@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "128156672205",
+    "project_id": "send-me-431e4",
+    "storage_bucket": "send-me-431e4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128156672205:android:03f69c9003ff919a7f0984",
+        "android_client_info": {
+          "package_name": "com.asynctech.sendme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4mnSZ00uL2imTIZmzPxSf7eNR9EvI8-8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

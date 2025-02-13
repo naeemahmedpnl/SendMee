@@ -1,0 +1,996 @@
+{
+  "userAccount": {
+    "signUp": "Registrarse",
+    "enterName": "Ingresa tu nombre",
+    "enterEmail": "Ingresa tu correo electrónico",
+    "enterNewPassword": "Ingresa una nueva contraseña",
+    "nameRequired": "Por favor ingresa tu nombre",
+    "emailRequired": "Por favor ingresa tu correo electrónico",
+    "emailInvalid": "Por favor ingresa un correo electrónico válido",
+    "passwordRequired": "Por favor ingresa tu contraseña",
+    "profileCreateError": "Error al crear el perfil. Por favor intenta de nuevo.",
+    "profileCreateSuccess": "Perfil creado exitosamente"
+  },
+  "userSignup": {
+    "signUp": "Registrarse",
+    "phoneNumber": "Número de Teléfono",
+    "enterPhoneNumber": "Por favor ingresa un número de teléfono válido",
+    "continueWith": "o Continuar con",
+    "alreadyHaveAccount": "¿Ya tienes una cuenta?",
+    "signIn": "Iniciar Sesión",
+    "errors": {
+      "invalidPhone": "Por favor ingresa un número de teléfono válido",
+      "registrationFailed": "Error en el registro. Por favor intenta de nuevo."
+    }
+  },
+  "userLogin": {
+    "signIn": "Iniciar Sesión",
+    "enterEmail": "Ingresa tu correo electrónico",
+    "enterPassword": "Ingresa tu contraseña",
+    "emailRequired": "Por favor ingresa tu correo electrónico",
+    "passwordRequired": "Por favor ingresa tu contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "signUp": "Registrarse",
+    "dismiss": "Descartar",
+    "errors": {
+      "notificationInit": "Error al inicializar las notificaciones",
+      "saveUserData": "Error al guardar los datos del usuario",
+      "networkError": "Por favor verifica tu conexión a internet"
+    }
+  },
+  "drawer_header": {
+    "loading": "Cargando...",
+    "guest": "Invitado",
+    "guest_email": "invitado@ejemplo.com"
+  },
+  "drawer": {
+    "support": "Soporte",
+    "profile": "Perfil",
+    "history": "Historial",
+    "wallet": "Billetera",
+    "notifications": "Notificaciones",
+    "passengerMode": "Modo Pasajero",
+    "language": "Idioma",
+    "reset_password": "Cambiar Contraseña",
+    "settings": "Configuración",
+    "driver_mode": "Cambiar al perfil del conductor",
+    "become_driver": "Conviértete en Conductor",
+    "logout": "Cerrar Sesión",
+    "languageChanged": "Idioma cambiado exitosamente",
+    "languageError": "Error al cambiar el idioma",
+    "error": {
+      "logout": "Ocurrió un error durante el cierre de sesión. Por favor, inténtelo de nuevo.",
+      "not_driver": "No estás registrado como conductor. Viendo vista de pasajero.",
+      "invalid_status": "Estado de conductor no válido",
+      "no_user_data": "No se encontraron datos de usuario",
+      "general": "Ocurrió un error. Por favor, inténtelo de nuevo."
+    }
+  },
+  "driver": {
+    "status": {
+      "pending": {
+        "title": "Solicitud Pendiente",
+        "message": "Tu solicitud de conductor está en revisión. Te notificaremos cuando sea aprobada."
+      },
+      "banned": {
+        "title": "Cuenta Bloqueada",
+        "message": "Tu cuenta de conductor ha sido bloqueada. Por favor contacta a soporte para más información."
+      },
+      "actions": {
+        "back": "Volver",
+        "contact_support": "Contactar Soporte"
+      }
+    }
+  },
+  "home_screen": {
+    "tagline": "La vida es un viaje,\nhazlo un trayecto para\nrecordar",
+    "get_started": "¿Qué necesitas?",
+    "offline_message": "Estás desconectado actualmente",
+    "refresh_success": "Datos actualizados correctamente",
+    "refresh_error": "Error al actualizar los datos",
+    "no_internet": "Sin conexión a Internet",
+    "server_error": "Se produjo un error en el servidor. Por favor, inténtelo de nuevo más tarde",
+    "not_found": "Recurso no encontrado",
+    "auth_error": "Error de autenticación. Por favor, inicie sesión de nuevo",
+    "general_error": "Se produjo un error. Por favor, inténtelo de nuevo",
+    "retry": "Reintentar",
+
+    "ride_type": {
+      "bike": "Solicitar un Viaje",
+      "delivery": "Envío de Paquetes"
+    }
+  },
+  "bottom_nav": {
+    "home": "Inicio",
+    "activity": "Actividad",
+    "profile": "Perfil"
+  },
+  "change_password": {
+    "title": "Cambiar Contraseña",
+    "old_password": "Ingrese su contraseña anterior",
+    "new_password": "Ingrese nueva contraseña",
+    "button": "Cambiar Contraseña",
+    "success": "Contraseña cambiada exitosamente",
+    "validation": {
+      "old_required": "Por favor ingrese su contraseña actual",
+      "new_required": "Por favor ingrese una nueva contraseña",
+      "length": "La contraseña debe tener al menos 6 caracteres"
+    }
+  },
+  "forgot_password": {
+    "title": "Olvidé mi Contraseña",
+    "email_label": "Correo Electrónico",
+    "email_hint": "Ingrese su correo electrónico aquí",
+    "button": "Recuperar Contraseña",
+    "sending": "Enviando...",
+    "otp_sent": "OTP enviado a su correo. Por favor verifique y continúe.",
+    "validation": {
+      "email_required": "Por favor ingrese su correo electrónico."
+    }
+  },
+  "otp": {
+    "title": "Verificación OTP",
+    "your_otp": "Su OTP: {}",
+    "enter_code": "Ingrese su Código OTP",
+    "code_hint": "Ingrese su código OTP aquí",
+    "verify_button": "Verificar OTP",
+    "invalid_otp": "OTP inválido. Por favor intente de nuevo.",
+    "validation": {
+      "required": "Por favor ingrese el OTP",
+      "length": "El OTP debe tener 4 dígitos o es inválido"
+    }
+  },
+  "reset_password": {
+    "title": "Olvidé mi Contraseña",
+    "otp_hint": "Ingrese su OTP",
+    "new_password_hint": "Ingrese una nueva contraseña",
+    "confirm_password_hint": "Confirme su contraseña",
+    "button": "Listo",
+    "success": "Contraseña actualizada exitosamente",
+    "errors": {
+      "passwords_not_match": "Las contraseñas no coinciden",
+      "invalid_otp": "OTP inválido",
+      "password_length": "La contraseña debe tener al menos 8 caracteres",
+      "general": "Error: {}"
+    },
+    "validation": {
+      "otp_required": "Por favor ingrese su OTP",
+      "new_password_required": "Por favor ingrese una nueva contraseña",
+      "confirm_password_required": "Por favor confirme su contraseña",
+      "password_length": "La contraseña debe tener al menos 8 caracteres",
+      "passwords_not_match": "Las contraseñas no coinciden"
+    }
+  },
+  "history": {
+    "no_trips": "No hay viajes disponibles",
+    "title": "Historial",
+    "status": {
+      "pending": "Pendiente",
+      "completed": "Completado",
+      "cancelled": "Cancelado"
+    },
+    "tabs": {
+      "summary": "Resumen",
+      "receipt": "Recibo"
+    },
+    "summary": {
+      "address": "Plot 12 j Block PECHS Karachi\nMillinium mall Rashid minhas",
+      "partner_name": "Nombre del socio:",
+      "plate_number": "Número de placa:",
+      "booking_time": "Hora de reserva:",
+      "service_type": "Tipo de servicio:"
+    },
+    "receipt": {
+      "base_fare": "Tarifa base:",
+      "distance": "Distancia ({}Km):",
+      "fare": "Tarifa:",
+      "platform_fee": "Cargo de plataforma",
+      "total": "Total:"
+    },
+    "button": {
+      "done": "Listo"
+    }
+  },
+  "support": {
+    "title": "Soporte",
+    "help_text": "¿Cómo podemos ayudarte?",
+    "faq_section": {
+      "title": "Centro de Ayuda / FAQ",
+      "booking": "¿Cómo reservar un viaje?",
+      "payment": "Métodos de pago",
+      "cancellation": "Política de cancelación"
+    },
+    "contact_section": {
+      "title": "Contáctanos",
+      "call": {
+        "title": "Llámanos",
+        "phone": "+52 744 681 1296"
+      },
+      "email": {
+        "title": "Correo electrónico",
+        "address": "support@ride-mexico.app"
+      },
+      "whatsapp": {
+        "title": "Número de WhatsApp",
+        "number": "+52 1 771 980 0047"
+      },
+      "chat": "Chatea con nosotros"
+    },
+
+    "feedback_section": {
+      "title": "Enviar un Problema o Comentario",
+      "hint": "Describe tu problema o comentario",
+      "submit": "Enviar"
+    },
+    "email_dialog": {
+      "title": "App de Correo No Encontrada",
+      "content": "No pudimos abrir tu aplicación de correo. Por favor copia la dirección de correo abajo y envíanos un email manualmente:\n\n{0}",
+      "close": "Cerrar",
+      "copy": "Copiar Correo",
+      "copied": "Dirección de correo copiada al portapapeles"
+    },
+    "whatsapp_error": "No se pudo abrir WhatsApp. Por favor verifica que la aplicación esté instalada."
+  },
+  "parcel": {
+    "title": "Envía paquetes con Connect",
+    "subtitle": "Recibe la entrega en el tiempo que toma conducir hasta allí",
+    "receive_button": "Recibir un paquete",
+    "send_button": "Enviar un Paquete"
+  },
+  "receivingparcel": {
+    "title": "¿Quién recibirá el paquete?",
+    "dimmensions": "Dimensiones máximas del paquete: 50 cm alto x 50 cm ancho, 20 kg.",
+    "subtitle": "El conductor puede contactar al receptor para completar la entrega",
+    "receive_button": "Recibir un Paquete",
+    "send_button": "Enviar un Paquete",
+    "receiver_name_hint": "Ingrese el nombre del receptor",
+    "phone_hint": "Ingrese el número de teléfono",
+    "sender_title": "¿Quién envía el paquete?",
+    "sender_subtitle": "El conductor puede contactar al remitente para completar la entrega",
+    "sender_name_hint": "Ingrese el nombre del remitente"
+  },
+  "addressSearch": {
+    "title": "Buscar dirección",
+    "searchHint": "Buscar dirección",
+    "clearSearch": "Limpiar búsqueda",
+    "back": "Atrás",
+    "searching": "Buscando...",
+    "startTyping": "Comience a escribir para buscar direcciones",
+    "noResults": "No se encontraron resultados",
+    "retry": "Reintentar",
+    "error": "Intenta ser más específico o revisa la ortografía.",
+    "fetchError": "No se pudieron recuperar las sugerencias de direcciones",
+    "locationError": "No se pudieron obtener los detalles de la ubicación",
+    "apiError": "Error de API: {0} - {1}",
+    "httpError": "Error HTTP: {0}",
+    "locationFetchError": "No se pudieron obtener los detalles de la ubicación. Intente de nuevo.",
+    "networkError": "Pruebe con una dirección diferente o verifique su conexión.",
+    "permissionError": "Permiso de ubicación denegado",
+    "genericError": "Algo salió mal"
+  },
+  "profile": {
+    "title": "Perfil",
+    "username": "Nombre de Usuario",
+    "update_success": "¡Perfil actualizado exitosamente!",
+    "edit_profile": "Editar Perfil",
+    "wallet": "Billetera",
+    "payment_method": "Método de Pago",
+    "default_payment": "Predeterminado para pagos",
+    "phone_label": "Teléfono:",
+    "email_label": "Correo:",
+    "address_label": "Dirección",
+    "license_label": "Licencia de Conducir:",
+    "total_earnings": "Ganancias Totales",
+    "as_driver": "Como Conductor",
+    "as_passenger": "Como Pasajero",
+    "total_rides": "Viajes Totales"
+  },
+  "edit_profile": {
+    "title": "Editar Perfil",
+    "name_label": "Nombre",
+    "phone_label": "Teléfono",
+    "address_label": "Dirección",
+    "save_button": "Guardar Cambios",
+    "success_message": "Perfil actualizado exitosamente",
+    "error_message": "Error al actualizar el perfil: {0}",
+    "name_validation": "Por favor ingrese su nombre",
+    "address_validation": "Por favor ingrese su dirección"
+  },
+  "wallet": {
+    "title": "Billetera",
+    "createAccount": "Crear Cuenta",
+    "withdrawMoney": "Retirar Dinero",
+    "transactions": "Transacciones",
+    "balance": "Saldo",
+    "add_money": "Agregar Dinero",
+    "transaction_details": "Detalles de la Transacción",
+    "Select_Payment_Method": "Seleccionar Método de Pago",
+    "credit_card": "Tarjeta de Crédito",
+    "payment_successful": "¡Pago Exitoso!",
+    "amount_deposited": "El monto ha sido depositado exitosamente en su cuenta",
+    "done": "Listo",
+    "oxxo_voucher_generated": "Voucher OXXO Generado",
+    "click_view_voucher": "Haga clic abajo para ver su comprobante de pago",
+    "view_voucher": "Ver Voucher",
+    "voucher_error": "No se pudo abrir el voucher. Por favor intente de nuevo.",
+    "close": "Cerrar",
+    "select_amount": "Seleccionar Monto",
+    "enter_custom_amount": "Ingrese monto personalizado",
+    "enterAmount": "Ingrese Monto",
+    "amountHint": "Ingrese monto a retirar",
+    "withdrawDescription": "Por favor ingrese el monto que desea retirar de su billetera",
+    "accountCreated": "Cuenta Stripe creada exitosamente",
+    "errorCreatingAccount": "Error al crear cuenta Stripe",
+    "errorCheckingBank": "Error al verificar cuenta bancaria",
+    "payoutCreated": "Solicitud de retiro creada exitosamente",
+    "errorCreatingPayout": "Error al crear solicitud de retiro",
+    "completeSetup": "Completar Configuración",
+    "setupDescription": "Para retirar dinero, complete la configuración de su cuenta bancaria",
+    "completeNow": "Completar Ahora",
+    "continue": "Continuar"
+  },
+  "passengerReviews": {
+    "rateDriver": "Califica a tu pasajero ",
+    "howWasYourRide": "¿Cómo estuvo tu viaje?",
+    "criteria": {
+      "drivingSkill": "Conducción",
+      "communication": "Comunicación",
+      "cleanliness": "Limpieza",
+      "professionalism": "Profesional",
+      "punctuality": "Puntual",
+      "safetyMeasures": "Seguridad",
+      "routeOptimization": "Navegación",
+      "overallExperience": "Experiencia"
+    },
+    "pleaseSelectRating": "Por favor selecciona una calificación",
+    "selectFeedback": "Por favor selecciona al menos una opción de comentario",
+    "submitting": "Enviando tu reseña...",
+    "thankYouFeedback": "¡Gracias por tus comentarios!",
+    "errorSubmitting": "Error al enviar la reseña",
+    "unexpectedError": "Ocurrió un error inesperado",
+    "submit": "Enviar"
+  },
+  "ride_home": {
+    "move_map": "Mover el mapa para seleccionar la ubicación",
+    "add_location_manually": "Agregar Ubicación Manualmente",
+    "distance": "Distancia",
+    "location_services_disabled": "Los servicios de ubicación están desactivados. Por favor, actívelos",
+    "location_permissions_denied": "Permisos de ubicación denegados",
+    "location_permissions_permanently_denied": "Los permisos de ubicación están permanentemente denegados, no podemos solicitar permisos.",
+    "trip_created_success": "Viaje creado exitosamente",
+    "trip_creation_failed": "Error al crear el viaje",
+    "pickup_location": "Punto de Recogida",
+    "dropoff_location": "¿A dónde quieres ir?",
+    "price": "Precio",
+    "dropoff_locationn": "Ubicación de Destino",
+    "confirm_location": "Confirmar Ubicación",
+    "enter_price": "Ingrese el Precio",
+    "estimated_fare": "Tarifa Estimada",
+    "estimated_distance": "Distancia Estimada: {0} km",
+    "estimated_time": "Tiempo Estimado: {0}",
+    "book_ride": "Reservar Viaje",
+    "pickup_marker": "Recogida",
+    "dropoff_marker": "Entrega",
+    "route_not_found": "No se puede encontrar una ruta entre las ubicaciones seleccionadas.",
+    "no_route_between_locations": "No se encontró ruta entre las ubicaciones seleccionadas.",
+    "route_fetch_error": "Error al obtener la ruta: {0}",
+    "payment_dialog": {
+      "low_fare_title": "Alerta de Tarifa Baja",
+      "low_fare_message": "El monto de tu viaje es menor a $10.\nPor favor elige tu método de pago:",
+      "current_balance": "Saldo Actual: ${0}",
+      "payment_methods": {
+        "cash": "Efectivo",
+        "wallet": "Monedero"
+      }
+    }
+  },
+  "choose_driver": {
+    "no_token": "No hay token disponible",
+    "accept_trip_failed": "No se pudo aceptar el viaje. Por favor, inténtelo de nuevo.",
+    "driver_available": "Conductor Disponible",
+    "waiting_for_driver": "Esperando Conductor",
+    "waiting_message": "Esperando conductor...",
+    "connecting": "Conectando...",
+    "unknown": "Desconocido",
+    "eta": "Tiempo estimado: {0}",
+    "calculating": "Calculando...",
+    "rating_na": "⭐ N/A",
+    "trips": "{0} viajes",
+    "accept_ride": "Aceptar Viaje",
+    "cancel_ride": "Cancelar Viaje"
+  },
+  "payment": {
+    "sending_order": "Enviando orden al conductor",
+    "cash_method": "Pagar en Efectivo",
+    "card_method": "Pagar con Tarjeta",
+    "cash": "Efectivo",
+    "card": "Tarjeta",
+    "wallet": "Monedero",
+    "wallet_method": "Pagar con Monedero",
+    "total_fare": "Tarifa Total",
+    "continue_with": "Continuar con"
+  },
+  "review": {
+    "thanks_message": "Gracias por viajar,",
+    "enjoy_message": "Esperamos que hayas disfrutado tu viaje.",
+    "trip_route": "Ruta del Viaje",
+    "no_address": "Dirección no disponible",
+    "start_point": "Punto de Inicio",
+    "end_point": "Punto Final",
+    "submit_rating": "Enviar Calificación",
+    "trip_rating_question": "¿Cómo estuvo tu viaje con el conductor?",
+    "comments_hint": "Comentarios...",
+    "select_rating_error": "Por favor selecciona una calificación antes de enviar.",
+    "rating_success": "Gracias por calificar",
+    "rating_failed": "No se pudo enviar la calificación. Por favor, inténtalo de nuevo.",
+    "error_message": "Ocurrió un error. Por favor, inténtalo más tarde."
+  },
+  "ride_tracker": {
+    "trip_cancelled": "Viaje Cancelado",
+    "trip_cancelled_default": "Tu viaje ha sido cancelado",
+    "trip_started": "Viaje Iniciado",
+    "notification": "Notificación",
+    "user_cancelled_trip": "El usuario ha cancelado el viaje",
+    "trip_cancelled_message": "El viaje ha sido cancelado",
+    "errors": {
+      "no_auth_token": "Se requiere autenticación",
+      "cancellation_failed": "No se pudo cancelar el viaje",
+      "init_error": "Error al inicializar: {}"
+    },
+    "socket_connected": "Conectado al servidor",
+    "driver_location_updated": "Ubicación del conductor actualizada",
+    "driver_nearby_title": "Conductor Cerca",
+    "driver_nearby_message": "Tu conductor está a solo {0} metros",
+    "driver_arrived_title": "Conductor Llegó",
+    "driver_arrived_message": "Tu conductor ha llegado al punto de recogida",
+    "trip_started_title": "Viaje Iniciado",
+    "trip_started_message": "¡Tu viaje ha comenzado! Estás en camino a tu destino.",
+    "almost_there_title": "¡Casi Llegamos!",
+    "almost_there_message": "Estás cerca de tu destino",
+    "destination_arrived_title": "¡Llegamos!",
+    "destination_arrived_message": "Has llegado a tu destino",
+    "socket_error": "Error de conexión",
+    "connection_error": "Error de conexión ocurrido",
+    "trip_completed": "Viaje Completado",
+    "confirm_payment_message": "Tu viaje ha sido completado. Por favor confirma el pago.",
+    "total_fare": "Tarifa Total: ${0}",
+    "confirm_payment": "Confirmar Pago",
+    "on_way_to_destination": "En camino al destino",
+    "ride_arriving": "Tu viaje está llegando",
+    "unknown": "Desconocido",
+    "trips": "Viajes",
+    "payment": "Pago",
+    "cash": "Efectivo",
+    "amount": "${0}",
+    "cancel_ride": "CANCELAR",
+    "end_ride": "TERMINAR",
+    "trip_status": {
+      "waiting": "El conductor está en camino al punto de recogida",
+      "started": "En camino al destino",
+      "arrived": "Llegamos al destino",
+      "completed": "Viaje completado",
+      "preparing": "Preparando tu viaje"
+    },
+    "trip_updates_description": "Notificaciones sobre el progreso de tu viaje",
+    "rate_driver": "CALIFICAR CONDUCTOR",
+    "confirm_payment_button": "CONFIRMAR PAGO",
+    "error_generic": "Ocurrió un error. Por favor, intenta de nuevo.",
+    "rating_submitted": "¡Gracias por tu calificación!",
+    "payment_confirmed": "Pago confirmado",
+    "navigating_to_destination": "Navegando a tu destino",
+    "estimated_time": "Tiempo estimado: {0} min",
+    "driver_details": "Detalles del Conductor",
+    "vehicle_details": "Detalles del Vehículo",
+    "contact_driver": "Contactar Conductor",
+    "share_trip": "Compartir Viaje",
+    "emergency_contact": "Contacto de Emergencia"
+  },
+  "cancel_trip": {
+    "title": "Cancelar Viaje",
+    "reason_prompt": "Dinos por qué quieres cancelar",
+    "reason_no_need": "Ya no necesito el viaje",
+    "reason_change_booking": "Quiero cambiar los detalles de mi reserva",
+    "reason_no_contact": "No pude contactar al conductor",
+    "reason_driver_issue": "El conductor no se mueve o me pidió cancelar",
+    "reason_plan_changed": "Cambié de planes",
+    "reason_other": "Otro motivo",
+    "select_reason_error": "Por favor selecciona un motivo para la cancelación",
+    "success_message": "Viaje cancelado exitosamente",
+    "error_message": "Error al cancelar el viaje",
+    "confirm_button": "Cancelar Viaje",
+    "trip_details": {
+      "trip_id": "ID del Viaje",
+      "pickup": "Punto de Recogida",
+      "destination": "Destino",
+      "driver": "Conductor",
+      "estimated_fare": "Tarifa Estimada"
+    }
+  },
+
+  "messsage": {
+    "type_message": "Escribe tu mensaje",
+    "send": "Enviar",
+    "failed_to_send": "Error al enviar el mensaje. Inténtalo de nuevo."
+  },
+  "user_chat": {
+    "back": "Volver",
+    "loading": "Cargando..."
+  },
+  "address_search": {
+    "search_hint": "Buscar una dirección",
+    "clear_search": "Borrar búsqueda",
+    "back": "Atrás",
+    "searching": "Buscando...",
+    "start_typing": "Empieza a escribir para buscar direcciones",
+    "no_results": "No se encontraron resultados",
+    "retry": "Reintentar",
+    "error": "Error: {0}",
+    "fetch_error": "Error al buscar sugerencias de direcciones",
+    "location_error": "Error al obtener detalles de ubicación",
+    "api_error": "Error de API: {0} - {1}",
+    "http_error": "Error HTTP: {0}",
+    "location_fetch_error": "Error al obtener detalles de ubicación. Por favor, intenta de nuevo.",
+    "network_error": "Por favor verifica tu conexión a internet",
+    "permission_error": "Permiso de ubicación denegado",
+    "generic_error": "Algo salió mal"
+  },
+  "driverSignupParcel": {
+    "registration": "Registro",
+    "basicIntro": "Información Básica",
+    "driverLicense": "Licencia de Conducir",
+    "proofOfAddress": "Comprobante de Domicilio",
+    "idConfirmation": "Confirmación de Identidad",
+    "vehicleInfo": "Información del Vehículo",
+    "done": "Completar",
+    "submitting": "Enviando...",
+    "congratulations": "¡Felicitaciones!",
+    "verificationCompleted": "Tu verificación ha sido completada",
+    "errors": {
+      "incompleteRegistration": "Por favor completa todos los pasos del registro primero.",
+      "registrationFailed": "El registro falló. Por favor intenta de nuevo.",
+      "genericError": "Ocurrió un error. Por favor intenta de nuevo."
+    },
+    "actions": {
+      "close": "Cerrar",
+      "done": "Completar"
+    }
+  },
+
+  "driverLicense": {
+    "title": "Licencia de Conducir",
+    "licenseNumber": "Número de Licencia de Conducir",
+    "frontLicense": "Anverso de la Licencia de Conducir",
+    "backLicense": "Reverso de la Licencia de Conducir",
+    "noImage": "Ninguna imagen seleccionada",
+    "imageSize": "Tamaño de la imagen: {} KB",
+    "loading": "Cargando...",
+    "frontImage": "Imagen del Anverso",
+    "backImage": "Imagen del Reverso",
+    "addPhoto": "Agregar foto",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "errors": {
+      "bothImages": "Por favor selecciona las imágenes del anverso y reverso de la licencia de conducir.",
+      "frontImage": "Por favor selecciona la imagen del anverso de la licencia de conducir.",
+      "backImage": "Por favor selecciona la imagen del reverso de la licencia de conducir.",
+      "saveFailed": "Error al guardar las imágenes."
+    },
+    "success": {
+      "saved": "Guardado exitosamente."
+    }
+  },
+
+  "driverLogin": {
+    "signIn": "Iniciar Sesión",
+    "enterEmail": "Ingresa tu correo electrónico",
+    "enterPassword": "Ingresa tu contraseña",
+    "emailRequired": "Por favor ingresa tu correo electrónico",
+    "emailInvalid": "Por favor ingresa un correo electrónico válido",
+    "passwordRequired": "Por favor ingresa tu contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "dontHaveAccount": "¿No tienes una cuenta?",
+    "signUp": "Registrarse",
+    "errors": {
+      "fillAllFields": "Por favor completa todos los campos",
+      "fcmTokenError": "Error al obtener el token FCM",
+      "invalidCredentials": "Correo o contraseña inválidos",
+      "networkError": "Por favor verifica tu conexión a internet"
+    }
+  },
+  "basicInfo": {
+    "title": "Información Básica",
+    "userName": "Nombre de Usuario",
+    "phoneNumber": "Número de Teléfono",
+    "password": "Contraseña",
+    "email": "Correo (Opcional)",
+    "address": "Dirección",
+    "dateOfBirth": "Fecha de Nacimiento",
+    "save": "Guardar",
+    "userNameRequired": "*Por favor ingresa un nombre de usuario.",
+    "phoneRequired": "*Por favor ingresa un número de teléfono.",
+    "passwordRequired": "*Por favor ingresa una contraseña.",
+    "addressRequired": "*Por favor ingresa una dirección.",
+    "dobRequired": "*Por favor ingresa la fecha de nacimiento.",
+    "invalidEmail": "Por favor ingresa un correo electrónico válido",
+    "fillRequired": "Por favor completa todos los campos requeridos",
+    "saveSuccess": "Información guardada exitosamente",
+    "saveFailed": "Error al guardar la información",
+    "error": "Error: {0}",
+    "close": "Cerrar"
+  },
+
+  "idConfirmation": {
+    "title": "Confirmación de ID",
+    "voterID": "INE Anverso",
+    "passport": "INE Reverso",
+    "addPhoto": "Agregar foto",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "errors": {
+      "bothImages": "Por favor seleccione las imágenes del anverso y reverso del INE.",
+      "frontImage": "Por favor seleccione la imagen del anverso del INE.",
+      "backImage": "Por favor seleccione la imagen del reverso del INE.",
+      "saveFailed": "Error al guardar las imágenes."
+    },
+    "success": {
+      "saved": "Guardado exitosamente."
+    }
+  },
+
+  "proofOfAddress": {
+    "title": "Comprobante de Domicilio",
+    "noImage": "Ninguna imagen seleccionada",
+    "addPhoto": "Agregar una foto",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "guidelines": {
+      "faceAndLicense": "⚬ La foto debe mostrar claramente su rostro y licencia de conducir.",
+      "quality": "⚬ La foto debe tomarse con buena luz y ser de alta calidad.",
+      "sunglasses": "⚬ No se permiten fotos con gafas de sol."
+    },
+    "errors": {
+      "selectImage": "Por favor seleccione una imagen.",
+      "saveFailed": "Error al guardar la imagen."
+    },
+    "success": {
+      "saved": "Guardado exitosamente."
+    }
+  },
+  "vehicleInfo": {
+    "title": "Información del Vehículo",
+    "selectBrand": "Seleccionar marca del vehículo",
+    "vehiclePhotos": "Fotos del vehículo",
+    "save": "Guardar",
+    "success": {
+      "saved": "¡Guardado exitosamente!"
+    }
+  },
+  "brandDetails": {
+    "title": "Detalles de la Marca",
+    "brandName": "Nombre de la Marca",
+    "year": "Año del Modelo",
+    "color": "Color",
+    "plateNumber": "Placa de la Moto",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "close": "Cerrar",
+    "inputs": {
+      "brandNameHint": "Ingrese la marca (ej. Honda, Yamaha)",
+      "yearHint": "Ingrese el año (ej. 2020)",
+      "colorHint": "Ingrese el color",
+      "plateNumberHint": "Ingrese la placa de la moto"
+    },
+    "validation": {
+      "brandNameRequired": "*Por favor ingrese la marca.",
+      "yearRequired": "*Por favor ingrese el año del modelo.",
+      "yearInvalid": "*Por favor ingrese un año válido.",
+      "yearRange": "*El año debe estar entre 1900 y el año actual.",
+      "colorRequired": "*Por favor ingrese el color.",
+      "plateNumberRequired": "*Por favor ingrese la placa.",
+      "photosRequired": "*Por favor agregue fotos de la moto.",
+      "insufficientPhotos": "*Por favor agregue al menos {} fotos de la moto."
+    },
+    "success": {
+      "saved": "¡Detalles del vehículo guardados exitosamente!"
+    },
+    "errors": {
+      "saveFailed": "Error al guardar los detalles del vehículo.",
+      "general": "Ocurrió un error: {}"
+    }
+  },
+  "vehiclePhotos": {
+    "title": "Fotos del Vehículo",
+    "frontView": "Vista lateral del vehículo",
+    "backView": "Vista trasera del vehículo",
+    "noImage": "Ninguna imagen seleccionada",
+    "addPhoto": "Agregar una foto",
+    "save": "Guardar",
+    "close": "Cerrar",
+    "errors": {
+      "selectImage": "Por favor seleccione al menos una imagen.",
+      "saveFailed": "Error al guardar las fotos.",
+      "generalError": "Ocurrió un error al guardar las fotos: {}"
+    },
+    "success": {
+      "saved": "¡Fotos del vehículo guardadas exitosamente!"
+    }
+  },
+  "driverOverview": {
+    "services": "Servicios",
+    "earnWithUs": {
+      "title": "Gana con nosotros",
+      "benefits": {
+        "flexibleHours": "Horarios flexibles",
+        "yourPrices": "Tus precios",
+        "lowPayments": "Pagos de servicios bajos"
+      }
+    },
+    "serviceTypes": {
+      "parcel": "Paquetería",
+      "bike": "Moto"
+    }
+  },
+  "driverReviews": {
+    "pleaseSelectRating": "Por favor, selecciona una calificación",
+    "selectFeedback": "Por favor, selecciona al menos una opción de comentario",
+    "submitting": "Enviando tu reseña...",
+    "thankYouFeedback": "¡Gracias por tus comentarios!",
+    "errorSubmitting": "Error al enviar la reseña. Por favor, inténtalo de nuevo.",
+    "unexpectedError": "Ocurrió un error inesperado",
+    "criteria": {
+      "punctuality": "Puntualidad",
+      "communication": "Comunicación",
+      "payment": "Pago",
+      "vehicleRespect": "Respeto al vehículo",
+      "cleanliness": "Limpieza",
+      "friendliness": "Amabilidad",
+      "safetyDriving": "Conducción segura",
+      "navigation": "Navegación"
+    },
+    "rateRideWith": "Califica tu viaje con {0}",
+    "whatWentPerfect": "¿Qué salió perfecto?",
+    "submit": "Enviar"
+  },
+
+  "paymentSuccessful": {
+    "message": "Pago recibido del cliente exitosamente.",
+    "close": "Cerrar"
+  },
+  "chat": {
+    "title": "Chat",
+    "user": "Usuario",
+    "noMessages": "No hay mensajes todavía",
+    "typeMessage": "Escribe tu mensaje",
+    "send": "Enviar",
+    "call": "Llamar",
+    "cancel": "Cancelar",
+    "loading": "Cargando",
+    "error": {
+      "initialization": "Error al inicializar el chat",
+      "sendMessage": "Error al enviar mensaje",
+      "makeCall": "No se pudo abrir el marcador telefónico",
+      "callFailed": "Error al realizar la llamada",
+      "imagePickFailed": "Error al seleccionar imagen"
+    },
+    "media": {
+      "takePhoto": "Tomar foto",
+      "chooseFromGallery": "Elegir de la galería",
+      "sendImage": "Enviar imagen"
+    },
+    "dialog": {
+      "phoneCall": {
+        "title": "Llamar",
+        "message": "¿Desea llamar a este número?"
+      }
+    }
+  },
+  "ride_booking": {
+    "go_online": "CONECTARSE",
+    "go_offline": "DESCONECTARSE",
+    "test_notification": "Notificación de Prueba",
+    "location": {
+      "pickup": "Recoger",
+      "dropoff": "Destino"
+    },
+    "unknown_user": "Usuario Desconocido",
+    "no_email": "Correo no proporcionado",
+    "buttons": {
+      "more": "Más"
+    }
+  },
+  "ride_details": {
+    "markers": {
+      "pickup": "Recoger",
+      "dropoff": "Destino",
+      "driver": "Conductor"
+    },
+    "user_info": {
+      "unknown_user": "Usuario Desconocido",
+      "no_email": "Correo no proporcionado"
+    },
+    "location": {
+      "distance_pickup": "Distancia al punto de recogida: ",
+      "time_pickup": "Tiempo al punto de recogida: ",
+      "pickup_point": "Punto de Recogida",
+      "dropoff_point": "Punto de Destino",
+      "not_specified": "No especificado"
+    },
+    "buttons": {
+      "accept": "Aceptar Viaje",
+      "ok": "Aceptar",
+      "cancel": "Cancelar"
+    },
+    "dialog": {
+      "error": "Error",
+      "processing": "Procesando...",
+      "trip_unavailable": "Viaje No Disponible",
+      "trip_not_found": "Viaje No Encontrado",
+      "trip_no_longer_available": "Este viaje ya no está disponible.",
+      "driver_location_error": "No se pudo obtener la ubicación del conductor. Por favor, intente de nuevo.",
+      "accept_error": "Error al aceptar el viaje. Por favor, intente de nuevo.",
+      "general_error": "Ocurrió un error. Por favor, intente de nuevo."
+    },
+    "errors": {
+      "accept_trip": "No se puede aceptar el viaje. Por favor, inténtelo de nuevo.",
+      "trip_failed": "No se pudo aceptar el viaje. Por favor, inténtelo de nuevo.",
+      "general_error": "Ocurrió un error. Por favor, inténtelo de nuevo."
+    },
+    "success": {
+      "user_accepted": "¡El usuario aceptó el viaje!",
+      "trip_accepted": "¡Viaje aceptado con éxito!"
+    }
+  },
+  "get_direction": {
+    "markers": {
+      "driver": "Ubicación del Conductor",
+      "pickup": "Punto de Recogida",
+      "dropoff": "Punto de Destino"
+    },
+    "trip_status": {
+      "ride_arriving": "Tu viaje llega en {time}",
+      "heading_destination": "Dirigiéndose al destino",
+      "estimated_fare": "Tarifa Estimada"
+    },
+    "distance": {
+      "label": "Distancia: {value}"
+    },
+    "errors": {
+      "init_error": "Error al inicializar el viaje: {error}",
+      "cancel_error": "No se puede cancelar el viaje. Inténtalo de nuevo."
+    },
+    "buttons": {
+      "navigate_pickup": "Navegar al Punto de Recogida",
+      "navigate_destination": "Navegar al Destino",
+      "arrive": "Llegar",
+      "cancel_ride": "CANCELAR VIAJE"
+    },
+    "dialogs": {
+      "pickup": {
+        "title": "Llegada al Punto de Recogida",
+        "message": "¿Has recogido al pasajero?",
+        "confirm": "Sí"
+      },
+      "destination": {
+        "title": "Llegada al Destino",
+        "message": "¿Completar el viaje?",
+        "confirm": "Sí"
+      }
+    }
+  },
+  "payment_method": {
+    "title": "Enviando orden al conductor",
+    "methods": {
+      "cash": {
+        "title": "Efectivo",
+        "button": "Pagar en Efectivo"
+      },
+      "card": {
+        "title": "Tarjeta",
+        "button": "Pagar con Tarjeta"
+      }
+    }
+  },
+  "payment_details": {
+    "driver_info": {
+      "distance_away": "{distance} km de distancia",
+      "rating": "4.2"
+    },
+    "fare_details": {
+      "total_fare": "Tarifa Total",
+      "waiting_amount": "Cantidad de Espera",
+      "pickup_km": "Kilómetros de Recogida",
+      "total_price": "Precio Total"
+    },
+    "buttons": {
+      "collect": "Cobrar"
+    },
+    "amounts": {
+      "fare": "$200",
+      "waiting": "$50.00",
+      "pickup": "$50.00",
+      "total": "$250.00"
+    }
+  },
+  "notifications": {
+    "trip": {
+      "accepted": "Solicitud de Viaje Aceptada",
+      "driver_accepted": "El conductor {name} ha aceptado tu solicitud de viaje",
+      "started": "Viaje Iniciado",
+      "driver_started": "El conductor {name} ha iniciado tu viaje",
+      "completed": "Viaje Completado",
+      "completion_thanks": "El conductor {name} ha completado tu viaje. ¡Gracias por viajar con nosotros!",
+      "cancelled": "Viaje Cancelado",
+      "driver_cancelled": "El conductor {name} ha cancelado el viaje. Buscando otro conductor.",
+      "user_cancelled": "Usuario canceló el viaje",
+      "arrived": "Conductor Llegó",
+      "driver_arrived": "Tu conductor ha llegado al punto de recogida",
+      "near": "Conductor Cerca",
+      "driver_near": "Tu conductor está a {distance} metros",
+      "destination_near": "¡Casi Llegamos!",
+      "destination_arrived": "Has llegado a tu destino"
+    },
+    "payment": {
+      "success": "Pago Exitoso",
+      "received": "Pago de {amount} recibido vía {method}",
+      "failed": "Pago Fallido",
+      "pending": "Pago Pendiente"
+    },
+    "rating": {
+      "thanks": "¡Gracias por calificar!",
+      "request": "Por favor califica tu viaje"
+    }
+  },
+  "ride_trackerr": {
+    "trip_cancelled": "Viaje Cancelado",
+    "trip_started": "Viaje Iniciado",
+    "trip_completed": "Viaje Completado",
+    "driver_cancelled_message": "Tu viaje ha sido cancelado por el conductor",
+    "trip_started_message": "Tu viaje ha comenzado",
+    "user_cancelled_trip": "El usuario ha cancelado el viaje",
+    "trip_cancelled_message": "El viaje ha sido cancelado"
+  },
+  "errors": {
+    "unknown_error": "Se produjo un error desconocido",
+    "network_error": "Error de conexión de red",
+    "server_error": "Error del servidor. Por favor, inténtelo de nuevo más tarde",
+    "auth": {
+      "invalid_credentials": "Correo electrónico o contraseña inválidos",
+      "user_not_found": "Usuario no encontrado",
+      "invalid_input": "Por favor, revise sus datos",
+      "login_failed": "Error al iniciar sesión",
+      "user_exists": "Ya existe un usuario con este número de teléfono",
+      "invalid_phone": "Formato de número de teléfono inválido",
+      "registration_failed": "Error en el registro",
+      "token_not_found": "Token de autenticación no encontrado",
+      "session_expired": "Sesión expirada. Por favor, inicie sesión de nuevo"
+    },
+    "profile": {
+      "update_failed": "Error al actualizar el perfil",
+      "invalid_data": "Datos de perfil inválidos"
+    },
+    "password": {
+      "change_failed": "Error al cambiar la contraseña",
+      "not_match": "Las contraseñas no coinciden",
+      "invalid_current": "La contraseña actual es incorrecta",
+      "weak_password": "La contraseña es demasiado débil"
+    }
+  },
+  "trip_cancelled_successfully": "Viaje cancelado con éxito",
+  "cancel_trip_failed": "Error al cancelar el viaje",
+  "authentication_token_not_found": "Token de autenticación no encontrado",
+  "cancelling_trip": "Cancelando Viaje",
+  "trip_not_found": "Viaje no encontrado",
+  "failed_to_cancel_trip": "Error al cancelar el viaje",
+  "cancel_trip_confirmation": "¿Estás seguro de que quieres cancelar este viaje?",
+  "cancel_trip_subtitle": "Esta acción no se puede deshacer",
+  "no": "No",
+  "yes": "Sí",
+  "tap_again_to_close": "Toca de nuevo para cerrar",
+  "dismiss": "Descartar",
+  "retry": "Reintentar",
+  "no_internet_connection": "Sin conexión a internet",
+  "unknown_driver": "Conductor Desconocido",
+  "trip_request_accepted": "Solicitud de Viaje Aceptada",
+  "driver_accepted_trip": "{driverName} ha aceptado tu solicitud de viaje"
+}

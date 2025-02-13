@@ -1,0 +1,990 @@
+{
+  "userAccount": {
+    "signUp": "Sign Up",
+    "enterName": "Enter your name",
+    "enterEmail": "Enter your email",
+    "enterNewPassword": "Enter a new Password",
+    "nameRequired": "Please enter your name",
+    "emailRequired": "Please enter your email address",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Please enter your password",
+    "profileCreateError": "Failed to create profile. Please try again.",
+    "profileCreateSuccess": "Profile created successfully"
+  },
+  "userSignup": {
+    "signUp": "Sign Up",
+    "phoneNumber": "Phone Number",
+    "enterPhoneNumber": "Please enter a valid phone number",
+    "continueWith": "or Continue with",
+    "alreadyHaveAccount": "Already have an account?",
+    "signIn": "Sign In",
+    "errors": {
+      "invalidPhone": "Please enter a valid phone number",
+      "registrationFailed": "Registration failed. Please try again."
+    }
+  },
+  "driverSignupParcel": {
+    "registration": "Registration",
+    "basicIntro": "Basic Information",
+    "driverLicense": "Driver License",
+    "proofOfAddress": "Proof of Address",
+    "idConfirmation": "ID Confirmation",
+    "vehicleInfo": "Vehicle Information",
+    "done": "Complete",
+    "submitting": "Submitting...",
+    "congratulations": "Congratulations!",
+    "verificationCompleted": "Your verification has been completed",
+    "errors": {
+      "incompleteRegistration": "Please complete all registration steps first.",
+      "registrationFailed": "Registration failed. Please try again.",
+      "genericError": "An error occurred. Please try again."
+    },
+    "actions": {
+      "close": "Close",
+      "done": "Complete"
+    }
+  },
+  "userLogin": {
+    "signIn": "Sign In",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "emailRequired": "Please enter your email address",
+    "passwordRequired": "Please enter your password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "dismiss": "Dismiss",
+    "errors": {
+      "notificationInit": "Failed to initialize notifications",
+      "saveUserData": "Failed to save user data",
+      "networkError": "Please check your internet connection"
+    }
+  },
+
+  "drawer_header": {
+    "loading": "Loading...",
+    "guest": "Guest",
+    "guest_email": "guest@example.com"
+  },
+
+  "drawer": {
+    "profile": "Profile",
+    "history": "History",
+    "wallet": "Wallet",
+    "notifications": "Notifications",
+    "passengerMode": "Passenger Mode",
+    "reset_password": "Reset Password",
+    "language": "Language",
+    "languageChanged": "Language changed successfully",
+    "languageError": "Error changing language",
+    "support": "Support",
+    "settings": "Settings",
+    "driver_mode": "Switch to Driver Profile",
+    "logout": "Logout",
+    "error": {
+      "logout": "An error occurred during logout. Please try again.",
+      "not_driver": "You are not registered as a driver. Viewing passenger overview.",
+      "invalid_status": "Invalid driver status",
+      "no_user_data": "No user data found",
+      "general": "An error occurred. Please try again."
+    }
+  },
+  "driver": {
+    "status": {
+      "pending": {
+        "title": "Application Pending",
+        "message": "Your driver application is under review. We'll notify you once it's approved."
+      },
+      "banned": {
+        "title": "Account Banned",
+        "message": "Your driver account has been banned. Please contact support for more information."
+      },
+      "actions": {
+        "back": "Back",
+        "contact_support": "Contact Support"
+      }
+    }
+  },
+  "home_screen": {
+    "tagline": "Life is a journey,\nmake it a ride to\nremember",
+    "get_started": "What do you need?",
+    "offline_message": "You are currently offline",
+    "refresh_success": "Data refreshed successfully",
+    "refresh_error": "Failed to refresh data",
+    "no_internet": "Check your internet connection",
+    "server_error": "Server error occurred. Please try again later",
+    "not_found": "Resource not found",
+    "auth_error": "Authentication failed. Please login again",
+    "general_error": "An error occurred. Please try again",
+    "retry": "Retry",
+    "ride_type": {
+      "bike": "Request a Trip",
+      "delivery": "Parcel Shipping"
+    }
+  },
+  "bottom_nav": {
+    "home": "Home",
+    "activity": "Activity",
+    "profile": "Profile"
+  },
+  "change_password": {
+    "title": "Change Password",
+    "old_password": "Enter your old Password",
+    "new_password": "Enter new Password",
+    "button": "Change Password",
+    "success": "Password changed successfully",
+    "validation": {
+      "old_required": "Please enter your current password",
+      "new_required": "Please enter a new password",
+      "length": "Password must be at least 6 characters long"
+    }
+  },
+  "forgot_password": {
+    "title": "Forgot Password",
+    "email_label": "Email Address",
+    "email_hint": "Enter your email address here",
+    "button": "Forgot Password",
+    "sending": "Sending...",
+    "otp_sent": "OTP sent to your email. Kindly check and proceed.",
+    "validation": {
+      "email_required": "Please enter your email."
+    }
+  },
+  "otp": {
+    "title": "OTP Verification",
+    "your_otp": "Your OTP: {}",
+    "enter_code": "Enter Your OTP Code",
+    "code_hint": "Enter your OTP code here",
+    "verify_button": "Verify OTP",
+    "invalid_otp": "Invalid OTP. Please try again.",
+    "validation": {
+      "required": "Please enter OTP",
+      "length": "OTP must be 4 digits or Invalid OTP"
+    }
+  },
+  "reset_password": {
+    "title": "Forgot Password",
+    "otp_hint": "Enter your OTP",
+    "new_password_hint": "Enter a new Password",
+    "confirm_password_hint": "Confirm your Password",
+    "button": "Done",
+    "success": "Password successfully updated",
+    "errors": {
+      "passwords_not_match": "Passwords do not match",
+      "invalid_otp": "Invalid OTP",
+      "password_length": "Password should be at least 8 characters",
+      "general": "Error: {}"
+    },
+    "validation": {
+      "otp_required": "Please enter your OTP",
+      "new_password_required": "Please enter a new password",
+      "confirm_password_required": "Please confirm your password",
+      "password_length": "Password should be at least 8 characters",
+      "passwords_not_match": "Passwords do not match"
+    }
+  },
+  "history": {
+    "no_trips": "No trips found",
+    "title": "History",
+    "status": {
+      "pending": "Pending",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "tabs": {
+      "summary": "Summary",
+      "receipt": "Receipt"
+    },
+    "summary": {
+      "address": "Plot 12 j Block PECHS Karachi\nMillinium mall Rashid minhas",
+      "partner_name": "Partner name:",
+      "plate_number": "Plate number:",
+      "booking_time": "Booking time:",
+      "service_type": "Service Type:"
+    },
+    "receipt": {
+      "base_fare": "Base Fare:",
+      "distance": "Distance ({}Km):",
+      "fare": "Fare:",
+      "platform_fee": "Platform Fee",
+      "total": "Total:"
+    },
+    "button": {
+      "done": "Done"
+    }
+  },
+  "support": {
+    "title": "Support",
+    "help_text": "How can we help you?",
+    "faq_section": {
+      "title": "Help Center / FAQ",
+      "booking": "How to book a ride?",
+      "payment": "Payment methods",
+      "cancellation": "Cancellation policy"
+    },
+    "contact_section": {
+      "title": "Contact Us",
+      "call": {
+        "title": "Call Us",
+        "phone": "+52 744 681 1296"
+      },
+      "email": {
+        "title": "Support Email",
+        "address": "support@ride-mexico.app"
+      },
+      "whatsapp": {
+        "title": "WhatsApp Number",
+        "number": "+52 1 771 980 0047"
+      },
+      "email_dialog": {
+        "title": "Email App Not Found",
+        "content": "We couldn't open your email app. Please copy the email address below and send us an email manually:\n\n{0}",
+        "close": "Close",
+        "copy": "Copy Email",
+        "copied": "Email address copied to clipboard"
+      },
+      "whatsapp_error": "Could not launch WhatsApp. Please check the app is installed.",
+      "chat": "Chat with Us"
+    },
+    "feedback_section": {
+      "title": "Submit an Issue or Feedback",
+      "hint": "Describe your issue or feedback",
+      "submit": "Submit"
+    }
+  },
+  "parcel": {
+    "title": "Send packages with Connect",
+    "subtitle": "Get it delivered in the time it takes to drive there",
+    "receive_button": "Receive a package",
+    "send_button": "Send a Package"
+  },
+  "receivingparcel": {
+    "title": "Who's receiving the package?",
+    "dimmensions": "Maximum package dimensions: 50 cm high x 50 cm wide, 20 kg.",
+    "subtitle": "The driver may contact the receiver to complete the delivery",
+    "receive_button": "Receive a Parcel",
+    "send_button": "Send a Package",
+    "receiver_name_hint": "Enter receiver name",
+    "phone_hint": "Enter phone number",
+    "sender_title": "Who's Sending the package?",
+    "sender_subtitle": "The driver may contact the sender to complete the delivery",
+    "sender_name_hint": "Enter sender name"
+  },
+  "addressSearch": {
+    "title": "Search for an address",
+    "searchHint": "Search for an address",
+    "clearSearch": "Clear search",
+    "back": "Back",
+    "searching": "Searching...",
+    "startTyping": "Start typing to search for addresses",
+    "noResults": "No results found",
+    "retry": "Retry",
+    "error": "Try being more specific or check the spelling",
+    "fetchError": "Failed to fetch address suggestions",
+    "locationError": "Unable to find this location",
+    "apiError": "API Error: {0} - {1}",
+    "httpError": "HTTP Error: {0}",
+    "locationFetchError": "Failed to get location details. Please try again.",
+    "networkError": "Please try a different address or check your connection",
+    "permissionError": "Location permission denied",
+    "genericError": "Something went wrong"
+  },
+  "passengerReviews": {
+  "rateDriver": "Rate your Passenger",
+  "howWasYourRide": "How was your ride?",
+  "criteria": {
+    "drivingSkill": "Driving Skill",
+    "communication": "Communication", 
+    "cleanliness": "Cleanliness",
+    "professionalism": "Professionalism",
+    "punctuality": "Punctuality",
+    "safetyMeasures": "Safety Measures",
+    "routeOptimization": "Route Optimization",
+    "overallExperience": "Overall Experience"
+  },
+  "pleaseSelectRating": "Please select a rating",
+  "selectFeedback": "Please select at least one feedback option",
+  "submitting": "Submitting your review...",
+  "thankYouFeedback": "Thank you for your feedback!",
+  "errorSubmitting": "Error submitting review",
+  "unexpectedError": "An unexpected error occurred",
+  "submit": "Submit"
+},
+
+  "profile": {
+    "title": "Profile",
+    "edit_profile": "Edit Profile",
+    "wallet": "Wallet",
+    "username": "Username",
+    "payment_method": "Payment Method",
+    "default_payment": "Default for payment",
+    "phone_label": "Phone No:",
+    "email_label": "Email:",
+    "address_label": "Address",
+    "license_label": "Driver License:",
+    "total_earnings": "Total Earnings",
+    "as_driver": "As Driver",
+    "as_passenger": "As Passenger",
+    "update_success": "Profile Updated Successfully",
+    "total_rides": "Total Rides"
+  },
+  "edit_profile": {
+    "title": "Edit Profile",
+    "name_label": "Name",
+    "phone_label": "Phone No",
+    "address_label": "Address",
+    "save_button": "Save Changes",
+    "success_message": "Profile updated successfully",
+    "error_message": "Error updating profile: {0}",
+    "name_validation": "Please enter your name",
+    "address_validation": "Please enter your address"
+  },
+  "message": {
+    "type_message": "type you message",
+    "send": "Send",
+    "failed_to_send": " Failed to send message"
+  },
+  "user_chat": {
+    "back": "Back",
+    "loading": "Loading..."
+  },
+  "wallet": {
+    "title": "Wallet",
+    "createAccount": "Create Account",
+    "withdrawMoney": "Withdraw Money",
+    "transactions": "Wallet Transaction",
+    "payment_successful": "Payment Successful!",
+    "Select_Payment_Method": "Select Payment Method",
+    "balance": "Wallet Balance",
+    "add_money": "Add Money",
+    "credit_card": "Credit Card",
+    "debit_card": "Debit Card",
+    "amount_deposited": "Amount has been successfully deposited in your account",
+    "done": "Done",
+    "oxxo_voucher_generated": "OXXO Voucher Generated",
+    "click_view_voucher": "Click below to view your payment voucher",
+    "view_voucher": "View Voucher",
+    "voucher_error": "Could not open voucher. Please try again.",
+    "close": "Close",
+    "select_amount": "Select Amount",
+    "enter_custom_amount": "Enter custom amount",
+    "enterAmount": "Enter Amount",
+    "amountHint": "Enter withdrawal amount",
+    "withdrawDescription": "Please enter the amount you want to withdraw from your wallet",
+    "accountCreated": "Stripe account created successfully",
+    "errorCreatingAccount": "Error creating Stripe account",
+    "errorCheckingBank": "Error checking bank account details",
+    "payoutCreated": "Withdrawal request created successfully",
+    "errorCreatingPayout": "Error creating withdrawal request",
+    "completeSetup": "Complete Account Setup",
+    "setupDescription": "To withdraw money, please complete your bank account setup first",
+    "completeNow": "Complete Setup",
+    "continue": "Continue"
+  },
+  "ride_home": {
+    "move_map": "Move the map to pin your location",
+    "add_location_manually": "Add location manually",
+    "distance": "Distance",
+    "drop_off": "Select Drop Off Location",
+    "location_services_disabled": "Location services are disabled. Please enable the services",
+    "location_permissions_denied": "Location permissions are denied",
+    "location_permissions_permanently_denied": "Location permissions are permanently denied, we cannot request permissions.",
+    "trip_created_success": "Trip created successfully",
+    "trip_creation_failed": "Failed to create trip",
+    "pickup_location": "Pickup Location",
+    "dropoff_location": "Where do you want to go?",
+    "price": "Price",
+    "enter_price": "Enter Price",
+    "estimated_distance": "Estimated Distance: {0} km",
+    "estimated_fare": "Estimated Fare",
+    "estimated_time": "Estimated Time: {0}",
+    "book_ride": "Book Ride",
+    "pickup_marker": "Pickup",
+    "confirm_location": "Confirm Location",
+    "dropoff_locationn": "Dropoff Location",
+    "dropoff_marker": "Dropoff",
+    "route_not_found": "Unable to find a route between the selected locations.",
+    "no_route_between_locations": "No route found between the selected locations.",
+    "route_fetch_error": "Error fetching route: {0}",
+  "payment_dialog": {
+    "low_fare_title": "Low Fare Alert",
+    "low_fare_message": "Your ride amount is less than $10.\nPlease choose your payment method:",
+    "current_balance": "Current Balance: ${0}",
+    "payment_methods": {
+      "cash": "Cash",
+      "wallet": "Wallet"
+    }
+  }
+  },
+  "choose_driver": {
+    "no_token": "No token available",
+    "accept_trip_failed": "Failed to accept trip. Please try again.",
+    "driver_available": "Driver Available",
+    "waiting_for_driver": "Waiting for Driver",
+    "waiting_message": "Waiting for driver...",
+    "connecting": "Connecting...",
+    "unknown": "Unknown",
+    "eta": "ETA: {0}",
+    "calculating": "Calculating...",
+    "rating_na": "⭐ N/A",
+    "trips": "{0} trips",
+    "cancel_ride": "Cancel Ride"
+  },
+  "payment": {
+    "sending_order": "Sending order to driver",
+    "cash_method": "Pay with Cash",
+    "card_method": "Pay with Card",
+    "cash": "Cash",
+    "card": "Card",
+    "wallet": "Wallet",
+    "wallet_method": "Pay with Wallet",
+    "total_fare": "Total Fare",
+    "continue_with": "Continue with"
+  },
+  "review": {
+    "thanks_message": "Thanks for Riding",
+    "enjoy_message": "We hope you enjoyed your ride.",
+    "trip_route": "Trip Route",
+    "no_address": "Address not available",
+    "start_point": "Start Point",
+    "end_point": "End Point",
+    "submit_rating": "Submit Rating",
+    "trip_rating_question": "How was your trip with the driver?",
+    "comments_hint": "Comments...",
+    "select_rating_error": "Please select a rating before submitting.",
+    "rating_success": "Thanks for providing rating",
+    "rating_failed": "Failed to submit rating. Please try again.",
+    "error_message": "An error occurred. Please try again later."
+  },
+  "ride_tracker": {
+
+    "trip_cancelled": "Trip Cancelled",
+    "trip_cancelled_default": "Your trip has been cancelled",
+    "trip_started": "Trip Started",
+ 
+    "notification": "Notification",
+    "user_cancelled_trip": "User has cancelled the trip",
+    "trip_cancelled_message": "The trip has been canceled",
+    "errors": {
+      "no_auth_token": "Authentication required",
+      "cancellation_failed": "Failed to cancel trip",
+      "init_error": "Error initializing: {}"
+    },
+    "socket_connected": "Connected to socket server",
+    "driver_location_updated": "Driver location updated",
+    "driver_nearby_title": "Driver Nearby",
+    "driver_nearby_message": "Your driver is just {0} meters away",
+    "driver_arrived_title": "Driver Arrived",
+    "driver_arrived_message": "Your driver has arrived at the pickup location",
+    "trip_started_title": "Trip Started",
+    "trip_started_message": "Your trip has begun! You're on your way to your destination.",
+    "almost_there_title": "Almost There!",
+    "almost_there_message": "You are nearly at your destination",
+    "destination_arrived_title": "Arrived!",
+    "destination_arrived_message": "You have reached your destination",
+    "socket_error": "Socket error occurred",
+    "connection_error": "Connection error occurred",
+    "trip_completed": "Trip Completed",
+    "confirm_payment_message": "Your trip has been completed. Please confirm the payment.",
+    "total_fare": "Total Fare: ${0}",
+    "confirm_payment": "Confirm Payment",
+    "on_way_to_destination": "On the way to destination",
+    "ride_arriving": "Your ride is arriving",
+    "unknown": "Unknown",
+    "trips": "Trips",
+    "payment": "Payment",
+    "cash": "Cash",
+    "amount": "${0}",
+    "cancel_ride": "CANCEL RIDE",
+    "end_ride": "END RIDE",
+    "trip_status": {
+      "waiting": "Driver is on the way to pickup location",
+      "started": "On the way to destination",
+      "arrived": "Arrived at destination",
+      "completed": "Trip completed",
+      "preparing": "Preparing your ride"
+    },
+    "trip_updates_description": "Notifications about your trip progress",
+    "rate_driver": "RATE DRIVER",
+    "confirm_payment_button": "CONFIRM PAYMENT",
+    "error_generic": "An error occurred. Please try again.",
+    "rating_submitted": "Thank you for your rating!",
+    "payment_confirmed": "Payment confirmed",
+    "navigating_to_destination": "Navigating to your destination",
+    "estimated_time": "Estimated time: {0} min",
+    "driver_details": "Driver Details",
+    "vehicle_details": "Vehicle Details",
+    "contact_driver": "Contact Driver",
+    "share_trip": "Share Trip",
+    "emergency_contact": "Emergency Contact"
+  },
+  "cancel_trip": {
+    "title": "Cancel Trip",
+    "reason_prompt": "Tell us why you want to cancel",
+    "reason_no_need": "I don't need a ride anymore",
+    "reason_change_booking": "I want to change my booking details",
+    "reason_no_contact": "I couldn't contact the captain",
+    "reason_driver_issue": "Driver isn't moving or asked me to cancel",
+    "reason_plan_changed": "Plan changed",
+    "reason_other": "Other",
+    "select_reason_error": "Please select a reason for cancellation",
+    "success_message": "Trip cancelled successfully",
+    "error_message": "Failed to cancel trip",
+    "confirm_button": "Cancel Trip",
+    "trip_details": {
+      "trip_id": "Trip ID",
+      "pickup": "Pickup",
+      "destination": "Destination",
+      "driver": "Driver",
+      "estimated_fare": "Estimated Fare"
+    }
+  },
+  "address_search": {
+    "search_hint": "Search for an address",
+    "clear_search": "Clear search",
+    "back": "Back",
+    "searching": "Searching...",
+    "start_typing": "Start typing to search for addresses",
+    "no_results": "No results found",
+    "retry": "Retry",
+    "error": "Error: {0}",
+    "fetch_error": "Failed to fetch address suggestions",
+    "location_error": "Failed to get location details",
+    "api_error": "API Error: {0} - {1}",
+    "http_error": "HTTP Error: {0}",
+    "location_fetch_error": "Failed to get location details. Please try again.",
+    "network_error": "Please check your internet connection",
+    "permission_error": "Location permission denied",
+    "generic_error": "Something went wrong"
+  },
+
+  "driverLogin": {
+    "signIn": "Sign In",
+    "enterEmail": "Enter your email",
+    "enterPassword": "Enter your password",
+    "emailRequired": "Please enter your email address",
+    "emailInvalid": "Please enter a valid email address",
+    "passwordRequired": "Please enter your password",
+    "forgotPassword": "Forgot Password?",
+    "dontHaveAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "errors": {
+      "fillAllFields": "Please fill all fields",
+      "fcmTokenError": "Failed to get FCM token",
+      "invalidCredentials": "Invalid email or password",
+      "networkError": "Please check your internet connection"
+    }
+  },
+  "basicInfo": {
+    "title": "Basic Info",
+    "userName": "Full Name",
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "email": "Email (Optional)",
+    "address": "Address",
+    "dateOfBirth": "Date of Birth",
+    "save": "Save",
+    "userNameRequired": "*Please enter username.",
+    "phoneRequired": "*Please enter phone number.",
+    "passwordRequired": "*Please enter password.",
+    "addressRequired": "*Please enter address.",
+    "dobRequired": "*Please enter date of birth.",
+    "invalidEmail": "Please enter a valid email address",
+    "fillRequired": "Please fill all required fields",
+    "saveSuccess": "Information saved successfully",
+    "saveFailed": "Failed to save information",
+    "error": "Error: {0}",
+    "close": "Close"
+  },
+
+  "driverLicense": {
+    "title": "Driver License",
+    "licenseNumber": "Driver License number",
+    "frontLicense": "The Front of driver's license",
+    "noImage": "No image selected",
+    "addPhoto": "Add a photo",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "save": "Save",
+    "close": "Close",
+    "imageSize": "Image Size: {} KB",
+    "errors": {
+      "selectImage": "Please select the image.",
+      "savingError": "Error saving driver license: {}",
+      "generalError": "An error occurred while saving: {}"
+    },
+    "success": {
+      "saved": "Driver License Saved Successfully."
+    }
+  },
+
+  "idConfirmation": {
+    "title": "ID Confirmation",
+    "voterID": "INE Frontside",
+    "passport": "INE Backside",
+    "addPhoto": "Add a photo",
+    "save": "Save",
+    "close": "Close",
+    "errors": {
+      "bothImages": "Please select front and back side images of CNIC.",
+      "frontImage": "Please select front side image of CNIC.",
+      "backImage": "Please select back side image of CNIC.",
+      "saveFailed": "Failed to save images."
+    },
+    "success": {
+      "saved": "Saved Successfully."
+    }
+  },
+  "proofOfAddress": {
+    "title": "Proof Of Address",
+    "noImage": "No image selected",
+    "addPhoto": "Add a photo",
+    "save": "Save",
+    "close": "Close",
+    "guidelines": {
+      "faceAndLicense": "⚬ The photo should clearly show your face and driver's license.",
+      "quality": "⚬ The photo must be taken in good light and be of high quality.",
+      "sunglasses": "⚬ Photos with sunglasses are not allowed."
+    },
+    "errors": {
+      "selectImage": "Please select the image.",
+      "saveFailed": "Failed to save image."
+    },
+    "success": {
+      "saved": "Saved Successfully."
+    }
+  },
+  "vehicleInfo": {
+    "title": "Vehicle Info",
+    "selectBrand": "Select vehicle brand",
+    "vehiclePhotos": "Photos of vehicle",
+    "save": "Save",
+    "success": {
+      "saved": "Successfully saved!"
+    }
+  },
+  "brandDetails": {
+    "title": "Brand Details",
+    "brandName": "Brand Name",
+    "year": "Model Year",
+    "color": "Color",
+    "plateNumber": "Bike Number Plate",
+    "save": "Save",
+    "saving": "Saving...",
+    "close": "Close",
+    "inputs": {
+      "brandNameHint": "Enter brand (e.g., Honda, Yamaha)",
+      "yearHint": "Enter year (e.g., 2020)",
+      "colorHint": "Enter color",
+      "plateNumberHint": "Enter bike number plate"
+    },
+    "validation": {
+      "brandNameRequired": "*Please enter brand name.",
+      "yearRequired": "*Please enter model year.",
+      "yearInvalid": "*Please enter a valid year.",
+      "yearRange": "*Year must be between 1900 and current year.",
+      "colorRequired": "*Please enter color.",
+      "plateNumberRequired": "*Please enter number plate.",
+      "photosRequired": "*Please add motorcycle photos.",
+      "insufficientPhotos": "*Please add at least {} motorcycle photos."
+    },
+    "success": {
+      "saved": "Vehicle details saved successfully!"
+    },
+    "errors": {
+      "saveFailed": "Failed to save vehicle details.",
+      "general": "An error occurred: {}"
+    }
+  },
+  "vehiclePhotos": {
+    "title": "Photos of Vehicle",
+    "frontView": "Side view of vehicle",
+    "backView": "Back view of vehicle",
+    "noImage": "No image selected",
+    "addPhoto": "Add a photo",
+    "save": "Save",
+    "close": "Close",
+    "errors": {
+      "selectImage": "Please select at least one image.",
+      "saveFailed": "Failed to save photos.",
+      "generalError": "An error occurred while saving photos: {}"
+    },
+    "success": {
+      "saved": "Vehicle photos saved successfully!"
+    }
+  },
+  "driverOverview": {
+    "services": "Services",
+    "earnWithUs": {
+      "title": "Earn with us",
+      "benefits": {
+        "flexibleHours": "Flexible hours",
+        "yourPrices": "Your prices",
+        "lowPayments": "Low services payments"
+      }
+    },
+    "serviceTypes": {
+      "parcel": "Parcel",
+      "bike": "Bike"
+    }
+  },
+  "driverReviews": {
+    "submit": "Submit",
+    "rateRideWith": "Rate your ride with {0}",
+    "whatWentPerfect": "What went perfectly?",
+    "pleaseSelectRating": "Please select a rating",
+    "selectFeedback": "Please select at least one feedback option",
+    "submitting": "Submitting your review...",
+    "thankYouFeedback": "Thank you for your feedback!",
+    "errorSubmitting": "Error submitting review. Please try again.",
+    "unexpectedError": "An unexpected error occurred",
+    "criteria": {
+      "punctuality": "Punctuality",
+      "communication": "Communication",
+      "payment": "Payment",
+      "vehicleRespect": "Respect for Vehicle",
+      "cleanliness": "Cleanliness",
+      "friendliness": "Friendliness",
+      "safetyDriving": "Safe Driving",
+      "navigation": "Navigation"
+    }
+  },
+
+  "paymentSuccessful": {
+    "message": "Received payment from the customer successfully.",
+    "close": "Done"
+  },
+  "chat": {
+    "title": "Chat",
+    "user": "User",
+    "noMessages": "No messages yet",
+    "typeMessage": "Type your message",
+    "send": "Send",
+    "call": "Call",
+    "cancel": "Cancel",
+    "loading": "Loading",
+    "error": {
+      "initialization": "Failed to initialize chat",
+      "sendMessage": "Failed to send message",
+      "makeCall": "Could not open phone dialer",
+      "callFailed": "Failed to make call",
+      "imagePickFailed": "Failed to pick image"
+    },
+    "media": {
+      "takePhoto": "Take Photo",
+      "chooseFromGallery": "Choose from Gallery",
+      "sendImage": "Send Image"
+    },
+    "dialog": {
+      "phoneCall": {
+        "title": "Call",
+        "message": "Would you like to call this number?"
+      }
+    }
+  },
+  "ride_booking": {
+    "go_online": "GO ONLINE",
+    "go_offline": "GO OFFLINE",
+    "test_notification": "Test Notification",
+    "location": {
+      "pickup": "Pickup",
+      "dropoff": "Dropoff"
+    },
+    "unknown_user": "Unknown User",
+    "no_email": "No email provided",
+    "buttons": {
+      "more": "More"
+    }
+  },
+  "ride_details": {
+    "markers": {
+      "pickup": "Pickup",
+      "dropoff": "Dropoff",
+      "driver": "Driver"
+    },
+    "errors": {
+      "accept_trip": "Unable to accept trip. Please try again.",
+      "trip_failed": "Failed to accept trip. Please try again.",
+      "general_error": "An error occurred. Please try again."
+    },
+    "success": {
+      "user_accepted": "User accepted the ride!",
+      "trip_accepted": "Trip accepted successfully!"
+    },
+    "user_info": {
+      "unknown_user": "Unknown User",
+      "no_email": "No email provided"
+    },
+    "location": {
+      "distance_pickup": "Distance to pickup: ",
+      "time_pickup": "Time to pickup: ",
+      "pickup_point": "Pickup Point",
+      "dropoff_point": "Drop-off Point",
+      "not_specified": "Not specified"
+    },
+    "buttons": {
+      "accept": "Accept Trip",
+      "acceptt": "Accept",
+      "ok": "OK",
+      "cancel": "Cancel"
+    },
+    "dialog": {
+      "error": "Error",
+      "processing": "Processing...",
+      "trip_unavailable": "Trip Unavailable",
+      "trip_not_found": "Trip Not Found",
+      "trip_no_longer_available": "This trip is no longer available.",
+      "driver_location_error": "Could not get driver location. Please try again.",
+      "accept_error": "Failed to accept trip. Please try again.",
+      "general_error": "An error occurred. Please try again."
+    }
+  },
+  "get_direction": {
+    "markers": {
+      "driver": "Driver Location",
+      "pickup": "Pickup Location",
+      "dropoff": "Dropoff Location"
+    },
+    "trip_status": {
+      "ride_arriving": "Your ride is arriving in",
+      "heading_destination": "Heading to destination",
+      "estimated_fare": "Estimated Fare"
+    },
+    "distance": {
+      "label": "Distance: {value}"
+    },
+    "errors": {
+      "init_error": "Error initializing trip: {error}",
+      "cancel_error": "Unable to cancel ride. Please try again."
+    },
+    "buttons": {
+      "navigate_pickup": "Navigate to Pickup",
+      "navigate_destination": "Navigate to Destination",
+      "arrive": "Arrive",
+      "cancel_ride": "CANCEL RIDE"
+    },
+    "dialogs": {
+      "pickup": {
+        "title": "Arrived at Pickup",
+        "message": "Have you picked up the passenger?",
+        "confirm": "Yes"
+      },
+      "destination": {
+        "title": "Arrived at Destination",
+        "message": "Complete the trip?",
+        "confirm": "Yes"
+      }
+    }
+  },
+
+   
+  "payment_method": {
+    "title": "Sending order to driver",
+    "methods": {
+      "cash": {
+        "title": "Cash",
+        "button": "Pay with Cash"
+      },
+      "card": {
+        "title": "Card",
+        "button": "Pay with Card"
+      }
+    }
+  },
+  "payment_details": {
+    "driver_info": {
+      "distance_away": "{distance} km away",
+      "rating": "4.2"
+    },
+    "fare_details": {
+      "total_fare": "Total Fare",
+      "waiting_amount": "Waiting Amount",
+      "pickup_km": "Pick up km",
+      "total_price": "Total Price"
+    },
+    "buttons": {
+      "collect": "Collect"
+    },
+    "amounts": {
+      "fare": "$200",
+      "waiting": "$50.00",
+      "pickup": "$50.00",
+      "total": "$250.00"
+    }
+  },
+  "notifications": {
+  "trip": {
+    "accepted": "Trip Request Accepted",
+    "driver_accepted": "Driver {name} has accepted your trip request",
+    "started": "Ride Started",
+    "driver_started": "Driver {name} has started your trip",
+    "completed": "Ride Completed",
+    "completion_thanks": "Driver {name} has completed your trip. Thank you for riding with us!",
+    "cancelled": "Trip Cancelled",
+    "driver_cancelled": "Driver {name} has canceled the trip. Looking for another driver.",
+    "user_cancelled": "User cancelled the trip",
+    "arrived": "Driver Arrived",
+    "driver_arrived": "Your driver has arrived at pickup location",
+    "near": "Driver Nearby",
+    "driver_near": "Your driver is {distance} meters away",
+    "destination_near": "Almost There!",
+    "destination_arrived": "You have reached your destination"
+  },
+  "payment": {
+    "success": "Payment Successful",
+    "received": "Payment of {amount} received via {method}",
+    "failed": "Payment Failed",
+    "pending": "Payment Pending"
+  },
+  "rating": {
+    "thanks": "Thank you for rating!",
+    "request": "Please rate your trip"
+  }
+},
+"errors": {
+  "unknown_error": "An unknown error occurred",
+  "network_error": "Network connection error",
+  "server_error": "Server error. Please try again later",
+  "auth": {
+    "invalid_credentials": "Invalid email or password",
+    "user_not_found": "User not found",
+    "invalid_input": "Please check your input",
+    "login_failed": "Login failed",
+    "user_exists": "User already exists with this phone number",
+    "invalid_phone": "Invalid phone number format",
+    "registration_failed": "Registration failed",
+    "token_not_found": "Authentication token not found",
+    "session_expired": "Session expired. Please login again"
+  },
+  "profile": {
+    "update_failed": "Failed to update profile",
+    "invalid_data": "Invalid profile data"
+  },
+  "password": {
+    "change_failed": "Failed to change password",
+    "not_match": "Passwords do not match",
+    "invalid_current": "Current password is incorrect",
+    "weak_password": "Password is too weak"
+  }
+},
+"trip_cancelled_successfully": "Trip cancelled successfully",
+"cancel_trip_failed": "Failed to cancel trip",
+"authentication_token_not_found": "Authentication token not found",
+"cancelling_trip": "Cancelling Trip",
+"trip_not_found": "Trip not found",
+"failed_to_cancel_trip": "Failed to cancel trip",
+"cancel_trip_confirmation": "Are you sure you want to cancel this trip?",
+"cancel_trip_subtitle": "This action cannot be undone",
+"no": "No",
+"yes": "Yes",
+"tap_again_to_close": "Tap again to close",
+"dismiss": "Dismiss",
+"retry": "Retry",
+"no_internet_connection": "No internet connection",
+
+"unknown_driver": "Unknown Driver",
+"trip_request_accepted": "Trip Request Accepted",
+"driver_accepted_trip": "{driverName} has accepted your trip request"
+
+
+}
