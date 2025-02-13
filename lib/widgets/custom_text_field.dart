@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
 
 class CustomTextFormField extends StatefulWidget {
   final IconData? icon;

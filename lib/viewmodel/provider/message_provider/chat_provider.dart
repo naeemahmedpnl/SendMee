@@ -2,7 +2,7 @@
 // // import 'package:http/http.dart' as http;
 // // import 'dart:convert';
 // // import 'package:shared_preferences/shared_preferences.dart';
-// // import 'package:rideapp/utils/constant/api_base_url.dart';
+// // import 'package:sendme/utils/constant/api_base_url.dart';
 // // import 'dart:developer' as developer;
 
 // // class ChatProvider with ChangeNotifier {
@@ -143,10 +143,10 @@
 // import 'package:flutter/foundation.dart';
 // import 'package:http/http.dart' as http;
 // import 'package:image_picker/image_picker.dart';
-// import 'package:rideapp/models/messeage_model.dart';
+// import 'package:sendme/models/messeage_model.dart';
 // import 'dart:convert';
 // import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:rideapp/utils/constant/api_base_url.dart';
+// import 'package:sendme/utils/constant/api_base_url.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 // class ChatProvider with ChangeNotifier {
@@ -395,9 +395,9 @@
 // import 'package:flutter/foundation.dart';
 // import 'package:http/http.dart' as http;
 // // import 'package:image_picker/image_picker.dart';
-// import 'package:rideapp/models/messeage_model.dart';
+// import 'package:sendme/models/messeage_model.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:rideapp/utils/constant/api_base_url.dart';
+// import 'package:sendme/utils/constant/api_base_url.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 
@@ -958,7 +958,7 @@
 // import 'dart:developer';
 // import 'package:flutter/foundation.dart';
 // import 'package:http/http.dart' as http;
-// import 'package:rideapp/utils/constant/api_base_url.dart';
+// import 'package:sendme/utils/constant/api_base_url.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // class ChatMessageProvider with ChangeNotifier {
@@ -1067,9 +1067,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:rideapp/utils/constant/api_base_url.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rideapp/models/messeage_model.dart';
+import 'package:sendme/models/messeage_model.dart';
 
 class ChatMessageProvider with ChangeNotifier {
   List<Message> _messages = [];

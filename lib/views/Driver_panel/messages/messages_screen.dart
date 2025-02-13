@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/message_provider/chatroom_provider.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/message_provider/chatroom_provider.dart';
 
 class DriverChatScreen extends StatefulWidget {
   final String phoneNumber;

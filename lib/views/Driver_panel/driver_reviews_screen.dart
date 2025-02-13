@@ -5,11 +5,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/ratings_provider/driver_rating_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/ratings_provider/driver_rating_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class DriverReviewsView extends StatefulWidget {
   const DriverReviewsView({super.key});

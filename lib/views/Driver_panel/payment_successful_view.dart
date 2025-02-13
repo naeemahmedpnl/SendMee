@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class PaymentSuccessfulView extends StatelessWidget {
   const PaymentSuccessfulView({super.key});

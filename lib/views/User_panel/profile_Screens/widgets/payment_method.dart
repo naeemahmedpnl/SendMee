@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
-import 'package:rideapp/viewmodel/provider/payment_provider.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/viewmodel/provider/payment_provider.dart';
 
 class PaymentMethodPopup extends StatefulWidget {
   final User? userData;

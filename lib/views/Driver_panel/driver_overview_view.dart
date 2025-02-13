@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/services.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
 
 
 class DriverOverviewView extends StatelessWidget {

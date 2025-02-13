@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
 
 class CustomDrawerHeader extends StatefulWidget {
   const CustomDrawerHeader({super.key});

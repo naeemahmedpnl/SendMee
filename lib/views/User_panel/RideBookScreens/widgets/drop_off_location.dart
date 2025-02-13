@@ -2,11 +2,11 @@
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:rideapp/viewmodel/provider/ridebook_provider.dart';
-// import 'package:rideapp/viewmodel/provider/map_provider.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/widgets/pickup_location.dart';
-// import 'package:rideapp/utils/theme/map_theme_popup.dart';
+// import 'package:sendme/viewmodel/provider/ridebook_provider.dart';
+// import 'package:sendme/viewmodel/provider/map_provider.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/widgets/pickup_location.dart';
+// import 'package:sendme/utils/theme/map_theme_popup.dart';
 // import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:geocoding/geocoding.dart';

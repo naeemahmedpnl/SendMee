@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:rideapp/models/driver_registration_model.dart';
-import 'package:rideapp/utils/constant/api_base_url.dart';
+import 'package:sendme/models/driver_registration_model.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DriverRegistrationProvider extends ChangeNotifier {

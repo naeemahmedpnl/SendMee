@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;

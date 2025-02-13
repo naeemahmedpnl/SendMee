@@ -22,7 +22,7 @@ class MapThemePopup extends StatelessWidget {
           onTap: () {
             _controller.future.then((value) {
               DefaultAssetBundle.of(context)
-                  .loadString('assets/map_theme/standard_theme.json')
+                  .loadString('assets/map_theme/night_theme.json')
                   .then((string) {
                 value.setMapStyle(string);
               });

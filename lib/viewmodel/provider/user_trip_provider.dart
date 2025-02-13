@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rideapp/utils/constant/api_base_url.dart';
-import 'package:rideapp/views/Driver_panel/ride_screens/location.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
+import 'package:sendme/views/Driver_panel/ride_screens/location.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 

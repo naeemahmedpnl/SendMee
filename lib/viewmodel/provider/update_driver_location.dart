@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rideapp/views/Driver_panel/ride_screens/location.dart';
+import 'package:sendme/views/Driver_panel/ride_screens/location.dart';
 import 'dart:developer' as developer;
 
 class TripProvider with ChangeNotifier {

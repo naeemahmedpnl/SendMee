@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/constant/api_base_url.dart';
-import 'package:rideapp/utils/location_utils.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
+import 'package:sendme/utils/location_utils.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -55,7 +55,7 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
  
     final provider = Provider.of<MapProvider>(context, listen: false);
     DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/standard_theme.json')
+        .loadString('assets/map_theme/night_theme.json')
         .then((value) => provider.setMapTheme(value));
 
     _initializeSocket();

@@ -2,13 +2,13 @@
 // import 'package:easy_localization/easy_localization.dart';
 // import 'package:flutter/material.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:rideapp/utils/constant/api_base_url.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/utils/theme/app_colors.dart';
-// import 'package:rideapp/utils/theme/app_text_theme.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
-// import 'package:rideapp/utils/location_utils.dart';
+// import 'package:sendme/utils/constant/api_base_url.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/utils/theme/app_colors.dart';
+// import 'package:sendme/utils/theme/app_text_theme.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
+// import 'package:sendme/utils/location_utils.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -517,13 +517,13 @@
 // // import 'package:flutter/material.dart';
 // // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // // import 'package:easy_localization/easy_localization.dart';
-// // import 'package:rideapp/utils/constant/api_base_url.dart';
-// // import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// // import 'package:rideapp/utils/theme/app_colors.dart';
-// // import 'package:rideapp/utils/theme/app_text_theme.dart';
-// // import 'package:rideapp/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
-// // import 'package:rideapp/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
-// // import 'package:rideapp/utils/location_utils.dart';
+// // import 'package:sendme/utils/constant/api_base_url.dart';
+// // import 'package:sendme/utils/routes/user_panel_routes.dart';
+// // import 'package:sendme/utils/theme/app_colors.dart';
+// // import 'package:sendme/utils/theme/app_text_theme.dart';
+// // import 'package:sendme/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
+// // import 'package:sendme/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
+// // import 'package:sendme/utils/location_utils.dart';
 // // import 'package:socket_io_client/socket_io_client.dart' as IO;
 // // import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -1295,15 +1295,15 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/services/notification_service.dart';
-import 'package:rideapp/utils/constant/api_base_url.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
-import 'package:rideapp/utils/location_utils.dart';
+import 'package:sendme/services/notification_service.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/widgets/cancel_trip_screen.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/widgets/driver_contact_card.dart';
+import 'package:sendme/utils/location_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
@@ -1534,7 +1534,7 @@ void initializeSocket() {
   Future<void> _loadMapTheme() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapTheme = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/standard_theme.json');
+        .loadString('assets/map_theme/night_theme.json');
     mapProvider.setMapTheme(mapTheme);
   }
 

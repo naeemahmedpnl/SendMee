@@ -1,4 +1,4 @@
-import 'package:rideapp/utils/constant/api_base_url.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:developer';
 

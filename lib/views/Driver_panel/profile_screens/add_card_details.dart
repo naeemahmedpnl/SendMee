@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/views/Driver_panel/widgets/custom_text_field.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/views/Driver_panel/widgets/custom_text_field.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class AddCardDetailsView extends StatefulWidget {
   const AddCardDetailsView({super.key});

@@ -5,13 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
 
-import 'package:rideapp/views/Driver_panel/ride_screens/location.dart';
-import 'package:rideapp/views/Driver_panel/ride_screens/location_provider.dart';
-import 'package:rideapp/views/Driver_panel/widgets/driver_contact_card.dart';
+import 'package:sendme/views/Driver_panel/ride_screens/location.dart';
+import 'package:sendme/views/Driver_panel/ride_screens/location_provider.dart';
+import 'package:sendme/views/Driver_panel/widgets/driver_contact_card.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GetDirection extends StatelessWidget {

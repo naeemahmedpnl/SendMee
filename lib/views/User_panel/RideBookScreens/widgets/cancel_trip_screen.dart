@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:rideapp/viewmodel/provider/cancel_trip_request.dart';
-import 'package:rideapp/widgets/custom_button.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
+import 'package:sendme/viewmodel/provider/cancel_trip_request.dart';
+import 'package:sendme/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
 
 class UserCancelTripScreen extends StatefulWidget {
   final Map<String, dynamic> tripDetails;

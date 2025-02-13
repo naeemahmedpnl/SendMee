@@ -2,10 +2,10 @@
 // import 'dart:developer';
 // import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
-// import 'package:rideapp/services/notification_service.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-// import 'package:rideapp/utils/theme/app_colors.dart';
+// import 'package:sendme/services/notification_service.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/utils/routes/driver_panel_routes.dart';
+// import 'package:sendme/utils/theme/app_colors.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // class CommonSplashView extends StatefulWidget {
@@ -266,10 +266,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rideapp/services/notification_service.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
+import 'package:sendme/services/notification_service.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonSplashView extends StatefulWidget {

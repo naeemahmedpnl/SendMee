@@ -4,9 +4,9 @@ import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final String? estimatedFare;

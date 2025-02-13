@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/responsive_config.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/responsive_config.dart';
 
 class AppTextTheme {
   AppTextTheme._();

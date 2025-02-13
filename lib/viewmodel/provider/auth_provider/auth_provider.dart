@@ -5,9 +5,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/services/canhed_data.dart';
-import 'package:rideapp/utils/constant/api_base_url.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/services/canhed_data.dart';
+import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {

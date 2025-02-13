@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rideapp/views/Driver_panel/widgets/custom_text_field.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/views/Driver_panel/widgets/custom_text_field.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import '../../../utils/theme/app_colors.dart';
 import '../../../utils/theme/app_text_theme.dart';
 import 'custom_snackbar.dart';

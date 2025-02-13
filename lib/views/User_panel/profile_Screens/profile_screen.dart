@@ -2,10 +2,10 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);

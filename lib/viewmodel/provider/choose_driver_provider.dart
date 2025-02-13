@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:rideapp/utils/location_utils.dart';
+import 'package:sendme/utils/location_utils.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'dart:developer' as dev;
 import 'dart:convert';

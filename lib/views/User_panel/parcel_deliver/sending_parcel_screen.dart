@@ -4,10 +4,10 @@
 // import 'package:flutter/services.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 // import 'package:provider/provider.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/utils/theme/app_colors.dart';
-// import 'package:rideapp/viewmodel/provider/map_provider.dart';
-// import 'package:rideapp/widgets/custom_button.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/utils/theme/app_colors.dart';
+// import 'package:sendme/viewmodel/provider/map_provider.dart';
+// import 'package:sendme/widgets/custom_button.dart';
 
 // class ParcelSendingScreen extends StatefulWidget {
 //   const ParcelSendingScreen({super.key});
@@ -190,10 +190,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ParcelSendingScreen extends StatefulWidget {
@@ -237,7 +237,7 @@ class _ParcelSendingScreenState extends State<ParcelSendingScreen> {
   Future<void> _loadMapTheme() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapTheme = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/standard_theme.json');
+        .loadString('assets/map_theme/night_theme.json
     mapProvider.setMapTheme(mapTheme);
   }
 

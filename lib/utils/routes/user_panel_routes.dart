@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 // Authentication Views
-import 'package:rideapp/views/User_panel/Authentication/change_password.dart';
-import 'package:rideapp/views/User_panel/Authentication/forgotpassword.dart';
-import 'package:rideapp/views/User_panel/Authentication/otp_screen.dart';
-import 'package:rideapp/views/User_panel/Authentication/reset_password.dart';
-import 'package:rideapp/views/User_panel/Authentication/user_account_view.dart';
-import 'package:rideapp/views/User_panel/Authentication/user_login_view.dart';
-import 'package:rideapp/views/User_panel/Authentication/user_signup_view.dart';
+import 'package:sendme/views/User_panel/Authentication/change_password.dart';
+import 'package:sendme/views/User_panel/Authentication/forgotpassword.dart';
+import 'package:sendme/views/User_panel/Authentication/otp_screen.dart';
+import 'package:sendme/views/User_panel/Authentication/reset_password.dart';
+import 'package:sendme/views/User_panel/Authentication/user_account_view.dart';
+import 'package:sendme/views/User_panel/Authentication/user_login_view.dart';
+import 'package:sendme/views/User_panel/Authentication/user_signup_view.dart';
 // Ride Booking Views
-import 'package:rideapp/views/User_panel/RideBookScreens/choose_driver.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/payment_method_screen.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/rating_screen.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/ride_book_screen.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/show_rider_details.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/payment_method_screen.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/rating_screen.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/ride_book_screen.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/show_rider_details.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
 // Other Views
-import 'package:rideapp/views/User_panel/Support/support_screen.dart';
-import 'package:rideapp/views/User_panel/common_splash_view.dart';
-import 'package:rideapp/views/User_panel/history_screens/history_screen.dart';
-import 'package:rideapp/views/User_panel/parcel_deliver/parcel_booking.dart';
+import 'package:sendme/views/User_panel/Support/support_screen.dart';
+import 'package:sendme/views/User_panel/common_splash_view.dart';
+import 'package:sendme/views/User_panel/history_screens/history_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/parcel_booking.dart';
 // Parcel Delivery Views
-import 'package:rideapp/views/User_panel/parcel_deliver/parcel_screen.dart';
-import 'package:rideapp/views/User_panel/parcel_deliver/recieving_parcel_screen.dart';
-import 'package:rideapp/views/User_panel/parcel_deliver/sending_parcel_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/parcel_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/recieving_parcel_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/sending_parcel_screen.dart';
 // Profile and Settings Views
-import 'package:rideapp/views/User_panel/profile_Screens/edit_profile.dart';
-import 'package:rideapp/views/User_panel/profile_Screens/profile_screen.dart';
-import 'package:rideapp/views/User_panel/profile_Screens/wallet_details.dart';
+import 'package:sendme/views/User_panel/profile_Screens/edit_profile.dart';
+import 'package:sendme/views/User_panel/profile_Screens/profile_screen.dart';
+import 'package:sendme/views/User_panel/profile_Screens/wallet_details.dart';
 
 import '../../views/User_panel/Authentication/pessenger_id.dart';
 
@@ -200,34 +200,34 @@ class AppRoutes {
 
 
 // import 'package:flutter/material.dart';
-// // import 'package:rideapp/views/Driver_panel/ride_screens/rider_history.dart';
-// import 'package:rideapp/views/User_panel/Authentication/change_password.dart';
-// import 'package:rideapp/views/User_panel/Authentication/reset_password.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/choose_driver.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/rating_screen.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/ride_book_screen.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/show_rider_details.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
-// import 'package:rideapp/views/User_panel/Support/support_screen.dart';
-// import 'package:rideapp/views/User_panel/Authentication/forgotpassword.dart';
-// import 'package:rideapp/views/User_panel/Authentication/otp_screen.dart';
-// import 'package:rideapp/views/User_panel/Authentication/user_account_view.dart';
-// import 'package:rideapp/views/User_panel/Authentication/user_login_view.dart';
-// import 'package:rideapp/views/User_panel/Authentication/user_signup_view.dart';
-// // import 'package:rideapp/views/User_panel/RideBookScreens/choose_driver.dart';
-// import 'package:rideapp/views/User_panel/RideBookScreens/payment_method_screen.dart';
+// // import 'package:sendme/views/Driver_panel/ride_screens/rider_history.dart';
+// import 'package:sendme/views/User_panel/Authentication/change_password.dart';
+// import 'package:sendme/views/User_panel/Authentication/reset_password.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/rating_screen.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/ride_book_screen.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/show_rider_details.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
+// import 'package:sendme/views/User_panel/Support/support_screen.dart';
+// import 'package:sendme/views/User_panel/Authentication/forgotpassword.dart';
+// import 'package:sendme/views/User_panel/Authentication/otp_screen.dart';
+// import 'package:sendme/views/User_panel/Authentication/user_account_view.dart';
+// import 'package:sendme/views/User_panel/Authentication/user_login_view.dart';
+// import 'package:sendme/views/User_panel/Authentication/user_signup_view.dart';
+// // import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
+// import 'package:sendme/views/User_panel/RideBookScreens/payment_method_screen.dart';
 
-// import 'package:rideapp/views/User_panel/common_splash_view.dart';
-// import 'package:rideapp/views/User_panel/history_screens/history_screen.dart';
-// // import 'package:rideapp/views/User_panel/messages/inbox_screen.dart';
-// // import 'package:rideapp/views/User_panel/messages/messages_screen.dart';
-// import 'package:rideapp/views/User_panel/parcel_deliver/parcel_screen.dart';
-// import 'package:rideapp/views/User_panel/parcel_deliver/recieving_parcel_screen.dart';
-// import 'package:rideapp/views/User_panel/parcel_deliver/sending_parcel_screen.dart';
-// import 'package:rideapp/views/User_panel/profile_Screens/edit_profile.dart';
-// import 'package:rideapp/views/User_panel/profile_Screens/profile_screen.dart';
-// import 'package:rideapp/views/User_panel/profile_Screens/wallet_details.dart';
-// import 'package:rideapp/views/User_panel/user_home_view.dart'; 
+// import 'package:sendme/views/User_panel/common_splash_view.dart';
+// import 'package:sendme/views/User_panel/history_screens/history_screen.dart';
+// // import 'package:sendme/views/User_panel/messages/inbox_screen.dart';
+// // import 'package:sendme/views/User_panel/messages/messages_screen.dart';
+// import 'package:sendme/views/User_panel/parcel_deliver/parcel_screen.dart';
+// import 'package:sendme/views/User_panel/parcel_deliver/recieving_parcel_screen.dart';
+// import 'package:sendme/views/User_panel/parcel_deliver/sending_parcel_screen.dart';
+// import 'package:sendme/views/User_panel/profile_Screens/edit_profile.dart';
+// import 'package:sendme/views/User_panel/profile_Screens/profile_screen.dart';
+// import 'package:sendme/views/User_panel/profile_Screens/wallet_details.dart';
+// import 'package:sendme/views/User_panel/user_home_view.dart'; 
 
 // class AppRoutes {
 //   static const String commonSplash = '/';

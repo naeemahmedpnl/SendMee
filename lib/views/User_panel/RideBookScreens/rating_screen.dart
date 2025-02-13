@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/ratings_provider/rating_provider.dart';
-import 'package:rideapp/viewmodel/provider/ridebook_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/widgets/custom_toast.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/ratings_provider/rating_provider.dart';
+import 'package:sendme/viewmodel/provider/ridebook_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/widgets/custom_toast.dart';
 import 'dart:developer' as developer;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -137,12 +137,12 @@ class _RideReviewScreenState extends State<RideReviewScreen> {
     return <Marker>{
       Marker(
         markerId: const MarkerId('start'),
-        position: const LatLng(24.8607, 67.0011),
+        position: const LatLng(19.4326, -99.1332),
         infoWindow: InfoWindow(title: 'review.start_point'.tr()),
       ),
       Marker(
         markerId: const MarkerId('end'),
-        position: const LatLng(24.9007, 67.0808),
+        position: const LatLng(19.4326, -99.1332),
         infoWindow: InfoWindow(title: 'review.end_point'.tr()),
       ),
     };

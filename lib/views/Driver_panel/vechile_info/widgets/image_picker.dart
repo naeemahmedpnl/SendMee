@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
 
 class ImagePickerWidget extends StatelessWidget {
   final File? imageFile;

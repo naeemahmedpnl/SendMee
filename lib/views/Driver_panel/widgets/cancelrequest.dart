@@ -4,9 +4,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/viewmodel/provider/cancel_trip_request.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/viewmodel/provider/cancel_trip_request.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class DriverCancelTripScreen extends StatefulWidget {
    final String tripId;

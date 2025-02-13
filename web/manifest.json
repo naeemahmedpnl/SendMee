@@ -1,6 +1,6 @@
 {
-    "name": "rideapp",
-    "short_name": "rideapp",
+    "name": "sendme",
+    "short_name": "sendme",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

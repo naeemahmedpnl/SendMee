@@ -2,10 +2,10 @@
 // // // import 'package:flutter/material.dart';
 // // // import 'package:image_picker/image_picker.dart';
 // // // import 'package:provider/provider.dart';
-// // // import 'package:rideapp/models/messeage_model.dart';
-// // // import 'package:rideapp/utils/theme/app_colors.dart';
-// // // import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
-// // // import 'package:rideapp/viewmodel/provider/message_provider/chatroom_provider.dart';
+// // // import 'package:sendme/models/messeage_model.dart';
+// // // import 'package:sendme/utils/theme/app_colors.dart';
+// // // import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
+// // // import 'package:sendme/viewmodel/provider/message_provider/chatroom_provider.dart';
 // // // import 'package:url_launcher/url_launcher.dart';
 
 // // // class UserChatScreen extends StatefulWidget {
@@ -555,10 +555,10 @@
 // // // // // import 'package:flutter/material.dart';
 // // // // // // import 'package:image_picker/image_picker.dart';
 // // // // // import 'package:provider/provider.dart';
-// // // // // import 'package:rideapp/models/messeage_model.dart';
-// // // // // // import 'package:rideapp/utils/theme/app_colors.dart';
-// // // // // import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
-// // // // // import 'package:rideapp/viewmodel/provider/message_provider/chatroom_provider.dart';
+// // // // // import 'package:sendme/models/messeage_model.dart';
+// // // // // // import 'package:sendme/utils/theme/app_colors.dart';
+// // // // // import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
+// // // // // import 'package:sendme/viewmodel/provider/message_provider/chatroom_provider.dart';
 // // // // // import 'package:url_launcher/url_launcher.dart';
 
 // // // // // class UserChatScreen extends StatefulWidget {
@@ -1116,7 +1116,7 @@
 // // // // import 'dart:developer';
 // // // // import 'package:flutter/material.dart';
 // // // // import 'package:provider/provider.dart';
-// // // // import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
+// // // // import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
 // // // // import 'package:url_launcher/url_launcher.dart';
 
 // // // // class UserChatScreen extends StatefulWidget {
@@ -1519,8 +1519,8 @@
 // // // // import 'dart:developer';
 // // // // import 'package:flutter/material.dart';
 // // // // import 'package:provider/provider.dart';
-// // // // import 'package:rideapp/models/messeage_model.dart';
-// // // // import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
+// // // // import 'package:sendme/models/messeage_model.dart';
+// // // // import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
 // // // // import 'package:url_launcher/url_launcher.dart';
 
 // // // // class UserChatScreen extends StatefulWidget {
@@ -1928,8 +1928,8 @@
 
 // // import 'package:flutter/material.dart';
 // // import 'package:provider/provider.dart';
-// // import 'package:rideapp/utils/theme/app_text_theme.dart';
-// // import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
+// // import 'package:sendme/utils/theme/app_text_theme.dart';
+// // import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
 // // import 'package:shared_preferences/shared_preferences.dart';
 
 // // class UserChatScreen extends StatefulWidget {
@@ -2151,9 +2151,9 @@
 
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
-// import 'package:rideapp/services/sockets_io.dart';
-// import 'package:rideapp/utils/theme/app_text_theme.dart';
-// import 'package:rideapp/viewmodel/provider/message_provider/chat_provider.dart';
+// import 'package:sendme/services/sockets_io.dart';
+// import 'package:sendme/utils/theme/app_text_theme.dart';
+// import 'package:sendme/viewmodel/provider/message_provider/chat_provider.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'dart:developer';
 
@@ -2472,8 +2472,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/message_provider/chatroom_provider.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/message_provider/chatroom_provider.dart';
 
 class UserChatScreen extends StatefulWidget {
   final String driverName;

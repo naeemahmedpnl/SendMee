@@ -2,9 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/routes/driver_panel_routes.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/routes/driver_panel_routes.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import '../widgets/custom_drawer.dart';
 
 class ReachedScreen extends StatefulWidget {

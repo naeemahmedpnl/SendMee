@@ -9,16 +9,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/utils/theme/map_theme_popup.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/viewmodel/provider/ridebook_provider.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/choose_driver.dart';
-import 'package:rideapp/views/User_panel/RideBookScreens/widgets/address_search.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/utils/theme/map_theme_popup.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/viewmodel/provider/ridebook_provider.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
+import 'package:sendme/views/User_panel/RideBookScreens/widgets/address_search.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -211,7 +211,7 @@ Future<void> _checkSharedPreferencesData() async {
   Future<void> _loadMapTheme() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapTheme = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/standard_theme.json');
+        .loadString('assets/map_theme/night_theme.json');
     mapProvider.setMapTheme(mapTheme);
   }
 

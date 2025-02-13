@@ -5,13 +5,13 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/services/notification_service.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
-import 'package:rideapp/widgets/custom_text_field.dart';
+import 'package:sendme/services/notification_service.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
+import 'package:sendme/widgets/custom_text_field.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserLoginView extends StatefulWidget {

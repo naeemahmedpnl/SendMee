@@ -5,10 +5,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/map_provider.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/map_provider.dart';
+import 'package:sendme/widgets/custom_button.dart';
 
 class MapPickerScreen extends StatefulWidget {
   final String title;
@@ -26,7 +26,7 @@ class _MapPickerScreenState extends State<MapPickerScreen>
     with SingleTickerProviderStateMixin {
   GoogleMapController? mapController;
   String selectedAddress = "Move map to select dropoff location";
-  LatLng currentCenter = const LatLng(19.4326, -99.1332); // Default location
+  LatLng currentCenter = const LatLng(19.4326, -99.1332); 
   bool _isMoving = false;
 
   // Pin Animation variables
@@ -52,7 +52,7 @@ class _MapPickerScreenState extends State<MapPickerScreen>
   Future<void> _loadMapTheme() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapTheme = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/standard_theme.json');
+        .loadString('assets/map_theme/night_theme.json');
     mapProvider.setMapTheme(mapTheme);
   }
 

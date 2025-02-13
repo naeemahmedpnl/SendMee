@@ -3,13 +3,13 @@
 
 // import 'package:easy_localization/easy_localization.dart';
 // import 'package:flutter/material.dart';
-// import 'package:rideapp/models/user_model.dart';
-// import 'package:rideapp/utils/routes/user_panel_routes.dart';
-// import 'package:rideapp/utils/theme/app_colors.dart';
-// import 'package:rideapp/utils/theme/app_text_theme.dart';
-// import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
-// import 'package:rideapp/views/User_panel/drawer/drawer.dart';
-// import 'package:rideapp/widgets/custom_button.dart';
+// import 'package:sendme/models/user_model.dart';
+// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:sendme/utils/theme/app_colors.dart';
+// import 'package:sendme/utils/theme/app_text_theme.dart';
+// import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
+// import 'package:sendme/views/User_panel/drawer/drawer.dart';
+// import 'package:sendme/widgets/custom_button.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 // class ParcelScreen extends StatefulWidget {
@@ -194,13 +194,13 @@ import 'dart:developer';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:rideapp/models/user_model.dart';
-import 'package:rideapp/utils/routes/user_panel_routes.dart';
-import 'package:rideapp/utils/theme/app_colors.dart';
-import 'package:rideapp/utils/theme/app_text_theme.dart';
-import 'package:rideapp/viewmodel/provider/auth_provider/auth_provider.dart';
-import 'package:rideapp/views/User_panel/drawer/drawer.dart';
-import 'package:rideapp/widgets/custom_button.dart';
+import 'package:sendme/models/user_model.dart';
+import 'package:sendme/utils/routes/user_panel_routes.dart';
+import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/views/User_panel/drawer/drawer.dart';
+import 'package:sendme/widgets/custom_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
