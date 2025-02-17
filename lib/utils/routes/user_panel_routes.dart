@@ -11,7 +11,6 @@ import 'package:sendme/views/User_panel/Authentication/user_signup_view.dart';
 import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
 import 'package:sendme/views/User_panel/RideBookScreens/payment_method_screen.dart';
 import 'package:sendme/views/User_panel/RideBookScreens/rating_screen.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/ride_book_screen.dart';
 import 'package:sendme/views/User_panel/RideBookScreens/show_rider_details.dart';
 // import 'package:sendme/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
 // Other Views

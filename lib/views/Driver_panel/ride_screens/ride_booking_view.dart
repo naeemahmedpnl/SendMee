@@ -32,7 +32,7 @@ class _RideBookingViewState extends State<RideBookingView> {
   String get baseUrl => Constants.apiBaseUrl;
 
   static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(19.4326, -99.1332),
+    target: LatLng(-25.7479, 28.2293),
     zoom: 14.4746,
   );
 

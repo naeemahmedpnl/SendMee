@@ -137,12 +137,12 @@ class _RideReviewScreenState extends State<RideReviewScreen> {
     return <Marker>{
       Marker(
         markerId: const MarkerId('start'),
-        position: const LatLng(19.4326, -99.1332),
+        position: const LatLng(-25.7479, 28.2293),
         infoWindow: InfoWindow(title: 'review.start_point'.tr()),
       ),
       Marker(
         markerId: const MarkerId('end'),
-        position: const LatLng(19.4326, -99.1332),
+        position: const LatLng(-25.7479, 28.2293),
         infoWindow: InfoWindow(title: 'review.end_point'.tr()),
       ),
     };

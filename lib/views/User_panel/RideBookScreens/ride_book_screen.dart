@@ -339,7 +339,7 @@ Future<void> _checkSharedPreferencesData() async {
               GoogleMap(
                 initialCameraPosition: CameraPosition(
                   target: rideProvider.pickupLatLng ??
-                      const LatLng(19.4326, -99.1332),
+                      const LatLng(-25.7479, 28.2293),
                   zoom: 15,
                 ),
                 onMapCreated: (GoogleMapController controller) {

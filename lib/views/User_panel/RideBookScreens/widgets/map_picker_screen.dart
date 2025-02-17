@@ -26,7 +26,7 @@ class _MapPickerScreenState extends State<MapPickerScreen>
     with SingleTickerProviderStateMixin {
   GoogleMapController? mapController;
   String selectedAddress = "Move map to select dropoff location";
-  LatLng currentCenter = const LatLng(19.4326, -99.1332); 
+  LatLng currentCenter = const LatLng(-25.7479, 28.2293); 
   bool _isMoving = false;
 
   // Pin Animation variables

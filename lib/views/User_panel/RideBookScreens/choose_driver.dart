@@ -1640,7 +1640,7 @@ class _ChooseDriverScreenState extends State<ChooseDriverScreen> {
 
   // Initial Map Position (Mexico City)
   static const CameraPosition _kInitialPosition = CameraPosition(
-    target: LatLng(19.4326, -99.1332),
+    target: LatLng(-25.7479, 28.2293),
     zoom: 14.4746,
   );
 

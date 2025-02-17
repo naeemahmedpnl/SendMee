@@ -237,7 +237,7 @@ class _ParcelSendingScreenState extends State<ParcelSendingScreen> {
   Future<void> _loadMapTheme() async {
     final mapProvider = Provider.of<MapProvider>(context, listen: false);
     final mapTheme = await DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/night_theme.json
+        .loadString('assets/map_theme/night_theme.json');
     mapProvider.setMapTheme(mapTheme);
   }
 

@@ -53,7 +53,7 @@ class AddressSearch extends SearchDelegate<Map<String, dynamic>> {
       _isLocationInitialized = true;
     } catch (e) {
       // Fallback to default location (Mexico City)
-      _currentLocation = const LatLng(19.4326, -99.1332);
+      _currentLocation = const LatLng(-25.7479, 28.2293);
       _countryCode = 'mx';
       _isLocationInitialized = true;
     }

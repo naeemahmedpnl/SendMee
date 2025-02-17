@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,9 +28,15 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -40,49 +49,21 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD-PqOvzC6-OUiBDUHmK1uV_S41ozDD4mg',
-    appId: '1:128156672205:web:f2d50bdc8885cb107f0984',
-    messagingSenderId: '128156672205',
-    projectId: 'send-me-431e4',
-    authDomain: 'send-me-431e4.firebaseapp.com',
-    storageBucket: 'send-me-431e4.firebasestorage.app',
-    measurementId: 'G-XZTDSS41BL',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC4mnSZ00uL2imTIZmzPxSf7eNR9EvI8-8',
-    appId: '1:128156672205:android:03f69c9003ff919a7f0984',
-    messagingSenderId: '128156672205',
-    projectId: 'send-me-431e4',
-    storageBucket: 'send-me-431e4.firebasestorage.app',
+    apiKey: 'AIzaSyBkVN0HyvuwUxZDTSftaDlienUiNkJzENs',
+    appId: '1:611004294689:android:e966f891b66907c21b6560',
+    messagingSenderId: '611004294689',
+    projectId: 'sendme-4bb71',
+    storageBucket: 'sendme-4bb71.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBYEOXicPwKemPZeVcsmH0eoAeCooNOO50',
-    appId: '1:128156672205:ios:262bb0756a244d7c7f0984',
-    messagingSenderId: '128156672205',
-    projectId: 'send-me-431e4',
-    storageBucket: 'send-me-431e4.firebasestorage.app',
+    apiKey: 'AIzaSyDFrh71IvCyynFE5fZ6bCw4sQf-3dfU1sc',
+    appId: '1:611004294689:ios:2562f74d15c4f1dc1b6560',
+    messagingSenderId: '611004294689',
+    projectId: 'sendme-4bb71',
+    storageBucket: 'sendme-4bb71.firebasestorage.app',
     iosBundleId: 'com.asynctech.sendme',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBYEOXicPwKemPZeVcsmH0eoAeCooNOO50',
-    appId: '1:128156672205:ios:c95e050b87c331b17f0984',
-    messagingSenderId: '128156672205',
-    projectId: 'send-me-431e4',
-    storageBucket: 'send-me-431e4.firebasestorage.app',
-    iosBundleId: 'com.asynctech.sendmeap',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyD-PqOvzC6-OUiBDUHmK1uV_S41ozDD4mg',
-    appId: '1:128156672205:web:c0be7fb276f89dac7f0984',
-    messagingSenderId: '128156672205',
-    projectId: 'send-me-431e4',
-    authDomain: 'send-me-431e4.firebaseapp.com',
-    storageBucket: 'send-me-431e4.firebasestorage.app',
-    measurementId: 'G-Z2LL46P38J',
-  );
 }
