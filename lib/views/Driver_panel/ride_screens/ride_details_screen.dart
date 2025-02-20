@@ -1,5 +1,3 @@
-
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -52,7 +50,7 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
   @override
   void initState() {
     super.initState();
- 
+
     final provider = Provider.of<MapProvider>(context, listen: false);
     DefaultAssetBundle.of(context)
         .loadString('assets/map_theme/night_theme.json')
@@ -65,49 +63,55 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
         widget.displayData['estimatedFare']?.toString() ?? '0';
   }
 
-void _initializeSocket() {
-  log('RideDetailsScreen - Initializing Socket.IO');
-  try {
-    socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': true,  // Changed to true
-      'reconnection': true,
-      'reconnectionAttempts': 5,
-      'reconnectionDelay': 1000,
-    });
+  void _initializeSocket() {
+    log('RideDetailsScreen - Initializing Socket.IO');
+    try {
+      socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
+        'transports': ['websocket'],
+        'autoConnect': true, // Changed to true
+        'reconnection': true,
+        'reconnectionAttempts': 5,
+        'reconnectionDelay': 1000,
+      });
 
-    socket.connect();
+      socket.connect();
 
-    socket.on('connect', (_) {
-      log('RideDetailsScreen - Socket connected');
-    });
+      socket.on('connect', (_) {
+        log('RideDetailsScreen - Socket connected');
+      });
 
-    socket.on('user_accepted', (data) {
-      log('RideDetailsScreen - User accepted the ride: $data');
-      if (!_isDisposed && mounted) {
-        Navigator.pushReplacementNamed(
-          context, 
-          AppDriverRoutes.showridesdetails
-        );
-      }
-    });
+      socket.on('user_accepted', (data) {
+        log('RideDetailsScreen - User accepted the ride: $data');
+        if (!_isDisposed && mounted) {
+          Navigator.pushReplacementNamed(
+              context, AppDriverRoutes.showridesdetails);
+        }
+      });
 
-    socket.on('disconnect', (_) {
-      log('RideDetailsScreen - Socket disconnected');
-      if (!_isDisposed) {
-        socket.connect();  // Try to reconnect if not disposed
-      }
-    });
+      // socket.on('user_accepted', (data) {
+      //   log('RideDetailsScreen - User accepted the ride: $data');
+      //   if (!_isDisposed && mounted) {
+      //     Navigator.pushReplacementNamed(
+      //       context,
+      //       AppDriverRoutes.showridesdetails
+      //     );
+      //   }
+      // });
 
-    socket.on('error', (error) {
-      log('RideDetailsScreen - Socket error: $error');
-    });
-  } catch (e) {
-    log('RideDetailsScreen - Error initializing Socket.IO: $e');
+      socket.on('disconnect', (_) {
+        log('RideDetailsScreen - Socket disconnected');
+        if (!_isDisposed) {
+          socket.connect(); // Try to reconnect if not disposed
+        }
+      });
+
+      socket.on('error', (error) {
+        log('RideDetailsScreen - Socket error: $error');
+      });
+    } catch (e) {
+      log('RideDetailsScreen - Error initializing Socket.IO: $e');
+    }
   }
-}
-
- 
 
   void _cleanupSocket() {
     try {
@@ -128,122 +132,120 @@ void _initializeSocket() {
   }
 
   Future<void> _acceptTrip(BuildContext context) async {
-  if (_driverCurrentLocation == null || _driverId == null) {
-    if (!_isDisposed && mounted) {
-      _showErrorDialog(
-        context,
-        'Error',
-        'Could not get driver location. Please try again.',
-      );
-    }
-    return;
-  }
-
-  try {
-    // Show loading dialog first
-    _showLoadingDialog(context);
-
-    final tripId = widget.fullData['result']['_id'];
-    log('Trip ID: $tripId');
-    final url = '${Constants.apiBaseUrl}/trip/accept/$tripId';
-
-    // Make sure socket is connected before making API call
-    if (!socket.connected) {
-      socket.connect();
-      // Wait briefly for socket to connect
-      await Future.delayed(const Duration(milliseconds: 500));
-    }
-
-    final response = await http.put(
-      Uri.parse(url),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({
-        'latitude': _driverCurrentLocation!.latitude,
-        'longitude': _driverCurrentLocation!.longitude,
-        'driverId': _driverId,
-        'driverEstimatedFare': double.tryParse(_fareController.text) ?? 
-            widget.displayData['estimatedFare'],
-      }),
-    );
-
-    // Remove loading dialog
-    if (!_isDisposed && mounted && Navigator.canPop(context)) {
-      Navigator.pop(context);
-    }
-
-    if (_isDisposed) return;
-
-    if (response.statusCode == 200) {
-      final responseData = jsonDecode(response.body);
-      log('Trip accepted successfully: $responseData');
-
-      // Emit the event before navigation
-      socket.emit('trip_accepted', responseData['tripDetails']);
-
-      // Add a small delay before navigation to ensure socket event is sent
-      await Future.delayed(const Duration(milliseconds: 300));
-
+    if (_driverCurrentLocation == null || _driverId == null) {
       if (!_isDisposed && mounted) {
-        final dataToPass = {
-          'displayData': widget.displayData,
-          'fullData': widget.fullData,
-          'driverCurrentLocation': {
-            'latitude': _driverCurrentLocation!.latitude,
-            'longitude': _driverCurrentLocation!.longitude,
-          },
-          'pickupLocation': _parseLatLng(widget.fullData['result']['pickup']),
-          'dropoffLocation':
-              _parseLatLng(widget.fullData['result']['destination']),
-          'distanceToPickup': _distanceToPickup,
-          'timeToPickup': _timeToPickup,
-          'driverId': _driverId,
-          'fareAmount': _fareController.text,
-          'driverUserId': _driverUserId,
-          'tripId': tripId,
-          'tripStatus': 'accepted',
-        };
-
-        // Don't disconnect socket before navigation
-        Navigator.pushReplacementNamed(
-          context,
-          AppDriverRoutes.getdirection,
-          arguments: dataToPass,
-        );
-      }
-    } else {
-      // Handle error responses...
-      if (response.statusCode == 404) {
-        await _showTripNotFoundDialog(context);
-        Navigator.pop(context);
-      } else if (response.statusCode == 400) {
-        final errorData = jsonDecode(response.body);
-        await _showTripCancelledDialog(
-          context, 
-          errorData['message'] ?? 'Trip is no longer available'
-        );
-        Navigator.pop(context);
-      } else {
         _showErrorDialog(
           context,
           'Error',
-          'Failed to accept trip. Please try again.',
+          'Could not get driver location. Please try again.',
+        );
+      }
+      return;
+    }
+
+    try {
+      // Show loading dialog first
+      _showLoadingDialog(context);
+
+      final tripId = widget.fullData['result']['_id'];
+      log('Trip ID: $tripId');
+      final url = '${Constants.apiBaseUrl}/trip/accept/$tripId';
+
+      // Make sure socket is connected before making API call
+      if (!socket.connected) {
+        socket.connect();
+        // Wait briefly for socket to connect
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+
+      final response = await http.put(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'latitude': _driverCurrentLocation!.latitude,
+          'longitude': _driverCurrentLocation!.longitude,
+          'driverId': _driverId,
+          'driverEstimatedFare': double.tryParse(_fareController.text) ??
+              widget.displayData['estimatedFare'],
+        }),
+      );
+
+      // Remove loading dialog
+      if (!_isDisposed && mounted && Navigator.canPop(context)) {
+        Navigator.pop(context);
+      }
+
+      if (_isDisposed) return;
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        log('Trip accepted successfully: $responseData');
+
+        // Emit the event before navigation
+        socket.emit('trip_accepted', responseData['tripDetails']);
+
+        // Add a small delay before navigation to ensure socket event is sent
+        await Future.delayed(const Duration(milliseconds: 300));
+
+        if (!_isDisposed && mounted) {
+          final dataToPass = {
+            'displayData': widget.displayData,
+            'fullData': widget.fullData,
+            'driverCurrentLocation': {
+              'latitude': _driverCurrentLocation!.latitude,
+              'longitude': _driverCurrentLocation!.longitude,
+            },
+            'pickupLocation': _parseLatLng(widget.fullData['result']['pickup']),
+            'dropoffLocation':
+                _parseLatLng(widget.fullData['result']['destination']),
+            'distanceToPickup': _distanceToPickup,
+            'timeToPickup': _timeToPickup,
+            'driverId': _driverId,
+            'fareAmount': _fareController.text,
+            'driverUserId': _driverUserId,
+            'tripId': tripId,
+            'tripStatus': 'accepted',
+          };
+
+          // Don't disconnect socket before navigation
+          Navigator.pushReplacementNamed(
+            context,
+            AppDriverRoutes.getdirection,
+            arguments: dataToPass,
+          );
+        }
+      } else {
+        // Handle error responses...
+        if (response.statusCode == 404) {
+          await _showTripNotFoundDialog(context);
+          Navigator.pop(context);
+        } else if (response.statusCode == 400) {
+          final errorData = jsonDecode(response.body);
+          await _showTripCancelledDialog(
+              context, errorData['message'] ?? 'Trip is no longer available');
+          Navigator.pop(context);
+        } else {
+          _showErrorDialog(
+            context,
+            'Error',
+            'Failed to accept trip. Please try again.',
+          );
+        }
+      }
+    } catch (e) {
+      log('Error accepting trip: $e');
+      if (!_isDisposed && mounted) {
+        if (Navigator.canPop(context)) {
+          Navigator.pop(context);
+        }
+        _showErrorDialog(
+          context,
+          'Error',
+          'An error occurred. Please try again.',
         );
       }
     }
-  } catch (e) {
-    log('Error accepting trip: $e');
-    if (!_isDisposed && mounted) {
-      if (Navigator.canPop(context)) {
-        Navigator.pop(context);
-      }
-      _showErrorDialog(
-        context,
-        'Error',
-        'An error occurred. Please try again.',
-      );
-    }
   }
-}
 
   void _showLoadingDialog(BuildContext context) {
     showDialog(
@@ -363,22 +365,6 @@ void _initializeSocket() {
       },
     );
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   Future<void> _getDriverIdFromSharedPreferences() async {
     final prefs = await SharedPreferences.getInstance();
@@ -570,20 +556,25 @@ void _initializeSocket() {
                     children: [
                       Text(
                         "${'ride_details.location.distance_pickup'.tr()}$_distanceToPickup",
-                        style:
-                            const TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Colors.amber,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       ),
                       Text(
                         "${'ride_details.location.time_pickup'.tr()}$_timeToPickup",
-                        style:
-                            const TextStyle(color: Colors.amber, fontSize: 14, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Colors.amber,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'ride_details.location.pickup_point'.tr(),
-                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     widget.displayData['pickupAddress'] ??
@@ -593,7 +584,8 @@ void _initializeSocket() {
                   const SizedBox(height: 10),
                   Text(
                     'ride_details.location.dropoff_point'.tr(),
-                    style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     widget.displayData['destinationAddress'] ??

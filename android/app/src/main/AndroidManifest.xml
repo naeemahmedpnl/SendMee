@@ -18,7 +18,7 @@
   android:theme="@style/Theme.AppCompat.Light.NoActionBar"
   android:label="Send Me" android:name="${applicationName}" android:icon="@mipmap/ic_launcher">
 
-    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyD0xfykOqjNdyx72rjnt171xcF2gDidiqA" />
+    <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyBdbZLVOJf6x4kUv2xPEWZOYOVBifSBzwc" />
     <meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@drawable/launch_background" />
 
     <activity android:name=".MainActivity" android:exported="true" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:enableOnBackInvokedCallback="true" android:windowSoftInputMode="adjustResize">

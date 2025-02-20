@@ -514,7 +514,7 @@ Future<bool> _showLocationServiceDialog() async {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Image.asset(
-                'assets/logos/Send_Me.png',
+                'assets/logos/sednmesplash.png',
                 width: 317,
                 height: 317,
               ),

@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 import 'package:vector_math/vector_math.dart' as vector;
 
 class LocationService {
-  static const String _apiKey = 'AIzaSyD0xfykOqjNdyx72rjnt171xcF2gDidiqA';
+  static const String _apiKey = 'AIzaSyBdbZLVOJf6x4kUv2xPEWZOYOVBifSBzwc';
   static LatLng calculateNewPosition(LatLng current, LatLng next) {
     const stepSize = 0.00001; // Adjust based on your needs
 

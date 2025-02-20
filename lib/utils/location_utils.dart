@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 
 class LocationUtils {
   // GOOGLE MAPS API KEY
-  static const String _apiKey = 'AIzaSyD0xfykOqjNdyx72rjnt171xcF2gDidiqA'; 
+  static const String _apiKey = 'AIzaSyBdbZLVOJf6x4kUv2xPEWZOYOVBifSBzwc'; 
   // GET CURRENT LOCATION
   static Future<Position> getCurrentPosition() async {
     bool serviceEnabled;
