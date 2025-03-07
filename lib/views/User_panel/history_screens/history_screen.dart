@@ -15,41 +15,67 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+
   int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
-    // Use addPostFrameCallback to avoid the build-time provider access
+    // Initialize trip data after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<TripHistoryProvider>(context, listen: false).fetchTrips();
     });
   }
 
+  // Helper method to get the appropriate trip list based on status
   List<Map<String, dynamic>> _getFilteredData(TripHistoryProvider provider) {
-    List<TripModel> trips;
+    // First, get the appropriate trip list based on the selected index
+    List<TripModel> trips = switch (_selectedIndex) {
+      0 => provider.pendingTrips,
+      1 => provider.completedTrips,
+      2 => provider.cancelledTrips,
+      _ => []
+    };
 
-    switch (_selectedIndex) {
-      case 0:
-        trips = provider.pendingTrips;
-        break;
-      case 1:
-        trips = provider.completedTrips;
-        break;
-      case 2:
-        trips = provider.cancelledTrips;
-        break;
-      default:
-        trips = [];
-    }
+    // Convert each trip to a map and format the values appropriately
+    return trips.map((trip) {
+      final map = trip.toMap();
+      
+      // Format currency values consistently
+      map['amount'] = '\$${trip.estimatedFare.toStringAsFixed(2)}';
+      map['baseFare'] = '\$${trip.baseFare.toStringAsFixed(2)}';
+      map['distanceFare'] = '\$${trip.distanceFare.toStringAsFixed(2)}';
+      map['platformFee'] = '\$${trip.platformFee.toStringAsFixed(2)}';
+      map['totalAmount'] = '\$${trip.totalAmount.toStringAsFixed(2)}';
+      
+      // Add service-specific information
+      if (trip.serviceType == 'parcel') {
+        map['serviceInfo'] = 'Parcel Delivery';
+        if (trip.parcelType != null) {
+          map['serviceInfo'] += ' (${trip.parcelType})';
+        }
+      }
+      
+      // Format status for display
+      map['status'] = trip.status.replaceAll('_', ' ').toUpperCase();
+      
+      return map;
+    }).toList();
+  }
 
-    return trips.map((trip) => trip.toMap()).toList();
+  // Helper method to get status-specific colors
+  Color _getStatusColor(String status) {
+    return switch (status.toLowerCase()) {
+      'completed' => Colors.green,
+      'started' => Colors.blue,
+      'driver_accepted' => Colors.orange,
+      'cancelled' || 'rejected' => Colors.red,
+      _ => Colors.grey
+    };
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -58,35 +84,49 @@ class _HistoryScreenState extends State<HistoryScreen> {
         ),
         title: Text(
           'history.title'.tr(),
-          style: AppTextTheme.getLightTextTheme(context).headlineMedium
+          style: AppTextTheme.getLightTextTheme(context).headlineMedium,
         ),
         centerTitle: true,
       ),
       body: SafeArea(
         child: Consumer<TripHistoryProvider>(
           builder: (context, provider, child) {
+            // Show loading indicator while fetching data
             if (provider.isLoading) {
               return const Center(child: CircularProgressIndicator());
+            }
+
+            // Show error state with retry button if there's an error
+            if (provider.error != null) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      provider.error!,
+                      style: AppTextTheme.getLightTextTheme(context).titleLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 16),
+                    CustomButton(
+                      text: 'Retry',
+                      onPressed: () => provider.fetchTrips(),
+                    ),
+                  ],
+                ),
+              );
             }
 
             final filteredData = _getFilteredData(provider);
 
             return Column(
               children: [
-                _buildStatusTabs(screenWidth),
+                _buildStatusTabs(MediaQuery.of(context).size.width),
                 const SizedBox(height: 10),
                 Expanded(
                   child: filteredData.isEmpty
-                    ? Center(
-                        child: Text(
-                          'No trips found',
-                          style: AppTextTheme.getLightTextTheme(context).headlineMedium,
-                        ),
-                      )
-                    : ListView.builder(
-                        itemCount: filteredData.length,
-                        itemBuilder: (context, index) => _buildHistoryItem(filteredData[index]),
-                      ),
+                      ? _buildEmptyState()
+                      : _buildTripsList(filteredData),
                 ),
               ],
             );
@@ -95,6 +135,110 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
+
+  Widget _buildEmptyState() {
+    final messages = {
+      0: 'No pending trips',
+      1: 'No completed trips',
+      2: 'No cancelled trips'
+    };
+    
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.history, size: 48, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text(
+            messages[_selectedIndex] ?? 'No trips found',
+            style: AppTextTheme.getLightTextTheme(context).headlineMedium,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTripsList(List<Map<String, dynamic>> trips) {
+    return ListView.builder(
+      itemCount: trips.length,
+      padding: const EdgeInsets.only(bottom: 16),
+      itemBuilder: (context, index) => _buildHistoryItem(trips[index]),
+    );
+  }
+
+  Widget _buildHistoryItem(Map<String, dynamic> item) {
+    return GestureDetector(
+      onTap: () => _showDetailsDialog(item),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.buttonColor),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item['serviceInfo'] ?? item['serviceType'] ?? 'Trip',
+                        style: AppTextTheme.getLightTextTheme(context).titleMedium,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        item['dateTime'],
+                        style: AppTextTheme.getLightTextTheme(context).bodyMedium,
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        item['amount'],
+                        style: AppTextTheme.getLightTextTheme(context).headlineLarge,
+                      ),
+                      const SizedBox(height: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: _getStatusColor(item['status']).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(
+                          item['status'],
+                          style: TextStyle(
+                            color: _getStatusColor(item['status']),
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+ 
 
   Widget _buildStatusTabs(double screenWidth) {
     final statuses = [
@@ -148,59 +292,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  Widget _buildHistoryItem(Map<String, dynamic> item) {
-    return GestureDetector(
-      onTap: () => _showDetailsDialog(item),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: AppColors.buttonColor),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              flex: 3,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item['id'],
-                    style: AppTextTheme.getLightTextTheme(context).headlineMedium,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item['dateTime'],
-                    style: AppTextTheme.getLightTextTheme(context).titleMedium,
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    item['amount'].toString(),
-                    style: AppTextTheme.getLightTextTheme(context).headlineLarge
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    item['status'],
-                    style: AppTextTheme.getPrimaryTextTheme(context).titleMedium,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showDetailsDialog(Map<String, dynamic> item) {
     showDialog(
@@ -247,16 +338,27 @@ class _DetailsDialogState extends State<_DetailsDialog> {
   }
 
   Widget _buildDialogHeader() {
-    return Center(
-      child: Text(
-        widget.item['id'],
-        style: AppTextTheme.getPrimaryTextTheme(context).headlineSmall,
-        textAlign: TextAlign.center,
-      ),
+    return Column(
+      children: [
+        Text(
+          widget.item['serviceInfo'] ?? widget.item['serviceType'] ?? 'Trip Details',
+          style: AppTextTheme.getPrimaryTextTheme(context).headlineSmall,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          widget.item['dateTime'],
+          style: AppTextTheme.getLightTextTheme(context).bodyMedium,
+        ),
+      ],
     );
   }
 
   Widget _buildDialogTabs() {
+    final tabs = widget.item['serviceType'] == 'parcel' 
+        ? ['Summary', 'Receipt', 'Parcel Info']
+        : ['Summary', 'Receipt'];
+
     return Container(
       height: 45,
       decoration: BoxDecoration(
@@ -264,17 +366,108 @@ class _DetailsDialogState extends State<_DetailsDialog> {
         border: Border.all(color: AppColors.backgroundLight),
       ),
       child: Row(
-        children: [
-          Expanded(
-            child: _buildDialogTabButton('history.tabs.summary'.tr(), 0),
-          ),
-          Expanded(
-            child: _buildDialogTabButton('history.tabs.receipt'.tr(), 1),
-          ),
-        ],
+        children: tabs.asMap().entries.map((entry) {
+          return Expanded(
+            child: _buildDialogTabButton(entry.value, entry.key),
+          );
+        }).toList(),
       ),
     );
   }
+
+  Widget _buildDialogContent() {
+    return SizedBox(
+      width: double.infinity,
+      height: 250,
+      child: SingleChildScrollView(
+        child: switch (_selectedIndex) {
+          0 => _buildSummaryContent(),
+          1 => _buildReceiptContent(),
+          2 => _buildParcelContent(),
+          _ => const SizedBox(),
+        },
+      ),
+    );
+  }
+
+  Widget _buildSummaryContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Trip Details',
+          style: AppTextTheme.getLightTextTheme(context).titleLarge,
+        ),
+        const SizedBox(height: 8),
+        _buildInfoRow('Status', widget.item['status']),
+        _buildInfoRow('Pickup', widget.item['pickupAddress']),
+        _buildInfoRow('Destination', widget.item['destinationAddress']),
+        _buildInfoRow('Service Type', widget.item['serviceType'].toUpperCase()),
+        if (widget.item['parcelType'] != null)
+          _buildInfoRow('Delivery Type', widget.item['parcelType'].toUpperCase()),
+      ],
+    );
+  }
+
+  Widget _buildReceiptContent() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Fare Breakdown',
+          style: AppTextTheme.getLightTextTheme(context).titleLarge,
+        ),
+        const SizedBox(height: 8),
+        _buildInfoRow('Base Fare', widget.item['baseFare']),
+        _buildInfoRow(
+          'Distance (${widget.item['distanceKm']} km)', 
+          widget.item['distanceFare']
+        ),
+        _buildInfoRow('Platform Fee', widget.item['platformFee']),
+        const Divider(color: Colors.black26, thickness: 1),
+        _buildInfoRow('Total Amount', widget.item['totalAmount']),
+      ],
+    );
+  }
+
+  Widget _buildParcelContent() {
+    if (widget.item['serviceType'] != 'parcel') {
+      return const SizedBox();
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Parcel Information',
+          style: AppTextTheme.getLightTextTheme(context).titleLarge,
+        ),
+        const SizedBox(height: 8),
+        _buildInfoRow('Sender Name', widget.item['senderName'] ?? 'N/A'),
+        _buildInfoRow('Sender Phone', widget.item['senderPhone'] ?? 'N/A'),
+        _buildInfoRow('Receiver Name', widget.item['receiverName'] ?? 'N/A'),
+        _buildInfoRow('Receiver Phone', widget.item['receiverPhone'] ?? 'N/A'),
+        if (widget.item['packageDetails'] != null) ...[
+          const Divider(color: Colors.black26, thickness: 1),
+          Text(
+            'Package Details',
+            style: AppTextTheme.getLightTextTheme(context).titleMedium,
+          ),
+          const SizedBox(height: 8),
+          _buildInfoRow('Max Dimensions', 
+            widget.item['packageDetails']['maxDimensions'] ?? 'N/A'),
+          _buildInfoRow('Max Weight', 
+            '${widget.item['packageDetails']['maxWeight']} kg'),
+          _buildInfoRow('Description', 
+            widget.item['packageDetails']['description'] ?? 'N/A'),
+        ],
+      ],
+    );
+  }
+
+
+
+
 
   Widget _buildDialogTabButton(String text, int index) {
     final isSelected = _selectedIndex == index;
@@ -297,16 +490,6 @@ class _DetailsDialogState extends State<_DetailsDialog> {
           ),
           textAlign: TextAlign.center,
         ),
-      ),
-    );
-  }
-
-  Widget _buildDialogContent() {
-    return SizedBox(
-      width: double.infinity,
-      height: 250,
-      child: SingleChildScrollView(
-        child: _selectedIndex == 0 ? _buildSummaryContent() : _buildReceiptContent(),
       ),
     );
   }
@@ -334,36 +517,6 @@ class _DetailsDialogState extends State<_DetailsDialog> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildSummaryContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'history.summary.address'.tr(),
-          style: AppTextTheme.getLightTextTheme(context).titleLarge,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 8),
-        _buildInfoRow('Pickup Address', widget.item['pickupAddress']),
-        _buildInfoRow('Destination Address', widget.item['destinationAddress']),
-        _buildInfoRow('Booking Time', widget.item['dateTime']),
-        _buildInfoRow('Status', widget.item['status']),
-      ],
-    );
-  }
-Widget _buildReceiptContent() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildInfoRow('Base Fare', '${widget.item['baseFare']}'),
-        _buildInfoRow('Distance (${widget.item['distanceKm']} km)', '${widget.item['distanceFare']}'),
-        _buildInfoRow('Platform Fee', '${widget.item['platformFee']}'),
-        const Divider(color: Colors.black26, thickness: 1),
-        _buildInfoRow('Total Amount', '${widget.item['totalAmount']}'),
-      ],
     );
   }
 

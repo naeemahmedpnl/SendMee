@@ -9,6 +9,7 @@ class User {
   DateTime createdAt;
   bool isSuperAdmin;
   bool isDriver;
+  String serviceType;
   String driverRoleStatus;
   String passengerStatus;
   int v;
@@ -29,6 +30,7 @@ class User {
     required this.otp,
     required this.otpExpire,
     required this.createdAt,
+        this.serviceType = 'bike',
     this.profilePicture,
     required this.isSuperAdmin,
     required this.driverRoleStatus,
@@ -57,6 +59,7 @@ class User {
           DateTime.parse(json['otpExpire'] ?? DateTime.now().toIso8601String()),
       createdAt:
           DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+       serviceType: json['driverDetails']?['serviceType'] ?? 'bike',
       isSuperAdmin: json['isSuperAdmin'] ?? false,
       driverRoleStatus: json['driverRoleStatus'] ?? '',
       passengerStatus: json['PassengerStatus'] ?? '',
@@ -87,6 +90,7 @@ class User {
       'otpExpire': otpExpire.toIso8601String(),
       'createdAt': createdAt.toIso8601String(),
       'isSuperAdmin': isSuperAdmin,
+       'serviceType': serviceType, 
       'driverRoleStatus': driverRoleStatus,
       'PassengerStatus': passengerStatus,
       'isDriver': isDriver,

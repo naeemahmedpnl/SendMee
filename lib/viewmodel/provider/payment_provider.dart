@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
 import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,251 +8,346 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PaymentProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
-  bool _isStripeInitialized = false;
+  String? _instructions;
+  String? _pollUrl;
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
+  String? get instructions => _instructions;
+  String? get pollUrl => _pollUrl;
   String get baseUrl => Constants.apiBaseUrl;
 
-  static const String _stripePublishableKey =
-      'pk_test_51OO3YAIfSqUzfjxeDct2UULl9mnE7RkQnSeWSgg1RtekLTMwsXy6YbGhdhcPcT5xez6ZBXkBTSSyj9uvjWgO2TTh00BuOLVeuQ';
-
-  PaymentProvider() {
-    initializeStripe();
+  set errorMessage(String? value) {
+    _errorMessage = value;
+    notifyListeners();
   }
 
-  Future<void> initializeStripe() async {
-    if (_isStripeInitialized) return;
-
-    try {
-      log('Initializing Stripe with live key...');
-      Stripe.publishableKey = _stripePublishableKey;
-      await Stripe.instance.applySettings();
-
-      _isStripeInitialized = true;
-      log('Stripe initialized successfully in live mode');
-    } catch (e) {
-      log('Stripe initialization error: $e');
-      _errorMessage = 'Error al inicializar el sistema de pago';
-      _isStripeInitialized = false;
-      notifyListeners();
-    }
-  }
-
-  Future<bool> makePayment(amount) async {
+  // Process mobile money payments (EcoCash/OneMoney) - Optimized for speed
+  Future<bool> processMobilePayment({
+    required double amount,
+    required String phone,
+    required String method,
+  }) async {
     try {
       _setLoading(true);
       _errorMessage = null;
-
-      // Clean and validate amount
-      final cleanAmount = _cleanAmount(amount);
-      if (double.tryParse(cleanAmount) == null ||
-          double.parse(cleanAmount) <= 0) {
-        throw 'Monto inválido';
+      _instructions = null;
+      _pollUrl = null;
+      
+      // Get auth token - use cached token for speed
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
       }
-
-      log('Processing payment for amount: MXN \$$cleanAmount');
-
-      // Ensure Stripe is initialized
-      if (!_isStripeInitialized) {
-        await initializeStripe();
-        if (!_isStripeInitialized) {
-          throw 'Error de inicialización de Stripe';
+      
+      log('Processing ${method.toUpperCase()} payment');
+      log('Amount: $amount, Phone: $phone');
+      
+      // Optimize API call with timeouts
+      final client = http.Client();
+      try {
+        // Use timeout to prevent long-hanging requests
+        final response = await client.post(
+          Uri.parse('$baseUrl/stripe/create-mobile-payment'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token'
+          },
+          body: jsonEncode({
+            'amount': amount,
+            'phone': phone,
+            'method': method,
+          }),
+        ).timeout(Duration(seconds: 10)); // Faster timeout
+      
+        log('Mobile payment API response: ${response.body}');
+        final data = jsonDecode(response.body);
+        
+        if (data['success'] == true) {
+          _instructions = data['instructions'];
+          _pollUrl = data['pollUrl'];
+          log('Payment initiated successfully');
+          log('Instructions: $_instructions');
+          log('Poll URL: $_pollUrl');
+          return true;
+        } else {
+          _errorMessage = data['message'] ?? 'Payment failed';
+          log('Payment failed: $_errorMessage');
+          return false;
         }
+      } finally {
+        client.close(); // Properly close the client
       }
-
-      // Create payment intent
-      final paymentIntentResult = await _createPaymentIntent(cleanAmount);
-      if (paymentIntentResult == null ||
-          paymentIntentResult['clientSecret'] == null) {
-        throw 'Error al crear la intención de pago';
-      }
-
-      // Initialize and present payment sheet
-      await _initializePaymentSheet(paymentIntentResult['clientSecret']);
-      await Stripe.instance.presentPaymentSheet();
-
-      log('Payment completed successfully');
-      return true;
     } catch (e) {
-      log('Payment error occurred: $e');
-
-      if (e is StripeException) {
-        _handleStripeError(e);
-      } else {
-        _handleError(e.toString());
-      }
+      log('Error processing mobile payment: $e');
+      _errorMessage = e.toString();
       return false;
     } finally {
       _setLoading(false);
     }
   }
 
-  void _handleStripeError(StripeException e) {
-    log('Stripe Error Details:');
-    log('Code: ${e.error.code}');
-    log('Message: ${e.error.message}');
-    log('LocalizedMessage: ${e.error.localizedMessage}');
-    log('StripeErrorCode: ${e.error.stripeErrorCode}');
-
-    _handleError(_getReadableStripeError(e));
-  }
-
-  String _getReadableStripeError(StripeException e) {
-    switch (e.error.code) {
-      case FailureCode.Canceled:
-        return 'Pago cancelado';
-      case FailureCode.Failed:
-        if (e.error.stripeErrorCode == 'card_declined') {
-          return 'Tarjeta rechazada';
-        } else if (e.error.stripeErrorCode == 'expired_card') {
-          return 'Tarjeta expirada';
-        } else if (e.error.stripeErrorCode == 'incorrect_cvc') {
-          return 'CVC incorrecto';
-        } else if (e.error.stripeErrorCode == 'insufficient_funds') {
-          return 'Fondos insuficientes';
-        } else if (e.error.stripeErrorCode == 'invalid_card') {
-          return 'Tarjeta inválida';
-        }
-        return 'Error en el pago: ${e.error.localizedMessage}';
-      default:
-        return 'Error en el pago: Intente nuevamente';
-    }
-  }
-
-  Future<void> _initializePaymentSheet(String clientSecret) async {
+  // Check status of a payment - Optimized for speed
+  Future<Map<String, dynamic>> checkPaymentStatus(String pollUrl) async {
+    final client = http.Client();
     try {
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          merchantDisplayName: 'Ride App',
-          paymentIntentClientSecret: clientSecret,
-          style: ThemeMode.light,
-          appearance: PaymentSheetAppearance(
-            colors: const PaymentSheetAppearanceColors(
-              // Primary brand color
-              primary: Color(0xFF2962FF),
-              // Background color of the payment sheet
-              background: Colors.white,
-              // Color for components like text fields
-              componentBackground: Color(0xFFF8F9FA),
-              // Border color for components
-              componentBorder: Color(0xFFE9ECEF),
-              // Divider color
-              componentDivider: Color(0xFFE9ECEF),
-              // Primary text color
-              primaryText: Color(0xFF1A1F36),
-              // Secondary text color
-              secondaryText: Color(0xFF697386),
-              // Text color on components
-              componentText: Color(0xFF1A1F36),
-              // Icon color
-              icon: Color(0xFF2962FF),
-              // Error color
-              error: Color(0xFFFF3B30),
-            ),
-            primaryButton: PaymentSheetPrimaryButtonAppearance(
-              colors: const PaymentSheetPrimaryButtonTheme(
-                light: PaymentSheetPrimaryButtonThemeColors(
-                  background: Color(0xFF2962FF),
-                  text: Colors.white,
-                  border: Color(0xFF2962FF),
-                ),
-              ),
-              shapes: PaymentSheetPrimaryButtonShape(
-                blurRadius: 8,
-                borderWidth: 0,
-                shadow: PaymentSheetShadowParams(
-                  color: const Color(0xFF2962FF).withOpacity(0.25),
-                  offset: const PaymentSheetShadowOffset(x: 4, y: 4),
-                ),
-              ),
-            ),
-            shapes: PaymentSheetShape(
-              borderWidth: 1,
-              borderRadius: 12,
-              shadow: PaymentSheetShadowParams(
-                color: Colors.black.withOpacity(0.1),
-                offset: const PaymentSheetShadowOffset(x: 4, y: 4),
-              ),
-            ),
-          ),
-        ),
-      );
-    } catch (e) {
-      log('Error initializing payment sheet: $e');
-      throw 'Error al inicializar el pago';
-    }
-  }
-
-  Future<Map<String, dynamic>?> _createPaymentIntent(String amount) async {
-    try {
-      final amountInCentavos = (double.parse(amount) * 100).round();
-
-      final Map<String, dynamic> body = {
-        'amount': amountInCentavos,
-        'currency': 'mxn',
-        'payment_method_types[]': 'card'
-      };
-
-      log('Creating payment intent with amount: $amountInCentavos centavos');
-
-      final response = await http.post(
-        Uri.parse('$baseUrl/stripe/create-payment-intent'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(body),
-      );
-
-      log('Payment intent response status: ${response.statusCode}');
-      log('Payment intent response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        return {'success': false, 'error': 'Authentication token not found'};
       }
-      throw 'Error del servidor: ${response.statusCode}';
+      
+      log('Checking payment status for poll URL: $pollUrl');
+      
+      // Use timeout for faster response
+      final response = await client.post(
+        Uri.parse('$baseUrl/stripe/check-payment'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          'pollUrl': pollUrl,
+        }),
+      ).timeout(Duration(seconds: 5)); // Faster timeout
+      
+      log('Payment status API response: ${response.body}');
+      
+      // Handle non-200 status codes
+      if (response.statusCode != 200) {
+        log('Payment status check failed with status code: ${response.statusCode}');
+        return {
+          'success': false, 
+          'error': 'Server returned status code ${response.statusCode}'
+        };
+      }
+      
+      // Handle empty response body
+      if (response.body.isEmpty) {
+        log('Payment status check returned empty response');
+        return {
+          'success': false, 
+          'error': 'Empty response from server'
+        };
+      }
+      
+      // Parse the response body
+      Map<String, dynamic> data;
+      try {
+        data = jsonDecode(response.body);
+      } catch (e) {
+        log('Error parsing payment status response: $e');
+        log('Raw response: ${response.body}');
+        return {
+          'success': false, 
+          'error': 'Invalid response format'
+        };
+      }
+      
+      // If the response doesn't contain a 'success' field, add one
+      if (!data.containsKey('success')) {
+        if (data.containsKey('status')) {
+          data['success'] = true;
+        } else {
+          data['success'] = false;
+          data['error'] = 'Invalid response format: missing status field';
+        }
+      }
+      
+      return data;
     } catch (e) {
-      log('Error creating payment intent: $e');
-      throw 'Error al procesar el pago';
+      log('Error checking payment status: $e');
+      return {'success': false, 'error': e.toString()};
+    } finally {
+      client.close(); // Properly close the client
     }
   }
 
-  String _cleanAmount(String amount) {
-    // Remove any currency symbols, spaces, and non-numeric characters except decimal point
-    String cleaned = amount.replaceAll(RegExp(r'[^0-9.]'), '');
-    // Ensure only one decimal point
-    int decimalCount = '.'.allMatches(cleaned).length;
-    if (decimalCount > 1) {
-      int firstDecimalIndex = cleaned.indexOf('.');
-      cleaned = cleaned.substring(0, firstDecimalIndex + 1) +
-          cleaned.substring(firstDecimalIndex + 1).replaceAll('.', '');
+  // Manual wallet balance update - Optimized
+  Future<bool> manuallyRefreshWalletBalance() async {
+    final client = http.Client();
+    try {
+      _setLoading(true);
+      final token = await getToken();
+      
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
+      }
+      
+      log('Manually refreshing wallet balance');
+      
+      // Use timeout for faster response
+      final response = await client.get(
+        Uri.parse('$baseUrl/auth/refresh-wallet'),
+        headers: {
+          'Authorization': 'Bearer $token'
+        },
+      ).timeout(Duration(seconds: 5)); // Faster timeout
+      
+      log('Wallet refresh response: ${response.body}');
+      final data = jsonDecode(response.body);
+      
+      if (data['success'] == true) {
+        log('Wallet balance refreshed successfully');
+        return true;
+      } else {
+        _errorMessage = data['message'] ?? 'Failed to refresh wallet balance';
+        return false;
+      }
+    } catch (e) {
+      log('Error refreshing wallet balance: $e');
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      client.close(); // Properly close the client
+      _setLoading(false);
     }
-    return cleaned;
   }
 
-  void _setLoading(bool value) {
-    _isLoading = value;
-    notifyListeners();
+  // Cache the auth token for faster retrieval
+  String? _cachedToken;
+  DateTime? _tokenCacheTime;
+
+  // Get auth token from shared preferences with caching
+  Future<String?> getToken() async {
+    // Return cached token if available and less than 10 minutes old
+    if (_cachedToken != null && _tokenCacheTime != null) {
+      final cacheAge = DateTime.now().difference(_tokenCacheTime!);
+      if (cacheAge.inMinutes < 10) {
+        return _cachedToken;
+      }
+    }
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+      
+      // Cache the token
+      if (token != null && token.isNotEmpty) {
+        _cachedToken = token;
+        _tokenCacheTime = DateTime.now();
+      }
+      
+      return token;
+    } catch (e) {
+      log('Error getting token: $e');
+      return null;
+    }
   }
 
-  void _handleError(String error) {
-    log('Payment error: $error');
-    _errorMessage = error;
-    notifyListeners();
+  // Standard web-based Paynow payment - Optimized
+  Future<Map<String, dynamic>> createWebPayment(double amount) async {
+    final client = http.Client();
+    try {
+      _setLoading(true);
+      _errorMessage = null;
+      
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
+      }
+      
+      log('Creating web payment for amount: $amount');
+      
+      final response = await client.post(
+        Uri.parse('$baseUrl/stripe/create-payment'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          'amount': amount,
+        }),
+      ).timeout(Duration(seconds: 10)); // Faster timeout
+      
+      log('Web payment API response: ${response.body}');
+      final data = jsonDecode(response.body);
+      
+      if (data['success'] == true) {
+        return {
+          'success': true,
+          'redirectUrl': data['redirectUrl'],
+          'pollUrl': data['pollUrl']
+        };
+      } else {
+        _errorMessage = data['message'] ?? 'Payment failed';
+        return {'success': false, 'error': _errorMessage};
+      }
+    } catch (e) {
+      log('Error creating web payment: $e');
+      _errorMessage = e.toString();
+      return {'success': false, 'error': e.toString()};
+    } finally {
+      client.close(); // Properly close the client
+      _setLoading(false);
+    }
   }
 
+  // Simulate payment completion (for testing) - Optimized
+  Future<bool> simulatePayment(String paymentId) async {
+    final client = http.Client();
+    try {
+      _setLoading(true);
+      _errorMessage = null;
+      
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
+      }
+      
+      log('Simulating payment completion for: $paymentId');
+      
+      final response = await client.post(
+        Uri.parse('$baseUrl/stripe/simulate-payment'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode({
+          'paymentId': paymentId,
+        }),
+      ).timeout(Duration(seconds: 5)); // Faster timeout
+      
+      log('Simulate payment API response: ${response.body}');
+      final data = jsonDecode(response.body);
+      
+      if (data['success'] == true) {
+        return true;
+      } else {
+        _errorMessage = data['message'] ?? 'Simulation failed';
+        return false;
+      }
+    } catch (e) {
+      log('Error simulating payment: $e');
+      _errorMessage = e.toString();
+      return false;
+    } finally {
+      client.close(); // Properly close the client
+      _setLoading(false);
+    }
+  }
+
+  // Update wallet balance - Optimized
   Future<bool> updateWalletBalance(String userId, double amount) async {
+    final client = http.Client();
     try {
       log('Updating wallet balance for user: $userId with amount: $amount');
 
-      final response = await http.post(
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
+      }
+
+      final response = await client.post(
         Uri.parse('$baseUrl/auth/update-wallet-balance'),
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
         },
         body: jsonEncode({
           'userId': userId,
           'amount': amount,
         }),
-      );
+      ).timeout(Duration(seconds: 5)); // Faster timeout
 
       log('Wallet update response: ${response.body}');
 
@@ -269,58 +363,39 @@ class PaymentProvider extends ChangeNotifier {
       log('Error updating wallet balance: $e');
       _errorMessage = e.toString();
       return false;
+    } finally {
+      client.close(); // Properly close the client
     }
   }
 
-  Future<bool> processFullPayment(String amount, String userId) async {
-    try {
-      log('Starting full payment process for user: $userId');
-
-      // First process Stripe payment
-      final stripeSuccess = await makePayment(amount);
-
-      if (stripeSuccess) {
-        log('Stripe payment successful, updating wallet');
-
-        // If Stripe payment successful, update wallet balance
-        final walletSuccess = await updateWalletBalance(
-          userId,
-          double.parse(amount),
-        );
-
-        return walletSuccess;
-      }
-
-      return false;
-    } catch (e) {
-      log('Error in full payment process: $e');
-      _errorMessage = 'Payment failed: ${e.toString()}';
-      notifyListeners();
-      return false;
-    }
-  }
-
-// For wallet payment
+  // For wallet payment - Optimized
   Future<bool> makeWalletPayment(String estimatedFare) async {
-    _isLoading = true;
-    _errorMessage = null;
-    notifyListeners();
-
+    final client = http.Client();
     try {
+      _isLoading = true;
+      _errorMessage = null;
+      notifyListeners();
+
       final prefs = await SharedPreferences.getInstance();
 
       // Get driver ID
       String? driverId = prefs.getString('driverId');
       String? userId = prefs.getString('userId');
       if (driverId == null) throw 'Driver ID not found';
-      log('Driver IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD: $driverId');
+      log('Driver ID: $driverId');
 
-      if (userId == null) throw 'Driver ID not found';
-      log('User IDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD: $userId');
+      if (userId == null) throw 'User ID not found';
+      log('User ID: $userId');
 
       // Parse amount
       if (estimatedFare.isEmpty) throw 'Invalid amount';
       double amount = double.parse(estimatedFare);
+
+      // Get auth token
+      final token = await getToken();
+      if (token == null || token.isEmpty) {
+        throw 'Authentication token not found. Please login again.';
+      }
 
       // Prepare request
       final requestBody = {
@@ -329,16 +404,20 @@ class PaymentProvider extends ChangeNotifier {
         "amount": amount
       };
 
-      // Make API call
-      final response = await http.post(
-          Uri.parse('https://m5nkcs2p-3000.inc1.devtunnels.ms/auth/transferFromWallet'),
-          headers: {'Content-Type': 'application/json'},
-          body: json.encode(requestBody));
+      // Make API call with timeout
+      final response = await client.post(
+        Uri.parse('$baseUrl/auth/transferFromWallet'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token'
+        },
+        body: json.encode(requestBody)
+      ).timeout(Duration(seconds: 10)); // Faster timeout
 
       // Log response
       log('Response Status: ${response.statusCode}');
       log('Response Body: ${response.body}');
-      log('============= End Wallet Payment =======wefwefwerwerwerwerwerwerwerwerwer======\n');
+      log('============= End Wallet Payment =============');
 
       if (response.statusCode == 200) {
         _isLoading = false;
@@ -353,85 +432,13 @@ class PaymentProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
       return false;
-    }
-  }
-
-  Future<bool> getWalletPayment( int amountInCents) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('token');
-    if (token == null) {
-      log('Token not found');
-      return false;
-    }
-    try {
-      _isLoading = true;
-      _errorMessage = null;
-      notifyListeners();
-
-      final response = await http.get(
-        Uri.parse('$baseUrl/stripe/create-oxxo-payment'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        log('Wallet Payment Response: $responseData');
-        return true;
-      } else {
-        _errorMessage = 'Payment failed. Please try again.';
-        log('Paymenttttttt Error: ${response.body}');
-        return false;
-      }
-    } catch (e) {
-      _errorMessage = 'Error processing payment: $e';
-      log('Payment Exception: $e');
-      return false;
     } finally {
-      _isLoading = false;
-      notifyListeners();
+      client.close(); // Properly close the client
     }
   }
 
-//     Future<bool> getWalletPayment(int amount) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String? token = prefs.getString('token');
-//   if (token == null) {
-//     log('Token not found');
-//     return false;
-//   }
-
-//   try {
-//     _isLoading = true;
-//     _errorMessage = null;
-//     notifyListeners();
-
-//     final response = await http.get(
-//       Uri.parse('$baseUrl/stripe/create-oxxo-payment?amount=$amount'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//     );
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-//       log('Wallet Payment Response: $responseData');
-//       return true;
-//     } else {
-//       _errorMessage = 'Payment failed. Please try again.';
-//       log('Payment Error: ${response.body}');
-//       return false;
-//     }
-//   } catch (e) {
-//     _errorMessage = 'Error processing payment: $e';
-//     log('Payment Exception: $e');
-//     return false;
-//   } finally {
-//     _isLoading = false;
-//     notifyListeners();
-//   }
-// }
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
 }

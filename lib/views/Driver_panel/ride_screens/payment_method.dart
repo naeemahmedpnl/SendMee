@@ -5,13 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sendme/utils/routes/driver_panel_routes.dart';
-// import 'package:sendme/utils/routes/user_panel_routes.dart';
+// import 'package:rideapp/utils/routes/user_panel_routes.dart';
 import 'package:sendme/widgets/custom_button.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
   final String? estimatedFare;
 
-  const PaymentMethodScreen({Key? key, this.estimatedFare}) : super(key: key);
+  const PaymentMethodScreen({super.key, this.estimatedFare});
 
   @override
   State<PaymentMethodScreen> createState() => _PaymentMethodScreenState();
@@ -27,27 +27,27 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     zoom: 14.4746,
   );
 
-  String selectedPaymentMethod = 'payment.cash_method'.tr();
+ String selectedPaymentMethod = 'payment.cash_method'.tr();
 
   final List<PaymentMethod> paymentMethods = [
     PaymentMethod(
       id: 'cash',
       title: 'payment.cash'.tr(),
-      subtitle: 'Pay with cash after ride',
+      subtitle: 'payment.cash_method'.tr(),
       icon: "assets/images/cash.png",
       backgroundColor: Colors.green.withOpacity(0.1),
     ),
+    // PaymentMethod(
+    //   id: 'card',
+    //   title: 'payment.card'.tr(),
+    //   subtitle: 'payment.card_method'.tr(),
+    //   icon: "assets/images/card.png",
+    //   backgroundColor: Colors.blue.withOpacity(0.1),
+    // ),
     PaymentMethod(
-      id: 'card',
-      title: 'payment.card'.tr(),
-      subtitle: 'Credit or Debit card',
-      icon: "assets/images/card.png",
-      backgroundColor: Colors.blue.withOpacity(0.1),
-    ),
-     PaymentMethod(
       id: 'wallet',
-      title: 'Wallet Payment',
-      subtitle: 'Pay at Wallet',
+      title: 'payment.wallet'.tr(),
+      subtitle: 'payment.wallet_method'.tr(),
       icon: "assets/images/wallet.png",
       backgroundColor: Colors.orange.withOpacity(0.1),
     ),
@@ -58,7 +58,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     super.initState();
        log('Total Fare: ${widget.estimatedFare}');
     DefaultAssetBundle.of(context)
-        .loadString('assets/map_theme/night_theme.json')
+        .loadString('assets/map_theme/standard_theme.json')
         .then((value) {
       mapTheme = value;
     });
@@ -173,100 +173,6 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     );
   }
 
-  // Grid View Implementation
-  Widget _buildGridView() {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1,
-      ),
-      itemCount: paymentMethods.length,
-      itemBuilder: (context, index) {
-        final method = paymentMethods[index];
-        final isSelected = selectedPaymentMethod == method.id;
-
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              selectedPaymentMethod = method.id;
-            });
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(16),
-              border: isSelected
-                  ? Border.all(color: Colors.blue, width: 2)
-                  : Border.all(color: Colors.white24, width: 1),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: method.backgroundColor,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Image.asset(
-                          method.icon,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        method.title,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        method.subtitle,
-                        style: TextStyle(
-                          color: Colors.white.withOpacity(0.7),
-                          fontSize: 12,
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -328,18 +234,17 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                'Total Fare:',
-                                style: TextStyle(
+                              Text(
+                                'payment.total_fare'.tr(),
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              Text(
-                                '\$${widget.estimatedFare ?? "0.00"}',
-                             
-                                style: const TextStyle(
+                              const Text(
+                                '\${widget.estimatedFare ?? "0.00"}',
+                                style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -348,22 +253,14 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                             ],
                           ),
                         ),
-                        // Text(
-                        //   'payment.select_payment'.tr(),
-                        //   style: const TextStyle(
-                        //     color: Colors.white,
-                        //     fontSize: 24,
-                        //     fontWeight: FontWeight.bold,
-                        //   ),
-                        // ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 300,
-                          child: _buildListView(), // or _buildGridView()
+                          child: _buildListView(),
                         ),
                         const SizedBox(height: 20),
                         CustomButton(
-                          text: 'Continue with ${selectedPaymentMethod}',
+                          text: '${'payment.continue_with'.tr()} ${selectedPaymentMethod}',
                           onPressed: () {
                             Navigator.pushNamed(
                                 context, AppDriverRoutes.paymentsuccesful);

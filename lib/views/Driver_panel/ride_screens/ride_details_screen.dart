@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -63,55 +64,186 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
         widget.displayData['estimatedFare']?.toString() ?? '0';
   }
 
-  void _initializeSocket() {
-    log('RideDetailsScreen - Initializing Socket.IO');
-    try {
-      socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
-        'transports': ['websocket'],
-        'autoConnect': true, // Changed to true
-        'reconnection': true,
-        'reconnectionAttempts': 5,
-        'reconnectionDelay': 1000,
-      });
+  // void _initializeSocket() {
+  //   log('RideDetailsScreen - Initializing Socket.IO');
+  //   try {
+  //     socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
+  //       'transports': ['websocket'],
+  //       'autoConnect': true, // Changed to true
+  //       'reconnection': true,
+  //       'reconnectionAttempts': 5,
+  //       'reconnectionDelay': 1000,
+  //     });
 
-      socket.connect();
+  //     socket.connect();
 
-      socket.on('connect', (_) {
-        log('RideDetailsScreen - Socket connected');
-      });
+  //     socket.on('connect', (_) {
+  //       log('RideDetailsScreen - Socket connected');
+  //     });
 
-      socket.on('user_accepted', (data) {
-        log('RideDetailsScreen - User accepted the ride: $data');
+  //     socket.on('user_accepted_trip', (data) {
+  //       log('RideDetailsScreen - User accepted the ride: $data');
+  //       if (!_isDisposed && mounted) {
+  //         Navigator.pushReplacementNamed(
+  //             context, AppDriverRoutes.showridesdetails);
+  //       }
+  //     });
+
+  //     // socket.on('user_accepted', (data) {
+  //     //   log('RideDetailsScreen - User accepted the ride: $data');
+  //     //   if (!_isDisposed && mounted) {
+  //     //     Navigator.pushReplacementNamed(
+  //     //       context,
+  //     //       AppDriverRoutes.showridesdetails
+  //     //     );
+  //     //   }
+  //     // });
+
+  //     socket.on('disconnect', (_) {
+  //       log('RideDetailsScreen - Socket disconnected');
+  //       if (!_isDisposed) {
+  //         socket.connect(); // Try to reconnect if not disposed
+  //       }
+  //     });
+
+  //     socket.on('error', (error) {
+  //       log('RideDetailsScreen - Socket error: $error');
+  //     });
+  //   } catch (e) {
+  //     log('RideDetailsScreen - Error initializing Socket.IO: $e');
+  //   }
+  // }
+
+  // void _initializeSocket() {
+  //   log('RideDetailsScreen - Initializing Socket.IO');
+  //   try {
+  //     socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
+  //       'transports': ['websocket'],
+  //       'autoConnect': true,
+  //       'reconnection': true,
+  //       'reconnectionAttempts': 5,
+  //       'reconnectionDelay': 1000,
+  //     });
+
+  //     socket.connect();
+
+  //     socket.on('connect', (_) {
+  //       log('RideDetailsScreen - Socket connected successfully');
+
+  //       // Join a specific room for this driver (if your backend supports it)
+  //       final tripId = widget.fullData['result']['_id'];
+  //       socket.emit('join-driver-room', {'tripId': tripId});
+  //       log('Joined room for trip: $tripId');
+  //     });
+
+  //     // This is the key event we need to listen for
+  //     socket.on('user_accepted_trip', (data) {
+  //       log('RideDetailsScreen - User accepted trip event received: $data');
+  //       if (!_isDisposed && mounted) {
+  //         // Navigate to next screen with a small delay
+  //         Future.delayed(Duration(milliseconds: 200), () {
+  //           Navigator.pushReplacementNamed(
+  //               context, AppDriverRoutes.showridesdetails,
+  //               arguments: data // Pass the data to the next screen
+  //               );
+  //         });
+  //       }
+  //     });
+
+  //     socket.on('disconnect', (_) {
+  //       log('RideDetailsScreen - Socket disconnected');
+  //       if (!_isDisposed) {
+  //         socket.connect(); // Try to reconnect if not disposed
+  //       }
+  //     });
+
+  //     socket.on('error', (error) {
+  //       log('RideDetailsScreen - Socket error: $error');
+  //     });
+
+  //     socket.on('connect_error', (error) {
+  //       log('RideDetailsScreen - Connection error: $error');
+  //     });
+  //   } catch (e) {
+  //     log('RideDetailsScreen - Error initializing Socket.IO: $e');
+  //   }
+  // }
+
+
+void _initializeSocket() {
+  log('RideDetailsScreen - Initializing Socket.IO');
+  try {
+    socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
+      'transports': ['websocket'],
+      'autoConnect': true,
+      'reconnection': true,
+      'reconnectionAttempts': 5,
+      'reconnectionDelay': 1000,
+    });
+
+    socket.connect();
+
+    socket.on('connect', (_) {
+      log('RideDetailsScreen - Socket connected successfully');
+
+      // Join a specific room for this driver (if your backend supports it)
+      final tripId = widget.fullData['result']['_id'];
+      socket.emit('join-driver-room', {'tripId': tripId});
+      log('Joined room for trip: $tripId');
+    });
+
+    // Updated socket event listener
+    socket.on('user_accepted_trip', (data) {
+      log('RideDetailsScreen - User accepted trip event received: $data');
+      
+      // Validate the data and trip status
+      if (data != null && 
+          data['status'] == 'user_accepted' && 
+          data['tripDetails'] != null) {
         if (!_isDisposed && mounted) {
-          Navigator.pushReplacementNamed(
-              context, AppDriverRoutes.showridesdetails);
+          // Navigate to next screen with a small delay
+          Future.delayed(Duration(milliseconds: 200), () {
+            Navigator.pushReplacementNamed(
+              context, 
+              AppDriverRoutes.showridesdetails,
+              arguments: {
+                'displayData': widget.displayData,
+                'fullData': widget.fullData,
+                'tripDetails': data['tripDetails'], // Include full trip details
+              }
+            );
+          });
         }
-      });
+      } else {
+        log('Invalid user acceptance data: $data');
+        // Optionally show an error dialog or toast
+        _showErrorDialog(
+          context,
+          'Error',
+          'Trip acceptance failed. Please try again.',
+        );
+      }
+    });
 
-      // socket.on('user_accepted', (data) {
-      //   log('RideDetailsScreen - User accepted the ride: $data');
-      //   if (!_isDisposed && mounted) {
-      //     Navigator.pushReplacementNamed(
-      //       context,
-      //       AppDriverRoutes.showridesdetails
-      //     );
-      //   }
-      // });
+    socket.on('disconnect', (_) {
+      log('RideDetailsScreen - Socket disconnected');
+      if (!_isDisposed) {
+        socket.connect(); // Try to reconnect if not disposed
+      }
+    });
 
-      socket.on('disconnect', (_) {
-        log('RideDetailsScreen - Socket disconnected');
-        if (!_isDisposed) {
-          socket.connect(); // Try to reconnect if not disposed
-        }
-      });
+    socket.on('error', (error) {
+      log('RideDetailsScreen - Socket error: $error');
+    });
 
-      socket.on('error', (error) {
-        log('RideDetailsScreen - Socket error: $error');
-      });
-    } catch (e) {
-      log('RideDetailsScreen - Error initializing Socket.IO: $e');
-    }
+    socket.on('connect_error', (error) {
+      log('RideDetailsScreen - Connection error: $error');
+    });
+  } catch (e) {
+    log('RideDetailsScreen - Error initializing Socket.IO: $e');
   }
+}
+
 
   void _cleanupSocket() {
     try {
@@ -125,7 +257,7 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
 
   @override
   void dispose() {
-    _isDisposed = true; // Set flag before disposal
+    _isDisposed = true;
     _cleanupSocket();
     _fareController.dispose();
     super.dispose();
@@ -133,6 +265,7 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
 
   Future<void> _acceptTrip(BuildContext context) async {
     if (_driverCurrentLocation == null || _driverId == null) {
+      log('Driver location or ID is null. Location: $_driverCurrentLocation, ID: $_driverId');
       if (!_isDisposed && mounted) {
         _showErrorDialog(
           context,
@@ -150,25 +283,39 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
       final tripId = widget.fullData['result']['_id'];
       log('Trip ID: $tripId');
       final url = '${Constants.apiBaseUrl}/trip/accept/$tripId';
+      log('API URL: $url');
+
+      // Log socket connection status
+      log('Socket connected: ${socket.connected}');
 
       // Make sure socket is connected before making API call
       if (!socket.connected) {
+        log('Socket not connected, attempting to connect...');
         socket.connect();
         // Wait briefly for socket to connect
         await Future.delayed(const Duration(milliseconds: 500));
+        log('After delay, socket connected: ${socket.connected}');
       }
+
+      // Log the request payload for debugging
+      final requestPayload = {
+        'latitude': _driverCurrentLocation!.latitude,
+        'longitude': _driverCurrentLocation!.longitude,
+        'driverId': _driverId,
+        'driverEstimatedFare': double.tryParse(_fareController.text) ??
+            widget.displayData['estimatedFare'],
+      };
+      log('Request payload: ${jsonEncode(requestPayload)}');
 
       final response = await http.put(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'latitude': _driverCurrentLocation!.latitude,
-          'longitude': _driverCurrentLocation!.longitude,
-          'driverId': _driverId,
-          'driverEstimatedFare': double.tryParse(_fareController.text) ??
-              widget.displayData['estimatedFare'],
-        }),
+        body: jsonEncode(requestPayload),
       );
+
+      // Log response details
+      log('Response status code: ${response.statusCode}');
+      log('Response body: ${response.body}');
 
       // Remove loading dialog
       if (!_isDisposed && mounted && Navigator.canPop(context)) {
@@ -181,7 +328,15 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
         final responseData = jsonDecode(response.body);
         log('Trip accepted successfully: $responseData');
 
+        // Let the server know this driver is ready for updates about this specific trip
+        final tripId = widget.fullData['result']['_id'];
+        socket.emit('driver_waiting_for_user',
+            {'tripId': tripId, 'driverId': _driverId});
+
+        log('Trip accepted successfully: $responseData');
+
         // Emit the event before navigation
+        log('Emitting trip_accepted event with trip details');
         socket.emit('trip_accepted', responseData['tripDetails']);
 
         // Add a small delay before navigation to ensure socket event is sent
@@ -217,32 +372,37 @@ class _RideDetailsScreenState extends State<RideDetailsScreen> {
       } else {
         // Handle error responses...
         if (response.statusCode == 404) {
+          log('Trip not found (404)');
           await _showTripNotFoundDialog(context);
           Navigator.pop(context);
         } else if (response.statusCode == 400) {
           final errorData = jsonDecode(response.body);
+          log('Bad request (400): ${errorData['message']}');
           await _showTripCancelledDialog(
               context, errorData['message'] ?? 'Trip is no longer available');
           Navigator.pop(context);
         } else {
+          log('Unhandled error status code: ${response.statusCode}');
           _showErrorDialog(
             context,
             'Error',
-            'Failed to accept trip. Please try again.',
+            'Failed to accept trip. Please try again. Status: ${response.statusCode}',
           );
         }
       }
     } catch (e) {
       log('Error accepting trip: $e');
+      log('Stack trace: ${StackTrace.current}');
+
       if (!_isDisposed && mounted) {
         if (Navigator.canPop(context)) {
           Navigator.pop(context);
         }
         _showErrorDialog(
-          context,
-          'Error',
-          'An error occurred. Please try again.',
-        );
+            context,
+            'Error',
+            'An error occurred: ${e.toString().substring(0, math.min(100, e.toString().length))}'
+                '...');
       }
     }
   }

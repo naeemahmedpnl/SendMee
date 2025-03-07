@@ -52,13 +52,13 @@ Future<void> _handleDriverModeNavigation(BuildContext context) async {
      
       final Map<String, dynamic> userMap = jsonDecode(userData);
       final String driverStatus = userMap['driverRoleStatus'] ?? '';
-      log("🚗 Driver Status: $driverStatus");
+      log(" Driver Status: $driverStatus");
 
       if (!context.mounted) return;
 
       // Check if user is a driver
       final bool isDriver = userMap['isDriver'] ?? false;
-      log("🚗 Is User a Driver: $isDriver");
+      log("Is User a Driver: $isDriver");
       
       if (!isDriver) {
         Navigator.pushReplacementNamed(

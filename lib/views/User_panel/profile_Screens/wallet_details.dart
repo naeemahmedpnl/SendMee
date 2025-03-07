@@ -13,6 +13,8 @@ import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
 import 'package:sendme/views/User_panel/profile_Screens/widgets/payment_method.dart';
 
 class WalletScreen extends StatefulWidget {
+  const WalletScreen({super.key});
+
   @override
   State<WalletScreen> createState() => _WalletScreenState();
 }
@@ -87,7 +89,7 @@ class _WalletScreenState extends State<WalletScreen> {
                                 await showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
-                                  backgroundColor: Colors.transparent,
+                                  backgroundColor: Colors.white,
                                   builder: (context) => PaymentMethodPopup(userData: userData),
                                 );
                                 // Refresh data after payment sheet is closed
@@ -135,7 +137,7 @@ class BalanceWidget extends StatelessWidget {
       width: double.infinity,
       height: 150,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFFF5FFE8),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(

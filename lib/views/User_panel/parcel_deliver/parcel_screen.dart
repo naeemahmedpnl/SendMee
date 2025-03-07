@@ -1,5 +1,6 @@
 
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -37,42 +38,199 @@ class _ParcelScreenState extends State<ParcelScreen> {
     fetchData();
   }
 
-  Future<void> fetchData() async {
-    try {
-      log('Starting to fetch user data...');
-      final prefs = await SharedPreferences.getInstance();
-      final existingToken = prefs.getString('token');
-      log('Existing token from SharedPreferences: $existingToken');
+  // First add this helper function in your class to show error dialog
+void _showErrorDialog(String message) {
+  if (mounted) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: Row(
+            children: [
+              const Icon(Icons.error_outline, color: Colors.red),
+              const SizedBox(width: 10),
+              Text('Error', style: AppTextTheme.getLightTextTheme(context).titleMedium),
+            ],
+          ),
+          content: Text(
+            message,
+            style: AppTextTheme.getLightTextTheme(context).bodyMedium,
+          ),
+          actions: [
+            CustomButton(text: "Ok", onPressed: (){
+              Navigator.of(context).pop();
+            },
+            borderRadius: 40,
+            )
+            // TextButton(
+            //   child: const Text('OK'),
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //   },
+            // ),
+          ],
+        );
+      },
+    );
+  }
+}
 
-      AuthProvider authService = AuthProvider();
-      await authService.fetchUserData();
+Future<void> fetchData() async {
+  try {
+    log('Starting to fetch user data...');
+    final prefs = await SharedPreferences.getInstance();
+    final existingToken = prefs.getString('token');
+    log('Existing token from SharedPreferences: $existingToken');
+
+    AuthProvider authService = AuthProvider();
+    
+    try {
+      await authService.fetchUserData().timeout(
+        const Duration(seconds: 10),
+      );
+      
       var data = await authService.getUserData();
       
-      if (data != null) {
-        setState(() {
-          userData = data;
-        });
 
-        if (userData != null) {
-          Map<String, dynamic> userMap = userData!.toJson(); 
-          await prefs.setString('userData', jsonEncode(userMap));
-          
-          String? token = await authService.getToken();
-          if (token != null) {
-            await prefs.setString('token', token); 
-          }
-          
-          log('=========== Verification ===========');
-          log('Saved User Data: ${prefs.getString('userData')}');
-          log('Saved Token: ${prefs.getString('token')}');
-          log('===================================');
+         if (data != null) {
+      setState(() {
+        userData = data;
+      });
+
+      if (userData != null) {
+        Map<String, dynamic> userMap = userData!.toJson(); 
+        await prefs.setString('userData', jsonEncode(userMap));
+        
+        String? token = await authService.getToken();
+        if (token != null) {
+          await prefs.setString('token', token); 
         }
+        
+        log('=========== Verification ===========');
+        log('Saved User Data: ${prefs.getString('userData')}');
+        log('Saved Token: ${prefs.getString('token')}');
+        log('===================================');
       }
-    } catch (e) {
-      log('Error in fetchData: $e');
-      rethrow;
     }
+      
+    } catch (e) {
+      log('Error fetching user data: $e');
+      
+      if (e.toString().contains('158.220.90.248')) { 
+        _showErrorDialog('Server is currently unavailable. Please try again later.');
+      } else if (e.toString().contains('SocketException')) {
+        _showErrorDialog('Please check your internet connection.');
+      } else {
+        _showErrorDialog('Unable to connect to server. Please try again later.');
+      }
+    }
+
+  } catch (e) {
+    log('Error in fetchData: $e');
+    _showErrorDialog('An unexpected error occurred. Please try again.');
   }
+}
+
+// // Now modify your fetchData function with error handling
+// Future<void> fetchData() async {
+//   try {
+//     log('Starting to fetch user data...');
+//     final prefs = await SharedPreferences.getInstance();
+//     final existingToken = prefs.getString('token');
+//     log('Existing token from SharedPreferences: $existingToken');
+
+//     AuthProvider authService = AuthProvider();
+    
+//     // Add timeout to detect network issues
+//     await authService.fetchUserData().timeout(
+//       const Duration(seconds: 10),
+//       onTimeout: () {
+//         throw TimeoutException('Connection timed out. Please check your internet connection.');
+//       },
+//     );
+
+//     var data = await authService.getUserData();
+    
+//     if (data != null) {
+//       setState(() {
+//         userData = data;
+//       });
+
+//       if (userData != null) {
+//         Map<String, dynamic> userMap = userData!.toJson(); 
+//         await prefs.setString('userData', jsonEncode(userMap));
+        
+//         String? token = await authService.getToken();
+//         if (token != null) {
+//           await prefs.setString('token', token); 
+//         }
+        
+//         log('=========== Verification ===========');
+//         log('Saved User Data: ${prefs.getString('userData')}');
+//         log('Saved Token: ${prefs.getString('token')}');
+//         log('===================================');
+//       }
+//     }
+//   } catch (e) {
+//     log('Error in fetchData: $e');
+    
+//     String errorMessage;
+    
+//     if (e is TimeoutException) {
+//       errorMessage = 'Please check your internet connection and try again.';
+//     } else if (e.toString().contains('SocketException') || 
+//                e.toString().contains('NetworkException')) {
+//       errorMessage = 'Unable to connect to the internet. Please check your connection.';
+//     } else if (e.toString().contains('HttpException') || 
+//                e.toString().contains('StatusCode: 500')) {
+//       errorMessage = 'Server error. Please try again later.';
+//     } else {
+//       errorMessage = 'An unexpected error occurred. Please try again.';
+//     }
+    
+//     _showErrorDialog(errorMessage);
+//   }
+// }
+
+  // Future<void> fetchData() async {
+  //   try {
+  //     log('Starting to fetch user data...');
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final existingToken = prefs.getString('token');
+  //     log('Existing token from SharedPreferences: $existingToken');
+
+  //     AuthProvider authService = AuthProvider();
+  //     await authService.fetchUserData();
+  //     var data = await authService.getUserData();
+      
+  //     if (data != null) {
+  //       setState(() {
+  //         userData = data;
+  //       });
+
+  //       if (userData != null) {
+  //         Map<String, dynamic> userMap = userData!.toJson(); 
+  //         await prefs.setString('userData', jsonEncode(userMap));
+          
+  //         String? token = await authService.getToken();
+  //         if (token != null) {
+  //           await prefs.setString('token', token); 
+  //         }
+          
+  //         log('=========== Verification ===========');
+  //         log('Saved User Data: ${prefs.getString('userData')}');
+  //         log('Saved Token: ${prefs.getString('token')}');
+  //         log('===================================');
+  //       }
+  //     }
+  //   } catch (e) {
+  //     log('Error in fetchData: $e');
+  //     rethrow;
+  //   }
+  // }
 
   Future<void> _onRefresh()async {
     await fetchData();

@@ -1017,7 +1017,7 @@ Future<void> _checkSharedPreferencesData() async {
                     text: 'ride_home.payment_dialog.payment_methods.cash'.tr(),
                     onPressed: () {
                       Navigator.pop(context);
-                      _createTripRequest(context);
+                      // _createTripRequest(context);
                     },
                     borderRadius: 44,
                   ),

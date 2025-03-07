@@ -33,57 +33,139 @@ class AuthProvider extends ChangeNotifier {
   // Use a getter for the base URL
   String get baseUrl => Constants.apiBaseUrl;
 
-  //register wiht phone number
-  Future<void> registerWithPhoneNumber(String phoneNumber) async {
-    final phoneRegex = RegExp(r'^\+(52|92)\d{10,11}$');
+  // //register wiht phone number
+  // Future<void> registerWithPhoneNumber(String phoneNumber) async {
+  //   final phoneRegex = RegExp(r'^\+(52|92|27)\d{10,11}$');
 
-    // Log the start of the registration process
-    log('Starting registration for phone number: $phoneNumber');
+  //   // Log the start of the registration process
+  //   log('Starting registration for phone number: $phoneNumber');
 
-    // Validate phone number format
-    if (!phoneRegex.hasMatch(phoneNumber)) {
-      throw const FormatException('Invalid phone number format');
-    }
+  //   // Validate phone number format
+  //   if (!phoneRegex.hasMatch(phoneNumber)) {
+  //     throw const FormatException('Invalid phone number format');
+  //   }
 
-    _isLoading = true;
-    notifyListeners();
+  //   _isLoading = true;
+  //   notifyListeners();
 
-    try {
-      // Send registration request
-      final response = await http.post(
-        Uri.parse('$baseUrl/auth/register-with-phoneNumber'),
-        body: json.encode({'phoneNumber': phoneNumber}),
-        headers: {'Content-Type': 'application/json'},
-      );
+  //   try {
+  //     // Send registration request
+  //     final response = await http.post(
+  //       Uri.parse('$baseUrl/auth/register-with-phoneNumber'),
+  //       body: json.encode({'phoneNumber': phoneNumber}),
+  //       headers: {'Content-Type': 'application/json'},
+  //     );
 
-      // Check response status
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        log('Registration successful for phone number: $phoneNumber');
+  //     // Check response status
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       log('Registration successful for phone number: $phoneNumber');
 
-        final responseData = json.decode(response.body);
-        _otp = responseData['otp'].toString();
-        _token = responseData['token'];
+  //       final responseData = json.decode(response.body);
+  //       _otp = responseData['otp'].toString();
+  //       _token = responseData['token'];
 
-        // Save token and OTP to SharedPreferences
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', _token);
-        await prefs.setString('otp', _otp);
+  //       // Save token and OTP to SharedPreferences
+  //       SharedPreferences prefs = await SharedPreferences.getInstance();
+  //       await prefs.setString('token', _token);
+  //       await prefs.setString('otp', _otp);
 
-        log('Token: $_token, OTP: $_otp saved successfully');
-        notifyListeners();
-      } else if (response.statusCode == 409) {
-        log('User already exists with phone number: $phoneNumber');
-        throw Exception('User already exists');
-      } else {
-        log('Failed to register user. Status code: ${response.statusCode}');
-        throw Exception('Failed to register user');
-      }
-    } finally {
-      // Ensure loading state is reset
-      _isLoading = false;
-      notifyListeners();
-    }
+  //       log('Token: $_token, OTP: $_otp saved successfully');
+  //       notifyListeners();
+  //     } else if (response.statusCode == 409) {
+  //       log('User already exists with phone number: $phoneNumber');
+  //       throw Exception('User already exists');
+  //     } else {
+  //       log('Failed to register user. Status code: ${response.statusCode}');
+  //       throw Exception('Failed to register user');
+  //     }
+  //   } finally {
+  //     // Ensure loading state is reset
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
+
+
+Future<void> registerWithPhoneNumber(String phoneNumber) async {
+
+// Adjust digit count requirements for different country codes
+final phoneRegex = RegExp(r'^\+(52|92)\d{10,11}$|^\+27\d{9}$');
+
+  // Log the start of the registration process
+  log('Starting registration for phone number: $phoneNumber');
+
+  // Validate phone number format
+  if (!phoneRegex.hasMatch(phoneNumber)) {
+    log('Invalid phone format: $phoneNumber');
+    throw const FormatException('Invalid phone number format');
   }
+
+  _isLoading = true;
+  notifyListeners();
+
+  try {
+    // Send registration request
+    log('Sending request to: $baseUrl/auth/register-with-phoneNumber');
+    log('Request body: ${json.encode({'phoneNumber': phoneNumber})}');
+    
+    final response = await http.post(
+      Uri.parse('$baseUrl/auth/register-with-phoneNumber'),
+      body: json.encode({'phoneNumber': phoneNumber}),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept-Language': 'en', // Add language header
+      },
+    );
+
+    // Log the complete response
+    log('Response status: ${response.statusCode}');
+    log('Response body: ${response.body}');
+
+    // Check response status
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      log('Registration successful for phone number: $phoneNumber');
+
+      final responseData = json.decode(response.body);
+      _otp = responseData['otp'].toString();
+      _token = responseData['token'];
+
+      // Save token and OTP to SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('token', _token);
+      await prefs.setString('otp', _otp);
+
+      log('Token: $_token, OTP: $_otp saved successfully');
+      notifyListeners();
+    } else {
+      // Parse error message from response
+      Map<String, dynamic> errorData = {};
+      try {
+        errorData = json.decode(response.body);
+      } catch (e) {
+        log('Error parsing response: $e');
+      }
+      
+      String errorMessage = errorData['message'] ?? 'Unknown error occurred';
+      log('Registration failed: $errorMessage');
+      
+      if (response.statusCode == 409) {
+        throw Exception('User already exists with this phone number');
+      } else if (response.statusCode == 400) {
+        throw Exception(errorMessage);
+      } else {
+        throw Exception('Failed to register: $errorMessage');
+      }
+    }
+  } catch (e) {
+    log('Exception during registration: $e');
+    rethrow; // Re-throw to be handled by the UI
+  } finally {
+    // Ensure loading state is reset
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
 
 
   Future<void> completeProfile(

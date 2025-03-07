@@ -103,7 +103,7 @@ class _VehiclePhotosViewState extends State<VehiclePhotosView> {
   void _showMessage(String message, bool success) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: success ? AppColors.primary : Colors.red,
+        backgroundColor: success ? AppColors.buttonColor : Colors.red,
         content: Row(
           children: [
             Icon(success ? Icons.check : Icons.error_outline),

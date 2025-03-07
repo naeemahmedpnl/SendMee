@@ -8,10 +8,10 @@ import 'package:sendme/utils/theme/app_text_theme.dart';
 import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  const ProfileScreen({super.key});
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -170,7 +170,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 class ProfileHistoryCard extends StatelessWidget {
   final User? userData; // Changed type from Map<String, dynamic>? to User?
 
-  const ProfileHistoryCard({Key? key, this.userData}) : super(key: key);
+  const ProfileHistoryCard({super.key, this.userData});
 
   @override
   Widget build(BuildContext context) {

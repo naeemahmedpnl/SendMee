@@ -1,64 +1,112 @@
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:provider/provider.dart';
+import 'package:sendme/models/user_model.dart';
 import 'package:sendme/utils/theme/app_colors.dart';
 import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:sendme/viewmodel/provider/auth_provider/auth_provider.dart';
+import 'package:sendme/views/User_panel/profile_Screens/widgets/payment_method.dart';
 
 class WalletView extends StatefulWidget {
+  const WalletView({super.key});
+
   @override
   State<WalletView> createState() => _WalletViewState();
 }
 
 class _WalletViewState extends State<WalletView> {
-  final amount = 3000;
+ User? userData;
+  bool isLoading = true;
 
-  // final List<Transaction> transactions = [
-  //   Transaction(reference: 'KHIE2323423443', amount: 230),
-  //   Transaction(reference: 'KHIE2323423443', amount: 220),
-  // ];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    try {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      await authProvider.fetchUserData();
+      final user = await authProvider.getUserData();
+
+      setState(() {
+        userData = user;
+        isLoading = false;
+      });
+      log('Wallet data refreshed. New balance: ${user?.walletBalance}');
+    } catch (e) {
+      log('Error loading user data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 10, left: 25, right: 25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
+        child: RefreshIndicator(
+          onRefresh: _loadUserData,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10, left: 25, right: 25),
+            child: isLoading 
+                ? const Center(child: CircularProgressIndicator())
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          Text(
+                            'wallet.title'.tr(),
+                            style: AppTextTheme.getLightTextTheme(context).headlineMedium,
+                          ),
+                          const SizedBox(width: 50)
+                        ],
+                      ),
+                      Expanded(
+                        child: ListView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          children: [
+                            const SizedBox(height: 20),
+                            BalanceWidget(
+                              userData: userData,
+                              onAddMoney: () async {
+                                await showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.white,
+                                  builder: (context) => PaymentMethodPopup(userData: userData),
+                                );
+                                // Refresh data after payment sheet is closed
+                                _loadUserData();
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            // Text(
+                            //   "wallet.transactions".tr(),
+                            //   style: AppTextTheme.getLightTextTheme(context).headlineMedium
+                            // ),
+                            // ...transactions.map((transaction) => 
+                            //   TransactionItem(transaction: transaction)
+                            // ).toList(),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'wallet.title'.tr(),
-                    style: AppTextTheme.getDarkTextTheme(context).headlineMedium,
-                  ),
-                  const SizedBox(width: 50)
-                ],
-              ),
-              const SizedBox(height: 20),
-              BalanceWidget(amount: amount),
-              const SizedBox(height: 20),
-              Text(
-                'wallet.transactions'.tr(),
-                style: AppTextTheme.getDarkTextTheme(context).headlineMedium
-              ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: transactions.length,
-              //     itemBuilder: (context, index) {
-              //       final transaction = transactions[index];
-              //       return TransactionItem(transaction: transaction);
-              //     },
-              //   ),
-              // ),
-            ],
           ),
         ),
       ),
@@ -67,9 +115,19 @@ class _WalletViewState extends State<WalletView> {
 }
 
 class BalanceWidget extends StatelessWidget {
-  final int amount;
+  final User? userData;
+  final VoidCallback onAddMoney;
 
-  const BalanceWidget({required this.amount});
+  const BalanceWidget({
+    Key? key,
+    required this.userData,
+    required this.onAddMoney,
+  }) : super(key: key);
+
+  String formatBalance(double? balance) {
+    if (balance == null) return '\$0.00';
+    return '\$${balance.toStringAsFixed(2)}';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +135,7 @@ class BalanceWidget extends StatelessWidget {
       width: double.infinity,
       height: 150,
       decoration: BoxDecoration(
-      color: const Color(0xFFEEEEEE),
+        color: const Color(0xFFF5FFE8),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Padding(
@@ -96,26 +154,32 @@ class BalanceWidget extends StatelessWidget {
                     'wallet.balance'.tr(),
                     style: AppTextTheme.getLightTextTheme(context).titleSmall,
                   ),
-                  // Using NumberFormat for localized number formatting
+                  const SizedBox(height: 8),
                   Text(
-                    amount.toString(),
-                    style: AppTextTheme.getLightTextTheme(context).headlineLarge,
+                    formatBalance(userData?.walletBalance),
+                    style: AppTextTheme.getLightTextTheme(context).headlineLarge?.copyWith(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
             ),
-            Container(
-              width: 117,
-              height: 109,
-              decoration: BoxDecoration(
-                color: AppColors.buttonColor,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Center(
-                child: Text(
-                  'wallet.withdrawMoney'.tr(),
-                  style: AppTextTheme.getLightTextTheme(context).headlineSmall,
-                  textAlign: TextAlign.center,
+            GestureDetector(
+              onTap: onAddMoney,
+              child: Container(
+                width: 117,
+                height: 109,
+                decoration: BoxDecoration(
+                  color: AppColors.buttonColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Center(
+                  child: Text(
+                    'wallet.add_money'.tr(),
+                    style: AppTextTheme.getLightTextTheme(context).headlineSmall,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             )
@@ -125,42 +189,3 @@ class BalanceWidget extends StatelessWidget {
     );
   }
 }
-
-// class TransactionItem extends StatelessWidget {
-//   final Transaction transaction;
-
-//   const TransactionItem({required this.transaction});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       margin: const EdgeInsets.symmetric(vertical: 8),
-//       padding: const EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: AppColors.backgroundLight,
-//         borderRadius: BorderRadius.circular(10),
-//       ),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             transaction.reference,
-//             style: AppTextTheme.getLightTextTheme(context).titleSmall,
-//           ),
-//           // Using NumberFormat for localized number formatting
-//           Text(
-//             transaction.amount.toString(),
-//             style: AppTextTheme.getLightTextTheme(context).headlineSmall,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class Transaction {
-//   final String reference;
-//   final double amount;
-
-//   Transaction({required this.reference, required this.amount});
-// }

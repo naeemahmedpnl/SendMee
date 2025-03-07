@@ -23,7 +23,7 @@ class _VehicleInfoViewState extends State<VehicleInfoView> {
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.buttonColor,
         content: Row(
           children: [
             const Icon(Icons.check),

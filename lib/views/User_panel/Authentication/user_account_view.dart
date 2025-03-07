@@ -109,7 +109,7 @@ Future<void> _handleSignUp() async {
             children: [
               Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     width: 412,
                     height: screenHeight * 0.4,
                     child: Image.asset(
@@ -117,66 +117,66 @@ Future<void> _handleSignUp() async {
                       fit: BoxFit.fill,
                     ),
                   ),
-                  Positioned(
-                    top: 40,
-                    right: 20,
-                    child: Container(
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        border: Border.all(color: Colors.amber, width: 1),
-                      ),
-                      child: IconButton(
-                        onPressed: () async {
-                          try {
-                            if (context.locale == const Locale('en')) {
-                              await changeLanguage(context, 'es');
-                            } else {
-                              await changeLanguage(context, 'en');
-                            }
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    context.locale.languageCode == 'en'
-                                        ? 'Language changed to English'
-                                        : 'Idioma cambiado a Español',
-                                  ),
-                                  duration: const Duration(seconds: 1),
-                                ),
-                              );
-                            }
-                          } catch (e) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Error changing language'),
-                                ),
-                              );
-                            }
-                          }
-                        },
-                        icon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.language,
-                              size: 20,
-                              color: Colors.amber,
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              context.locale.languageCode.toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.amber,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Positioned(
+                  //   top: 40,
+                  //   right: 20,
+                  //   child: Container(
+                  //     height: 40,
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(50),
+                  //       border: Border.all(color: Colors.amber, width: 1),
+                  //     ),
+                  //     child: IconButton(
+                  //       onPressed: () async {
+                  //         try {
+                  //           if (context.locale == const Locale('en')) {
+                  //             await changeLanguage(context, 'es');
+                  //           } else {
+                  //             await changeLanguage(context, 'en');
+                  //           }
+                  //           if (context.mounted) {
+                  //             ScaffoldMessenger.of(context).showSnackBar(
+                  //               SnackBar(
+                  //                 content: Text(
+                  //                   context.locale.languageCode == 'en'
+                  //                       ? 'Language changed to English'
+                  //                       : 'Idioma cambiado a Español',
+                  //                 ),
+                  //                 duration: const Duration(seconds: 1),
+                  //               ),
+                  //             );
+                  //           }
+                  //         } catch (e) {
+                  //           if (context.mounted) {
+                  //             ScaffoldMessenger.of(context).showSnackBar(
+                  //               const SnackBar(
+                  //                 content: Text('Error changing language'),
+                  //               ),
+                  //             );
+                  //           }
+                  //         }
+                  //       },
+                  //       icon: Row(
+                  //         mainAxisSize: MainAxisSize.min,
+                  //         children: [
+                  //           const Icon(
+                  //             Icons.language,
+                  //             size: 20,
+                  //             color: Colors.amber,
+                  //           ),
+                  //           const SizedBox(width: 5),
+                  //           Text(
+                  //             context.locale.languageCode.toUpperCase(),
+                  //             style: const TextStyle(
+                  //               color: Colors.amber,
+                  //               fontWeight: FontWeight.bold,
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
               const SizedBox(height: 10),

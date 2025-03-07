@@ -420,12 +420,18 @@ void initializeSocket() {
 
     // Extract passenger ID correctly from nested structure
     // Correct way to extract passenger ID
-    final passengerId =
-        widget.tripDetails['tripDetails']?['passenger']?['_id'] ?? 'null';
-    final driverId =
-        widget.initialTripDetails['driver']?['userid']?['_id'] ?? 'null';
-    final driverPhone =
-        widget.initialTripDetails['driver']?['userid']?['phone'] ?? 'null';
+    // final passengerId =
+    //     widget.tripDetails['tripDetails']?['passenger']?['_id'] ?? 'null';
+    // final driverId =
+    //     widget.initialTripDetails['driver']?['userid']?['_id'] ?? 'null';
+    // final driverPhone =
+    //     widget.initialTripDetails['driver']?['userid']?['phone'] ?? 'null';
+
+    final passengerId = widget.tripDetails['tripDetails']?['passenger']?['_id'] ?? 'null';
+
+// Fix these lines based on the actual data structure in your logs
+final driverId = widget.initialTripDetails['driver']?['userid'] ?? 'null';
+final driverPhone = widget.initialTripDetails['driver']?['phone'] ?? 'null';
 
     // Log the extracted data
     log('Passenger ID: $passengerId');
