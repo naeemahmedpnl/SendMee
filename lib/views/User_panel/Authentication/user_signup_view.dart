@@ -119,7 +119,7 @@ class _UserSignupViewState extends State<UserSignupView> {
                             ),
                           ),
                         ),
-                        initialCountryCode: 'MX',
+                        initialCountryCode: 'ZA',
                         onChanged: (phone) {
                           setState(() {
                             _phoneNumber = phone.completeNumber;

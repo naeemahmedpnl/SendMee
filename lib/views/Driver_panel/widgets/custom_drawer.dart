@@ -97,7 +97,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
             children: [
             const   CustomDrawerHeader(),
               const Divider(
-                color: Colors.white54,
+                color: Colors.black26,
                 indent: 5,
                 endIndent: 5,
               ),
@@ -120,7 +120,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   Navigator.of(context).pushNamed(dp.AppDriverRoutes.profile);
                 },
               ),
-              const CustomDivider(),
+              // const CustomDivider(),
               // // Language Switcher with fixed width trailing
               // ListTile(
               //   leading: Container(
@@ -285,7 +285,7 @@ class CustomDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Divider(
       thickness: 0.3,
-      color: Colors.white54,
+       color: Colors.black26,
       indent: 12,
       endIndent: 12,
     );

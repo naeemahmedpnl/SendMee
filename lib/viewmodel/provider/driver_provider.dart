@@ -10,6 +10,10 @@ import 'package:http/http.dart' as http;
 import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:permission_handler/permission_handler.dart';
+
+
+
 class RideBookingProvider with ChangeNotifier {
   bool _isOnline = false;
   bool _isFetchingEnabled = true;
@@ -31,6 +35,76 @@ class RideBookingProvider with ChangeNotifier {
     _mapTheme = theme;
     notifyListeners();
   }
+
+
+
+Future<bool> requestLocationPermission(BuildContext context) async {
+  // Check current permission status
+  LocationPermission permission = await Geolocator.checkPermission();
+  
+  if (permission == LocationPermission.denied) {
+    // Show custom dialog explaining why you need the permission
+    final shouldProceed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: const Text('Location Permission Required'),
+        content: const Text(
+          'This app needs your location to find nearby trips and provide ride services. '
+          'Your location is only used when you are online and available for trips.'
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          ElevatedButton(
+            child: const Text('Allow Location'),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    );
+    
+    if (shouldProceed == true) {
+      // Request permission from system
+      permission = await Geolocator.requestPermission();
+    } else {
+      return false;
+    }
+  }
+  
+  if (permission == LocationPermission.deniedForever) {
+    // Show dialog to open app settings
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Location Permission Required'),
+        content: const Text(
+          'Location permission is required for this app to function. '
+          'Please enable location access in your device settings.'
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          ElevatedButton(
+            child: const Text('Open Settings'),
+            onPressed: () {
+              Navigator.of(context).pop();
+              openAppSettings();
+            },
+          ),
+        ],
+      ),
+    );
+    return false;
+  }
+  
+  return permission == LocationPermission.always || 
+         permission == LocationPermission.whileInUse;
+}
 
   void setPickupLocation(LatLng location) {
     notifyListeners();
@@ -68,7 +142,23 @@ class RideBookingProvider with ChangeNotifier {
     }
   }
 
-  Future<void> goOnline() async {
+
+
+  Future<void> goOnline(BuildContext context) async {
+
+    // Request location permission first
+  final hasPermission = await requestLocationPermission(context);
+  
+  if (!hasPermission) {
+    // Show a snackbar or message
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Location permission is required to go online')),
+    );
+    return;
+  }
+  
+
+
     log("Going online");
     _isOnline = true;
     _isFetchingEnabled = true;

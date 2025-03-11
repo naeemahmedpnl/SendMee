@@ -103,7 +103,7 @@ class ProfileProvider with ChangeNotifier {
       final token = prefs.getString('token') ?? '';
 
       final response = await http.get(
-        Uri.parse('https://m5nkcs2p-3000.inc1.devtunnels.ms/auth/user'),
+        Uri.parse('http://158.220.90.248:3000/auth/user'),
         headers: {'Authorization': 'Bearer $token'},
       );
 

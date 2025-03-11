@@ -46,10 +46,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
    await EasyLocalization.ensureInitialized();
 
-//  // Initialize Stripe
-//   Stripe.publishableKey = 'pk_live_51OO3YAIfSqUzfjxea4PQJWOeUT1Z12NhyCmBlZ7mcEXayjos3zI1HBSzctyRVxhcOLKjRHKaGn2EpwkVqj5wCcXo00fE57H6ja';
-//   await Stripe.instance.applySettings();  
-
   final prefs = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -74,14 +70,19 @@ void main() async {
   );
 
   // Load saved language
-  final savedLanguage = prefs.getString('language') ?? 'en';
+  // final savedLanguage = prefs.getString('language') ?? 'en';
 
   runApp(
     EasyLocalization(
-      supportedLocales: const [Locale('en'), Locale('es')],
+      supportedLocales: const [Locale('en')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      startLocale: Locale(savedLanguage),
+        startLocale: const Locale('en'), 
+          // Add this line to disable logs
+    useOnlyLangCode: true,
+    // Add this line to completely turn off logging
+    // logging: false,
+      // startLocale: Locale(savedLanguage),
       child: 
     MultiProvider(
       providers: [

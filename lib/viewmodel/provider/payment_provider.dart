@@ -437,6 +437,146 @@ class PaymentProvider extends ChangeNotifier {
     }
   }
 
+
+
+Future<bool> confirmTripsPayment({
+  required String tripId,
+  required String paymentMethod,
+  required String amount,
+  String? paymentIntentId,
+}) async {
+  log('\n====== Starting Payment Confirmation ======');
+  log('Trip ID: $tripId');
+  log('Payment Method: $paymentMethod');
+  log('Amount: $amount');
+
+  _isLoading = true;
+  _errorMessage = null;
+  notifyListeners();
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    final userDataString = prefs.getString('userData');
+    
+    if (token == null) {
+      throw Exception('Authentication token not found');
+    }
+    
+    if (userDataString == null) {
+      throw Exception('User data not found');
+    }
+
+    final userData = json.decode(userDataString);
+    final userId = userData['passengerDetails']['user'];
+    log('User ID from SharedPreferences: $userId');
+
+    Map<String, dynamic> requestBody = {
+      'tripId': tripId,
+      'paymentMethod': paymentMethod.toLowerCase(),
+      'amount': amount,
+    };
+
+    // Add additional fields based on payment method
+    if (paymentMethod.toLowerCase() == 'wallet') {
+      requestBody['senderId'] = userId;
+    } else if (paymentMethod.toLowerCase() == 'card' && paymentIntentId != null) {
+      requestBody['paymentIntentId'] = paymentIntentId;
+    }
+
+    log('Sending request with body: ${jsonEncode(requestBody)}');
+
+    final response = await http.post(
+      Uri.parse('${Constants.apiBaseUrl}/trip/confirm-payment'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(requestBody),
+    );
+
+    log('Response Status Code: ${response.statusCode}');
+    log('Response Body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      final responseData = jsonDecode(response.body);
+      
+      // Handle successful response even if platformFee and finalAmount are null
+      if (responseData['success'] == true) {
+        log('Payment confirmed successfully');
+        
+        // Log these values only if they exist
+        if (responseData.containsKey('platformFee')) {
+          log('Platform Fee: ${responseData['platformFee']}');
+        }
+        if (responseData.containsKey('finalAmount')) {
+          log('Final Amount: ${responseData['finalAmount']}');
+        }
+
+        // Update wallet balance if provided in response
+        if (responseData.containsKey('walletBalance')) {
+          // You might want to update the stored user data with new wallet balance
+          final updatedUserData = Map<String, dynamic>.from(userData);
+          updatedUserData['walletBalance'] = responseData['walletBalance'];
+          await prefs.setString('userData', jsonEncode(updatedUserData));
+        }
+
+        return true;
+      } else {
+        throw Exception(responseData['message'] ?? 'Payment confirmation failed');
+      }
+    } else {
+      String errorMessage;
+      try {
+        final errorData = jsonDecode(response.body);
+        errorMessage = errorData['message'] ?? 'Payment confirmation failed';
+      } catch (e) {
+        errorMessage = 'Server error: ${response.statusCode}';
+      }
+      throw Exception(errorMessage);
+    }
+  } catch (e) {
+    log('Error in payment confirmation: $e');
+    _errorMessage = e.toString().replaceAll('Exception:', '').trim();
+    return false;
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
+// Helper methods remain the same but with improved logging
+Future<bool> confirmCashPayment({
+  required String tripId,
+  required String amount,
+}) async {
+  log('\n=== Processing Cash Payment ===');
+  log('Trip ID: $tripId');
+  log('Amount: $amount');
+  
+  return await confirmTripsPayment(
+    tripId: tripId,
+    paymentMethod: 'cash',
+    amount: amount,
+  );
+}
+
+Future<bool> confirmWalletPayment({
+  required String tripId,
+  required String amount,
+}) async {
+  log('\n=== Processing Wallet Payment ===');
+  return await confirmTripsPayment(
+    tripId: tripId,
+    paymentMethod: 'wallet',
+    amount: amount,
+  );
+}
+
+
+
+
+
   void _setLoading(bool value) {
     _isLoading = value;
     notifyListeners();

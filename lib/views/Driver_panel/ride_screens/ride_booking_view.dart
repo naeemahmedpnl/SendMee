@@ -100,6 +100,9 @@ class _RideBookingViewState extends State<RideBookingView> {
   }
 
 
+  
+
+
   @override
   void dispose() {
     _provider.setRelevantScreenActive(false);
@@ -273,8 +276,8 @@ class _RideBookingViewState extends State<RideBookingView> {
             text: provider.isOnline
                 ? 'ride_booking.go_offline'.tr()
                 : 'ride_booking.go_online'.tr(),
-            onPressed:
-                provider.isOnline ? provider.goOffline : provider.goOnline,
+            onPressed: () => 
+                provider.isOnline ? provider.goOffline() : provider.goOnline(context),
           ),
         ),
       ),

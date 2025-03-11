@@ -164,11 +164,11 @@ class AppDriverRoutes {
 
       case driverlogin:
         return MaterialPageRoute(builder: (context) => const DriverLoginView());
-      // case showridesdetails:
-      //  final Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
-      //   return MaterialPageRoute(builder: (context) =>  ShowRiderDetails(
-      //     tripData: args
-      //   ));
+      case showridesdetails:
+       final Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+        return MaterialPageRoute(builder: (context) =>  GetDirection(
+          tripData: args
+        ));
       case support:
         return MaterialPageRoute(builder: (context) => SupportView());
       //   case showrides:
