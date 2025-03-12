@@ -28,6 +28,7 @@ import 'package:sendme/views/User_panel/profile_Screens/profile_screen.dart';
 import 'package:sendme/views/User_panel/profile_Screens/wallet_details.dart';
 
 import '../../views/User_panel/Authentication/pessenger_id.dart';
+import '../../views/User_panel/RideBookScreens/payment_method_screen.dart';
 
 class AppRoutes {
   // Private constructor to prevent instantiation
@@ -139,12 +140,12 @@ class AppRoutes {
       case chooseDriver:
         return _buildRoute(const ChooseDriverScreen(tripId: ''));
 
-      // case paymentMethod:
-      //   return _buildRoute(PaymentMethodScreen(
-      //     estimatedFare: settings.arguments != null
-      //         ? (settings.arguments as Map)['estimatedFare'] as String
-      //         : null, 
-      //   ));
+      case paymentMethod:
+        return _buildRoute(PaymentMethodScreen(
+          estimatedFare: settings.arguments != null
+              ? (settings.arguments as Map)['estimatedFare'] as String
+              : null, 
+        ));
 
       case ratingScreen:
         return _buildRoute(RideReviewScreen());
@@ -168,13 +169,24 @@ class AppRoutes {
   }
 
   // Helper method to handle ride details route
-  static Route<dynamic> _handleRideDetailsRoute(RouteSettings settings) {
-    final args = settings.arguments as Map<dynamic, dynamic>;
-    return _buildRoute(ShowRiderDetails(
+  // In your route configuration
+static Route<dynamic> _handleRideDetailsRoute(RouteSettings settings) {
+  final args = settings.arguments as Map<String, dynamic>;
+  return MaterialPageRoute(
+    builder: (context) => ShowRiderDetails(
       tripDetails: args['tripDetails'],
       initialTripDetails: args['initialTripDetails'],
-    ));
-  }
+   
+    )
+  );
+}
+  // static Route<dynamic> _handleRideDetailsRoute(RouteSettings settings) {
+  //   final args = settings.arguments as Map<dynamic, dynamic>;
+  //   return _buildRoute(ShowRiderDetails(
+  //     tripDetails: args['tripDetails'],
+  //     initialTripDetails: args['initialTripDetails'],
+  //   ));
+  // }
 
   // Helper method to build MaterialPageRoute
   static MaterialPageRoute _buildRoute(Widget view) {

@@ -1,3 +1,4 @@
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -23,10 +24,8 @@ import 'package:sendme/widgets/custom_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class ParcelBookScreen extends StatefulWidget {
   const ParcelBookScreen({super.key});
-
   @override
   State<ParcelBookScreen> createState() => ParcelBookScreenState();
 }
@@ -39,109 +38,61 @@ class ParcelBookScreenState extends State<ParcelBookScreen>
   final Set<Marker> _markers = {};
   final Set<Polyline> _polylines = {};
   PolylinePoints polylinePoints = PolylinePoints();
-
-  final double _bottomSheetHeight = 430.0;
   final TextEditingController _priceController = TextEditingController();
-
   // ADD NEW VARIABLES FOR DISTANCE AND TIME
   double _distanceInKm = 0.0;
   String _estimatedTime = '';
-
   late AnimationController _markerAnimationController;
   Animation<double>? _markerAnimation;
   bool _isDraggingMarker = false;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((_) {
-  //     final rideProvider = Provider.of<RideProvider>(context, listen: false);
-  //     rideProvider.clearAllData(); 
-
-  //     setState(() {
-  //       _markers.clear();
-  //       _polylines.clear();
-  //       _distanceInKm = 0.0;
-  //       _estimatedTime = '';
-  //       _priceController.clear();
-  //     });
-
-  //     _getCurrentLocation();
-  //   });
-
-  //   _markerAnimationController = AnimationController(
-  //     vsync: this,
-  //     duration: const Duration(milliseconds: 500),
-  //   );
-
-  //   _initializeMarkerAnimation();
-  //   _checkAndRequestLocationPermission();
-  //   _loadMapTheme();
-  //   _getCurrentLocation();
-  // }
-
-
-@override
-void initState() {
-  super.initState();
-  _checkSharedPreferencesData(); // Add this line
-
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    final rideProvider = Provider.of<RideProvider>(context, listen: false);
-    rideProvider.clearAllData(); 
-
-    setState(() {
-      _markers.clear();
-      _polylines.clear();
-      _distanceInKm = 0.0;
-      _estimatedTime = '';
-      _priceController.clear();
+  @override
+  void initState() {
+    super.initState();
+    _checkSharedPreferencesData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final rideProvider = Provider.of<RideProvider>(context, listen: false);
+      rideProvider.clearAllData();
+      setState(() {
+        _markers.clear();
+        _polylines.clear();
+        _distanceInKm = 0.0;
+        _estimatedTime = '';
+        _priceController.clear();
+      });
+      _getCurrentLocation();
     });
-
+    _markerAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _initializeMarkerAnimation();
+    _checkAndRequestLocationPermission();
+    _loadMapTheme();
     _getCurrentLocation();
-  });
-
-  _markerAnimationController = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 500),
-  );
-
-  _initializeMarkerAnimation();
-  _checkAndRequestLocationPermission();
-  _loadMapTheme();
-  _getCurrentLocation();
-}
-
-// Add this method to check SharedPreferences data
-Future<void> _checkSharedPreferencesData() async {
-  try {
-    final prefs = await SharedPreferences.getInstance();
-    
-    // Log all relevant data
-    log('Checking SharedPreferences data:');
-    log('Token: ${prefs.getString('token')}');
-    log('UserData: ${prefs.getString('userData')}');
-    log('ServiceType: ${prefs.getString('serviceType')}');
-    log('ParcelType: ${prefs.getString('parcelType')}');
-    log('SenderName: ${prefs.getString('senderName')}');
-    log('SenderPhone: ${prefs.getString('senderPhone')}');
-    log('ReceiverName: ${prefs.getString('receiverName')}');
-    log('ReceiverPhone: ${prefs.getString('receiverPhone')}');
-    
-    // Log all keys in SharedPreferences
-    log('All SharedPreferences keys:');
-    log('${prefs.getKeys().toString()}');
-    
-  } catch (e) {
-    log('Error checking SharedPreferences: $e');
   }
-}
 
-
-
-
-
-
+  // Add this method to check SharedPreferences data
+  Future<void> _checkSharedPreferencesData() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      // Log all relevant data
+      log('Checking SharedPreferences data:');
+      log('Token: ${prefs.getString('token')}');
+      log('UserData: ${prefs.getString('userData')}');
+      log('ServiceType: ${prefs.getString('serviceType')}');
+      log('ParcelType: ${prefs.getString('parcelType')}');
+      log('SenderName: ${prefs.getString('senderName')}');
+      log('SenderPhone: ${prefs.getString('senderPhone')}');
+      log('ReceiverName: ${prefs.getString('receiverName')}');
+      log('ReceiverPhone: ${prefs.getString('receiverPhone')}');
+      // Log all keys in SharedPreferences
+      log('All SharedPreferences keys:');
+      log('${prefs.getKeys().toString()}');
+    } catch (e) {
+      log('Error checking SharedPreferences: $e');
+    }
+  }
 
   void _initializeMarkerAnimation() {
     _markerAnimation = TweenSequence<double>([
@@ -159,7 +110,6 @@ Future<void> _checkSharedPreferencesData() async {
         curve: Curves.easeInOut,
       ),
     );
-
     _markerAnimationController.addStatusListener((status) {
       if (status == AnimationStatus.completed && _isDraggingMarker) {
         _markerAnimationController.reverse();
@@ -178,7 +128,6 @@ Future<void> _checkSharedPreferencesData() async {
         await Geolocator.openLocationSettings();
         return;
       }
-
       // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
@@ -189,13 +138,11 @@ Future<void> _checkSharedPreferencesData() async {
           return;
         }
       }
-
       // If permanently denied, directly open app settings
       if (permission == LocationPermission.deniedForever) {
         await Geolocator.openAppSettings();
         return;
       }
-
       // If we have permission, get the current location
       if (permission == LocationPermission.whileInUse ||
           permission == LocationPermission.always) {
@@ -222,9 +169,6 @@ Future<void> _checkSharedPreferencesData() async {
     mapProvider.setMapTheme(mapTheme);
   }
 
-
-  
-
   // GETS THE CURRENT LOCATION AND SETS IT AS THE PICKUP LOCATION
   Future<void> _getCurrentLocation() async {
     try {
@@ -233,7 +177,6 @@ Future<void> _checkSharedPreferencesData() async {
         _showErrorSnackbar('ride_home.location_services_disabled'.tr());
         return;
       }
-
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -242,23 +185,18 @@ Future<void> _checkSharedPreferencesData() async {
           return;
         }
       }
-
       if (permission == LocationPermission.deniedForever) {
         _showErrorSnackbar(
             'ride_home.location_permissions_permanently_denied'.tr());
         return;
       }
-
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
-
       LatLng location = LatLng(position.latitude, position.longitude);
       String address = await _getAddressFromLatLng(location);
-
       final rideProvider = Provider.of<RideProvider>(context, listen: false);
       rideProvider.setPickupLocation(address, location);
-
       _updateMapView();
     } catch (e) {
       log("Error getting current location: $e");
@@ -269,7 +207,6 @@ Future<void> _checkSharedPreferencesData() async {
   // FUNCTION TO FETCH PASSENGER _ID FROM SHARED PREFERENCES
   Future<String?> fetchPassengerId() async {
     final prefs = await SharedPreferences.getInstance();
-
     if (prefs.containsKey('user_Data')) {
       String? userDataJson = prefs.getString('user_Data');
       if (userDataJson != null) {
@@ -280,60 +217,86 @@ Future<void> _checkSharedPreferencesData() async {
     return null;
   }
 
-  // CREATE TRIP REQUEST
-
-  Future<void> _createTripRequest(BuildContext context) async {
-    final rideProvider = Provider.of<RideProvider>(context, listen: false);
-
-    try {
-      final result = await rideProvider.createTripRequest();
-      log("Trip creation result: $result");
-
-      // Check if result contains the trip data
-      if (result['result'] != null && result['result']['_id'] != null) {
+Future<void> _createTripRequest(BuildContext context) async {
+  // Create a GlobalKey to track the navigation context
+  final NavigatorState navigator = Navigator.of(context);
+  
+  // Get the ride provider without using context
+  final rideProvider = Provider.of<RideProvider>(context, listen: false);
+  
+  try {
+    // Attempt to create trip request
+    final result = await rideProvider.createTripRequest();
+    
+    // Log the result
+    log("Trip creation result: $result");
+    
+    // Check for success
+    if (result['success'] == true && result['result'] != null) {
+      try {
+        // Extract the trip ID from the result
         String tripId = result['result']['_id'];
-
+        
         // Save trip ID to SharedPreferences
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('currentTripId', tripId);
-
+        
         log("Saved trip ID to SharedPreferences: $tripId");
-
-        // Navigate to choose driver screen
-        if (mounted) {
-          Navigator.push(
-            context,
+        
+        // Use WidgetsBinding to ensure we're in a safe frame to navigate
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          // Navigate using the stored navigator state
+          navigator.push(
             MaterialPageRoute(
               builder: (context) => ChooseDriverScreen(tripId: tripId),
             ),
           );
+        });
+      } catch (innerError) {
+        log("Error processing successful response: $innerError");
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Error navigating to driver selection. Please try again."),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
         }
-      } else {
-        log("No trip ID found in response: $result");
-        // Handle error case
       }
-    } catch (e) {
-      log("Error creating trip request: $e");
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['message'] ?? 'Failed to create trip request'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
+  } catch (e) {
+    log("Error creating trip request: $e");
+    
+    if (mounted) {
+      String errorMessage = 'Unable to connect to server. Please try again later.';
+      if (e.toString().contains('Connection timed out') || 
+          e.toString().contains('SocketException')) {
+        errorMessage = 'Server is currently unavailable. Please try again later.';
+      }
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 5),
+        ),
+      );
     }
   }
+}
 
-  // Future<void> _createTripRequest(BuildContext context) async {
-  //   final rideProvider = Provider.of<RideProvider>(context, listen: false);
-
-  //   try {
-  //     final result = await rideProvider.createTripRequest();
-  //     if (result['success'] == true && result['tripId'] != null) {
-  //       Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => ChooseDriverScreen(tripId: result['tripId']!),
-  //         ),
-  //       );
-  //     } else {}
-  //   } catch (e) {
-  //     log("Error creating trip request: $e");
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -352,6 +315,10 @@ Future<void> _checkSharedPreferencesData() async {
                   _controller.complete(controller);
                   controller.setMapStyle(mapProvider.mapTheme);
                   _updateMapView();
+                  // Show the bottom sheet after map is created
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    _showBottomSheet(context, rideProvider);
+                  });
                 },
                 markers: _markers,
                 polylines: _polylines,
@@ -364,176 +331,165 @@ Future<void> _checkSharedPreferencesData() async {
                 right: 10,
                 child: MapThemePopup(controller: _controller),
               ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  height: _bottomSheetHeight,
-                  decoration: BoxDecoration(
-                    color: AppColors.backgroundLight,
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(20)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 0.55,
-                        blurRadius: 7,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
-                  ),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          _buildLocationField(
-                            context,
-                            'ride_home.pickup_location'.tr(),
-                            rideProvider.pickupAddress,
-                            (address, latLng) {
-                              rideProvider.setPickupLocation(address, latLng);
-                              _updateMapView();
-                            },
-                          ),
-                          const SizedBox(height: 16),
-
-                          // Dropoff Field
-                          _buildLocationField(
-                            context,
-                            'ride_home.dropoff_location'.tr(),
-                            rideProvider.dropoffAddress,
-                            (address, latLng) {
-                              rideProvider.setDropoffLocation(address, latLng);
-                              _updateMapView();
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                          CustomButton(
-                              text: "Add Location Manually",
-                              onPressed: () async {
-                                final result = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MapPickerScreen(
-                                      title: 'ride_home.dropoff_location'.tr(),
-                                      key: const ValueKey('dropoff'),
-                                    ),
-                                  ),
-                                );
-
-                                if (result != null) {
-                                  setState(() {
-                                    // Only set dropoff location
-                                    rideProvider.setDropoffLocation(
-                                        result['address'], result['latLng']);
-                                    _updateMapView();
-                                  });
-                                }
-                              })
-
-                          // Choose on map button
-                          // InkWell(
-                          //   onTap: () async {
-                          //     final result = await Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //         builder: (context) => MapPickerScreen(
-                          //           title: 'ride_home.dropoff_location'.tr(),
-                          //           key: const ValueKey('dropoff'),
-                          //         ),
-                          //       ),
-                          //     );
-
-                          //     if (result != null) {
-                          //       setState(() {
-                          //         // Only set dropoff location
-                          //         rideProvider.setDropoffLocation(
-                          //             result['address'], result['latLng']);
-                          //         _updateMapView();
-                          //       });
-                          //     }
-                          //   },
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: [
-                          //       const Icon(
-                          //         Icons.map_outlined,
-                          //         size: 20,
-                          //         color: AppColors.buttonColor,
-                          //       ),
-                          //       const SizedBox(width: 8),
-                          //       Text(
-                          //         'ride_home.add_location_manually'.tr(),
-                          //         style: AppTextTheme.getLightTextTheme(context)
-                          //             .titleLarge
-                          //             ?.copyWith(
-                          //               color: AppColors.backgroundLight,
-                          //             ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-
-                          ,
-                          Text('ride_home.price'.tr(),
-                              style: AppTextTheme.getLightTextTheme(context)
-                                  .titleMedium),
-                          const SizedBox(height: 8),
-                          TextField(
-                            controller: _priceController,
-                            keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true),
-                            decoration: InputDecoration(
-                              labelText: 'ride_home.estimated_fare'.tr(),
-                              hintText: 'Calculating...',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              labelStyle: AppTextTheme.getLightTextTheme(context)
-                                  .bodySmall,
-                              prefixIcon: const Icon(Icons.attach_money,
-                                  color: AppColors.buttonColor),
-                            ),
-                            style: AppTextTheme.getLightTextTheme(context)
-                                .bodyMedium,
-                            readOnly: true,
-                          ),
-                          const SizedBox(height: 16),
-                          // ADD DISTANCE AND TIME INFORMATION
-                          Text(
-                            '${'ride_home.distance'.tr()} ${_distanceInKm.toStringAsFixed(2)} km',
-                            style: AppTextTheme.getLightTextTheme(context)
-                                .bodyMedium,
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'ride_home.estimated_time'
-                                .tr(args: [_estimatedTime]),
-                            style: AppTextTheme.getLightTextTheme(context)
-                                .bodyMedium,
-                          ),
-                          const SizedBox(height: 24),
-                          CustomButton(
-                              text: "ride_home.book_ride".tr(),
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, AppRoutes.chooseDriver);
-                                _createTripRequest(context);
-                              }),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ],
           );
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppColors.buttonColor,
+        onPressed: () {
+          final rideProvider =
+              Provider.of<RideProvider>(context, listen: false);
+          _showBottomSheet(context, rideProvider);
+        },
+        child: const Icon(Icons.directions),
+      ),
+    );
+  }
+
+  // New method to show the modal bottom sheet
+  void _showBottomSheet(BuildContext context, RideProvider rideProvider) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Container(
+              height: 460,
+              decoration: BoxDecoration(
+                color: AppColors.backgroundLight,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(20)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 0.55,
+                    blurRadius: 7,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Add a handle for the bottom sheet
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 5,
+                          margin: const EdgeInsets.only(bottom: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.circular(2.5),
+                          ),
+                        ),
+                      ),
+                      _buildLocationField(
+                        context,
+                        'ride_home.pickup_location'.tr(),
+                        rideProvider.pickupAddress,
+                        (address, latLng) {
+                          rideProvider.setPickupLocation(address, latLng);
+                          _updateMapView();
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildLocationField(
+                        context,
+                        'ride_home.dropoff_location'.tr(),
+                        rideProvider.dropoffAddress,
+                        (address, latLng) {
+                          rideProvider.setDropoffLocation(address, latLng);
+                          _updateMapView();
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      CustomButton(
+                          text: "Add Location Manually",
+                          onPressed: () async {
+                            final result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MapPickerScreen(
+                                  title: 'ride_home.dropoff_location'.tr(),
+                                  key: const ValueKey('dropoff'),
+                                ),
+                              ),
+                            );
+                            if (result != null) {
+                              // Close and reopen the bottom sheet to reflect changes
+                              Navigator.pop(context);
+                              // Only set dropoff location
+                              rideProvider.setDropoffLocation(
+                                  result['address'], result['latLng']);
+                              _updateMapView();
+                              // Show bottom sheet again after a short delay
+                              Future.delayed(const Duration(milliseconds: 300),
+                                  () {
+                                _showBottomSheet(context, rideProvider);
+                              });
+                            }
+                          }),
+                      Text('ride_home.price'.tr(),
+                          style: AppTextTheme.getLightTextTheme(context)
+                              .titleMedium),
+                      const SizedBox(height: 8),
+                      TextField(
+                        controller: _priceController,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: true),
+                        decoration: InputDecoration(
+                          labelText: 'ride_home.estimated_fare'.tr(),
+                          hintText: 'Calculating...',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          labelStyle:
+                              AppTextTheme.getLightTextTheme(context).bodySmall,
+                          prefixIcon: const Icon(Icons.attach_money,
+                              color: AppColors.buttonColor),
+                        ),
+                        style:
+                            AppTextTheme.getLightTextTheme(context).bodyMedium,
+                        readOnly: true,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'ride_home.distance'.tr(),
+                            style: AppTextTheme.getLightTextTheme(context)
+                                .titleMedium,
+                          ),
+                          Text(
+                            '${_distanceInKm.toStringAsFixed(2)} km',
+                            style: AppTextTheme.getLightTextTheme(context)
+                                .titleMedium,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      CustomButton(
+                          text: "ride_home.book_ride".tr(),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            _createTripRequest(context);
+                            // Removed the immediate navigation
+                          }),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
@@ -605,13 +561,10 @@ Future<void> _checkSharedPreferencesData() async {
   // UPDATES THE MAP VIEW WITH MARKERS AND POLYLINES
   void _updateMapView() {
     if (!mounted) return;
-
     setState(() {
       _markers.clear();
       _polylines.clear();
-
       final rideProvider = Provider.of<RideProvider>(context, listen: false);
-
       // Add pickup marker if exists
       if (rideProvider.pickupLatLng != null) {
         _markers.add(
@@ -633,11 +586,9 @@ Future<void> _checkSharedPreferencesData() async {
                 _isDraggingMarker = false;
                 _markerAnimationController.reset();
               });
-
               // Get new address for the updated position
               String address = await _getAddressFromLatLng(newPosition);
               rideProvider.setPickupLocation(address, newPosition);
-
               // If dropoff exists, update route
               if (rideProvider.dropoffLatLng != null) {
                 _getPolyline(newPosition, rideProvider.dropoffLatLng!);
@@ -651,7 +602,6 @@ Future<void> _checkSharedPreferencesData() async {
           ),
         );
       }
-
       // Add dropoff marker if exists
       if (rideProvider.dropoffLatLng != null) {
         _markers.add(
@@ -673,11 +623,9 @@ Future<void> _checkSharedPreferencesData() async {
                 _isDraggingMarker = false;
                 _markerAnimationController.reset();
               });
-
               // Get new address for the updated position
               String address = await _getAddressFromLatLng(newPosition);
               rideProvider.setDropoffLocation(address, newPosition);
-
               // Update route with new dropoff location
               if (rideProvider.pickupLatLng != null) {
                 _getPolyline(rideProvider.pickupLatLng!, newPosition);
@@ -691,7 +639,6 @@ Future<void> _checkSharedPreferencesData() async {
           ),
         );
       }
-
       // Draw route if both points exist (complete route)
       if (rideProvider.isRouteComplete) {
         _getPolyline(rideProvider.pickupLatLng!, rideProvider.dropoffLatLng!);
@@ -706,7 +653,6 @@ Future<void> _checkSharedPreferencesData() async {
           );
         });
       }
-
       // Create custom animated marker overlay if dragging
       if (_isDraggingMarker) {
         OverlayEntry overlayEntry = OverlayEntry(
@@ -728,21 +674,18 @@ Future<void> _checkSharedPreferencesData() async {
             ),
           ),
         );
-
         // Remove overlay when drag ends
         Future.delayed(const Duration(milliseconds: 500), () {
           overlayEntry.remove();
         });
       }
     });
-
     // Corrected error handling for map controller
     _controller.future.catchError((error) {
       log('Error updating map view: $error');
       _showErrorSnackbar('ride_home.map_update_error'.tr());
-      throw error; 
+      throw error;
     }).then((controller) {
-
       final rideProvider = Provider.of<RideProvider>(context, listen: false);
       if (rideProvider.pickupLatLng != null && !rideProvider.isRouteComplete) {
         controller.animateCamera(
@@ -755,7 +698,6 @@ Future<void> _checkSharedPreferencesData() async {
   // FETCHES AND DRAWS THE POLYLINE BETWEEN PICKUP AND DROPOFF LOCATION
   Future<void> _getPolyline(LatLng pickup, LatLng dropoff) async {
     PolylinePoints polylinePoints = PolylinePoints();
-
     try {
       PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
           googleApiKey: dotenv.env['GOOGLE_MAPS_API_KEY'],
@@ -763,12 +705,10 @@ Future<void> _checkSharedPreferencesData() async {
               origin: PointLatLng(pickup.latitude, pickup.longitude),
               destination: PointLatLng(dropoff.latitude, dropoff.longitude),
               mode: TravelMode.driving));
-
       if (result.points.isNotEmpty) {
         List<LatLng> polylineCoordinates = result.points
             .map((point) => LatLng(point.latitude, point.longitude))
             .toList();
-
         setState(() {
           _polylines.add(Polyline(
             polylineId: const PolylineId('route'),
@@ -777,7 +717,6 @@ Future<void> _checkSharedPreferencesData() async {
             width: 5,
           ));
         });
-
         _controller.future.then((controller) {
           controller.animateCamera(CameraUpdate.newLatLngBounds(
             _getBounds(polylineCoordinates),
@@ -787,7 +726,6 @@ Future<void> _checkSharedPreferencesData() async {
       } else {
         _showErrorSnackbar('ride_home.route_not_found'.tr());
       }
-
       if (result.status == 'ZERO_RESULTS') {
         _showErrorSnackbar('ride_home.no_route_between_locations'.tr());
       } else if (result.status != 'OK') {
@@ -815,7 +753,6 @@ Future<void> _checkSharedPreferencesData() async {
             : dropoff.longitude,
       ),
     );
-
     _controller.future.then((controller) {
       controller.animateCamera(CameraUpdate.newLatLngBounds(bounds, 50));
     });
@@ -828,6 +765,7 @@ Future<void> _checkSharedPreferencesData() async {
         SnackBar(
           content: Text(message),
           backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
         ),
       );
     }
@@ -842,14 +780,12 @@ Future<void> _checkSharedPreferencesData() async {
 
   LatLngBounds _getBounds(List<LatLng> points) {
     double? minLat, maxLat, minLng, maxLng;
-
     for (LatLng point in points) {
       if (minLat == null || point.latitude < minLat) minLat = point.latitude;
       if (maxLat == null || point.latitude > maxLat) maxLat = point.latitude;
       if (minLng == null || point.longitude < minLng) minLng = point.longitude;
       if (maxLng == null || point.longitude > maxLng) maxLng = point.longitude;
     }
-
     return LatLngBounds(
       southwest: LatLng(minLat!, minLng!),
       northeast: LatLng(maxLat!, maxLng!),
@@ -862,24 +798,19 @@ Future<void> _checkSharedPreferencesData() async {
       final distance = await _calculateGoogleMapsDistance(
           "${pickup.latitude},${pickup.longitude}",
           "${dropoff.latitude},${dropoff.longitude}");
-
       // If Google API fails, fallback to Geolocator
       if (distance == null) {
         _calculateDirectDistance(pickup, dropoff);
         return;
       }
-
       _distanceInKm = distance;
-
       // Calculate estimated fare
       _calculateEstimatedFare(_distanceInKm);
       // Calculate time based on average speed (40 km/h)
       double averageSpeedKmPerHour = 40;
       double timeInHours = _distanceInKm / averageSpeedKmPerHour;
-
       int hours = timeInHours.floor();
       int minutes = ((timeInHours - hours) * 60).round();
-
       setState(() {
         if (hours > 0) {
           _estimatedTime = '${hours}h ${minutes}m';
@@ -899,12 +830,10 @@ Future<void> _checkSharedPreferencesData() async {
     var apiKey = dotenv.env['GOOGLE_MAPS_API_KEY'];
     final url =
         "https://maps.googleapis.com/maps/api/distancematrix/json?origins=$pickup&destinations=$destination&key=$apiKey";
-
     try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
         if (data['status'] == 'OK' &&
             data['rows'][0]['elements'][0]['status'] == 'OK') {
           // Distance comes in meters, convert to kilometers
@@ -925,19 +854,14 @@ Future<void> _checkSharedPreferencesData() async {
       dropoff.latitude,
       dropoff.longitude,
     );
-
     _distanceInKm = distanceInMeters / 1000;
-
     // Calculate estimated fare
     _calculateEstimatedFare(_distanceInKm);
-
     // Estimate time based on average speed (40 km/h)
     double averageSpeedKmPerHour = 40;
     double timeInHours = _distanceInKm / averageSpeedKmPerHour;
-
     int hours = timeInHours.floor();
     int minutes = ((timeInHours - hours) * 60).round();
-
     setState(() {
       if (hours > 0) {
         _estimatedTime = '${hours}h ${minutes}m';
@@ -951,7 +875,6 @@ Future<void> _checkSharedPreferencesData() async {
       BuildContext context, double estimatedFare) async {
     // Retrieve wallet balance
     final walletBalance = await showbalance();
-
     if (walletBalance >= estimatedFare) {
       // Enough balance, proceed with ride booking
       Navigator.pop(context);
@@ -967,7 +890,6 @@ Future<void> _checkSharedPreferencesData() async {
       BuildContext context, double estimatedFare) async {
     // Get wallet balance before showing the dialog
     final walletBalance = await showbalance();
-
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -1017,7 +939,6 @@ Future<void> _checkSharedPreferencesData() async {
                     text: 'ride_home.payment_dialog.payment_methods.cash'.tr(),
                     onPressed: () {
                       Navigator.pop(context);
-                      // _createTripRequest(context);
                     },
                     borderRadius: 44,
                   ),
@@ -1042,49 +963,40 @@ Future<void> _checkSharedPreferencesData() async {
 
   Future<double> _calculateEstimatedFare(double distanceInKm) async {
     final rideProvider = Provider.of<RideProvider>(context, listen: false);
-
     // Base calculation parameters
     final baseFare = rideProvider.rates?.baseFare ?? 5.0;
     final vehicleRate = rideProvider.rates?.vehicleRate ?? 5.0;
     final adjustmentFare = rideProvider.rates?.adjustmentFare ?? 0.0009;
-
     // Fare calculation formula
     final estimatedFare =
         baseFare + (distanceInKm * vehicleRate * (1 + adjustmentFare));
-
     // Update price controller and provider
     _priceController.text = estimatedFare.toStringAsFixed(2);
     rideProvider.setEstimatedFare(_priceController.text);
-
     // Show payment options dialog for low-cost rides
     if (estimatedFare < 10) {
       _showPaymentOptionsDialog(context, estimatedFare);
     }
-
     return estimatedFare;
   }
 
   Future<double> showbalance() async {
     // Get SharedPreferences instance
     final prefs = await SharedPreferences.getInstance();
-
     // Retrieve the saved user data
     String? userDataJson = prefs.getString('userData');
-
     if (userDataJson != null) {
       try {
         // Parse the JSON string back to a Map
         Map<String, dynamic> userData = jsonDecode(userDataJson);
-
         // Extract wallet balance
         // In this case, wallet balance is directly in the root of the user data
         return (userData['walletBalance'] as num).toDouble();
       } catch (e) {
-        ('Error retrieving wallet balance: $e');
+        log('Error retrieving wallet balance: $e');
         return 0.0; // Return 0 if there's an error
       }
     }
-
     return 0.0; // Return 0 if no user data is found
   }
 }

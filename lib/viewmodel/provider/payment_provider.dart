@@ -547,6 +547,9 @@ Future<bool> confirmTripsPayment({
 
 // Helper methods remain the same but with improved logging
 Future<bool> confirmCashPayment({
+
+
+  
   required String tripId,
   required String amount,
 }) async {

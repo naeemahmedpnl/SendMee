@@ -69,8 +69,7 @@ void main() async {
     sound: true,
   );
 
-  // Load saved language
-  // final savedLanguage = prefs.getString('language') ?? 'en';
+
 
   runApp(
     EasyLocalization(

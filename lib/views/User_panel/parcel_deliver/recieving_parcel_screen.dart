@@ -120,7 +120,7 @@ Future<void> saveReceiverDetails() async {
                         _phoneController.text.length == 10) {
                       await saveReceiverDetails();
                       if (mounted) {
-                        Navigator.pushNamed(context, AppRoutes.rideBook);
+                        Navigator.pushReplacementNamed(context, AppRoutes.rideBook);
                       }
                     }
                   }),

@@ -23,42 +23,105 @@ class AddressSearch extends SearchDelegate<Map<String, dynamic>> {
   AddressSearch({http.Client? client}) : _client = client ?? http.Client();
 
   Future<void> _initializeLocation() async {
-    if (_isLocationInitialized) return;
+  if (_isLocationInitialized) return;
 
-    try {
-      // Request location permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-      }
-
-      if (permission == LocationPermission.denied || 
-          permission == LocationPermission.deniedForever) {
-        throw Exception('Location permission denied');
-      }
-
-      // Get current position
-      Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high
-      );
-      _currentLocation = LatLng(position.latitude, position.longitude);
-
-      // Determine country based on coordinates
-      if (_isInMexico(position.latitude, position.longitude)) {
-        _countryCode = 'mx';
-      } else {
-        _countryCode = 'pk';
-      }
-
-      _isLocationInitialized = true;
-    } catch (e) {
-      // Fallback to default location (Mexico City)
-      _currentLocation = const LatLng(-25.7479, 28.2293);
-      _countryCode = 'mx';
-      _isLocationInitialized = true;
+  try {
+    // Request location permission
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
     }
-  }
 
+    if (permission == LocationPermission.denied || 
+        permission == LocationPermission.deniedForever) {
+      throw Exception('Location permission denied');
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high
+    );
+    _currentLocation = LatLng(position.latitude, position.longitude);
+
+    // Use reverse geocoding to determine country
+    _countryCode = await _getCountryCode(position.latitude, position.longitude);
+    
+    _isLocationInitialized = true;
+  } catch (e) {
+    // Fallback to default location in Zimbabwe (using Harare coordinates)
+    _currentLocation = const LatLng(-17.8292, 31.0522);
+    _countryCode = 'zw'; // Zimbabwe country code
+    _isLocationInitialized = true;
+  }
+}
+
+Future<String> _getCountryCode(double lat, double lng) async {
+  final params = {
+    'latlng': '$lat,$lng',
+    'key': _apiKey,
+  };
+
+  final uri = Uri.parse('$_baseUrl/geocode/json').replace(queryParameters: params);
+  
+  try {
+    final response = await _client.get(uri);
+    final result = json.decode(response.body);
+    
+    if (result['status'] == 'OK') {
+      // Loop through address components to find country code
+      for (var component in result['results'][0]['address_components']) {
+        if (component['types'].contains('country')) {
+          return component['short_name'].toLowerCase();
+        }
+      }
+    }
+    return 'zw'; 
+  } catch (e) {
+    return 'zw'; 
+  }
+}
+
+  // Future<void> _initializeLocation() async {
+  //   if (_isLocationInitialized) return;
+
+  //   try {
+  //     // Request location permission
+  //     LocationPermission permission = await Geolocator.checkPermission();
+  //     if (permission == LocationPermission.denied) {
+  //       permission = await Geolocator.requestPermission();
+  //     }
+
+  //     if (permission == LocationPermission.denied || 
+  //         permission == LocationPermission.deniedForever) {
+  //       throw Exception('Location permission denied');
+  //     }
+
+  //     // Get current position
+  //     Position position = await Geolocator.getCurrentPosition(
+  //       desiredAccuracy: LocationAccuracy.high
+  //     );
+  //     _currentLocation = LatLng(position.latitude, position.longitude);
+
+  //     // Determine country based on coordinates
+  //     if (_isInMexico(position.latitude, position.longitude)) {
+  //       _countryCode = 'mx';
+  //     } else {
+  //       _countryCode = 'pk';
+  //     }
+
+  //     _isLocationInitialized = true;
+  //   } catch (e) {
+  //     // Fallback to default location (Mexico City)
+  //     _currentLocation = const LatLng(-25.7479, 28.2293);
+  //     _countryCode = 'mx';
+  //     _isLocationInitialized = true;
+  //   }
+  // }
+
+ 
+ 
+ 
+ 
   bool _isInMexico(double lat, double lng) {
     // Rough boundaries for Mexico
     return lat >= 14.5 && lat <= 32.7 && lng >= -118.4 && lng <= -86.7;
