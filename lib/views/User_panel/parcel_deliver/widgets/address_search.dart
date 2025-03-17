@@ -81,45 +81,6 @@ Future<String> _getCountryCode(double lat, double lng) async {
   }
 }
 
-  // Future<void> _initializeLocation() async {
-  //   if (_isLocationInitialized) return;
-
-  //   try {
-  //     // Request location permission
-  //     LocationPermission permission = await Geolocator.checkPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       permission = await Geolocator.requestPermission();
-  //     }
-
-  //     if (permission == LocationPermission.denied || 
-  //         permission == LocationPermission.deniedForever) {
-  //       throw Exception('Location permission denied');
-  //     }
-
-  //     // Get current position
-  //     Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high
-  //     );
-  //     _currentLocation = LatLng(position.latitude, position.longitude);
-
-  //     // Determine country based on coordinates
-  //     if (_isInMexico(position.latitude, position.longitude)) {
-  //       _countryCode = 'mx';
-  //     } else {
-  //       _countryCode = 'pk';
-  //     }
-
-  //     _isLocationInitialized = true;
-  //   } catch (e) {
-  //     // Fallback to default location (Mexico City)
-  //     _currentLocation = const LatLng(-25.7479, 28.2293);
-  //     _countryCode = 'mx';
-  //     _isLocationInitialized = true;
-  //   }
-  // }
-
- 
- 
  
  
   bool _isInMexico(double lat, double lng) {

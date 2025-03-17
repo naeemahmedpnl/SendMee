@@ -181,18 +181,7 @@ Future<void> _saveDeliveryProofImageToPrefs(String imageUrl) async {
     }
   }
 
-  // Future<void> _saveDeliveryProofImageToPrefs(String imageUrl) async {
-  //   try {
-  //     final prefs = await SharedPreferences.getInstance();
-  //     await prefs.setString('latest_delivery_proof_image', imageUrl);
-  //     log('Saved delivery proof image to prefs: $imageUrl');
-  //   } catch (e) {
-  //     log('Error saving delivery proof image: $e');
-  //   }
-  // }
 
-
-  
 
   Future<String?> getLatestDeliveryProofImageFromPrefs() async {
     try {
@@ -214,60 +203,6 @@ Future<void> _saveDeliveryProofImageToPrefs(String imageUrl) async {
   }
 
 
-
-
-  // Modify your notification service to handle the image URL properly
-
-// // In the file where you handle FCM messages (likely in your NotificationService class)
-// Future<void> _handleForegroundMessage(RemoteMessage message) async {
-//   log('Received message in foreground: ${message.notification?.title}');
-
-//   // Extract delivery proof image if present
-//   String? deliveryProofImage;
-//   if (message.data.containsKey('deliveryProofImage')) {
-//     deliveryProofImage = message.data['deliveryProofImage'];
-    
-//     // Save the image URL to SharedPreferences for later retrieval
-//     final prefs = await SharedPreferences.getInstance();
-//     await prefs.setString('latest_delivery_proof', deliveryProofImage!);
-//     log('Saved delivery proof image from notification: $deliveryProofImage');
-//   }
-
-//   if (message.notification != null) {
-//     await showNotification(
-//       title: message.notification?.title ?? 'New Notification',
-//       body: message.notification?.body ?? '',
-//       payload: json.encode({
-//         'type': 'trip_notification',
-//         'deliveryProofImage': deliveryProofImage,
-//         // Add other relevant data
-//       }),
-//     );
-//   }
-// }
-
-// When handling notification taps (likely in your main.dart or app initialization)
-void _handleNotificationTap(NotificationResponse response) {
-  try {
-    if (response.payload != null) {
-      final payloadData = json.decode(response.payload!);
-      
-      // Check if this is a delivery proof notification
-      if (payloadData['deliveryProofImage'] != null) {
-        // Navigate to an appropriate screen that can show the delivery proof
-        // This could be done through a global navigator key or other navigation method
-        
-        // Store the data in SharedPreferences for access in the next screen
-        SharedPreferences.getInstance().then((prefs) {
-          prefs.setString('latest_delivery_proof', payloadData['deliveryProofImage']);
-          prefs.setBool('show_delivery_proof_dialog', true);
-        });
-      }
-    }
-  } catch (e) {
-    log('Error handling notification tap: $e');
-  }
-}
 
   Future<void> initializeNotifications() async {
     try {
@@ -304,111 +239,6 @@ void _handleNotificationTap(NotificationResponse response) {
     }
   }
 
-  // void _handleNotificationResponse(NotificationResponse response) async {
-  //   final payload = response.payload;
-  //   log('Notification tapped: ID=${response.id}, payload=$payload');
-
-  //   try {
-  //     if (payload != null && payload.isNotEmpty) {
-  //       // Try to parse the payload as JSON
-  //       if (payload.startsWith('{')) {
-  //         final Map<String, dynamic> data = json.decode(payload);
-          
-  //         // Check if the payload contains an image URL
-  //         if (data.containsKey('imageUrl')) {
-  //           _latestDeliveryProofImage = data['imageUrl'];
-  //           await _saveDeliveryProofImageToPrefs(_latestDeliveryProofImage!);
-  //           log('Extracted image URL from notification payload: $_latestDeliveryProofImage');
-  //         }
-  //       }
-  //     }
-  //   } catch (e) {
-  //     log('Error processing notification payload: $e');
-  //   }
-  // }
-
-  // // Handle FCM foreground message
-  // Future<void> _handleForegroundMessage(RemoteMessage message) async {
-  //   log('Received message in foreground: ${message.notification?.title}');
-
-  //   // Extract delivery proof image if present
-  //   String? deliveryProofImage;
-  //   if (message.data.containsKey('deliveryProofImage')) {
-  //     deliveryProofImage = message.data['deliveryProofImage'];
-  //   }
-
-  //   if (message.notification != null) {
-  //     await showNotification(
-  //       title: message.notification?.title ?? 'New Notification',
-  //       body: message.notification?.body ?? '',
-  //       payload: message.data.isNotEmpty ? json.encode(message.data) : null,
-  //       deliveryProofImage: deliveryProofImage,
-  //     );
-  //   }
-  // }
-
-
-
-
-  // // Track last notification time to prevent spam
-  // DateTime? _lastNotificationTime;
-  // static const Duration _notificationCooldown = Duration(seconds: 5);
-  
-  // // Map to store delivery proof images associated with notifications
-  // final Map<int, String> _deliveryProofImages = {};
-
-  // Future<void> showNotification({
-  //   required String title,
-  //   required String body,
-  //   String? payload,
-  //   String? deliveryProofImage,
-  // }) async {
-  //   // Check if enough time has passed since last notification
-  //   if (_lastNotificationTime != null && 
-  //       DateTime.now().difference(_lastNotificationTime!) < _notificationCooldown) {
-  //     log('Notification blocked: Too soon after previous notification');
-  //     return;
-  //   }
-
-  //   try {
-  //     final int notificationId = DateTime.now().millisecondsSinceEpoch.remainder(100000);
-
-  //     const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
-  //       'ride_app_channel',
-  //       'Ride Notifications',
-  //       importance: Importance.max,
-  //       priority: Priority.high,
-  //     );
-
-  //     const NotificationDetails platformDetails = NotificationDetails(
-  //       android: androidDetails,
-  //     );
-
-  //     await _localNotifications.show(
-  //       notificationId, 
-  //       title,
-  //       body,
-  //       platformDetails,
-  //       payload: payload,
-  //     );
-      
-  //     // Store image URL if provided
-  //     if (deliveryProofImage != null) {
-  //       _deliveryProofImages[notificationId] = deliveryProofImage;
-  //       log('Delivery proof image stored for notification ID: $notificationId');
-        
-  //       // Store in shared preferences for persistence
-  //       _saveDeliveryProofImage(notificationId.toString(), deliveryProofImage);
-  //     }
-      
-  //     // Update last notification time
-  //     _lastNotificationTime = DateTime.now();
-      
-  //     log('Notification shown successfully: $title');
-  //   } catch (e) {
-  //     log('Error showing notification: $e');
-  //   }
-  // }
 
   // Save image URL to shared preferences
   Future<void> _saveDeliveryProofImage(String notificationId, String imageUrl) async {
@@ -420,10 +250,6 @@ void _handleNotificationTap(NotificationResponse response) {
     }
   }
 
-  // // Get delivery proof image URL for a notification
-  // String? getDeliveryProofImage(int notificationId) {
-  //   return _deliveryProofImages[notificationId];
-  // }
 
   // Method to retrieve last delivery proof image (for showing in UI)
   Future<String?> getLastDeliveryProofImage() async {
@@ -444,63 +270,6 @@ void _handleNotificationTap(NotificationResponse response) {
     }
   }
 
-  // factory NotificationService() {
-  //   return _instance;
-  // }
-
-  // NotificationService._internal() {
-  //   initializeNotifications();
-  //   setupTokenListener();
-  // }
-
-  // Future<void> initializeNotifications() async {
-  //   try {
-  //     // Request permissions
-  //     await requestNotificationPermissions();
-
-  //     // Initialize local notifications
-  //     const AndroidInitializationSettings androidSettings = 
-  //         AndroidInitializationSettings('@mipmap/ic_launcher');
-      
-  //     const InitializationSettings initSettings = InitializationSettings(
-  //       android: androidSettings,
-  //     );
-      
-  //     await _localNotifications.initialize(
-  //       initSettings,
-  //       onDidReceiveNotificationResponse: _handleNotificationResponse,
-  //     );
-
-  //     // Handle FCM messages when app is in foreground
-  //     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
-      
-  //     // Handle when user taps on notification when app is in background
-  //     FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
-      
-  //     // Get initial FCM token
-  //     await getFCMToken();
-
-  //   } catch (e) {
-  //     log('Error initializing notifications: $e');
-  //   }
-  // }
-
-  // // Handle notification tap response
-  // void _handleNotificationResponse(NotificationResponse response) {
-  //   final notificationId = response.id;
-  //   final payload = response.payload;
-    
-  //   log('Notification tapped: ID=$notificationId, payload=$payload');
-    
-  //   // Check if this notification has a delivery proof image
-  //   final imageUrl = _deliveryProofImages[notificationId];
-  //   if (imageUrl != null) {
-  //     log('Notification has delivery proof image: $imageUrl');
-  //     // Store the image URL in shared preferences for the UI to access
-  //     _saveDeliveryProofImage('latest_tapped', imageUrl);
-  //   }
-  // }
-
   Future<void> requestNotificationPermissions() async {
     try {
       NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -520,25 +289,6 @@ void _handleNotificationTap(NotificationResponse response) {
     }
   }
 
-  // Future<void> _handleForegroundMessage(RemoteMessage message) async {
-  //   log('Received message in foreground: ${message.notification?.title}');
-
-  //   // Check for delivery proof image in the data payload
-  //   String? deliveryProofImage;
-  //   if (message.data.containsKey('deliveryProofImage')) {
-  //     deliveryProofImage = message.data['deliveryProofImage'];
-  //     log('Message contains delivery proof image: $deliveryProofImage');
-  //   }
-
-  //   if (message.notification != null) {
-  //     await showNotification(
-  //       title: message.notification?.title ?? 'New Notification',
-  //       body: message.notification?.body ?? '',
-  //       payload: message.data.toString(),
-  //       deliveryProofImage: deliveryProofImage,
-  //     );
-  //   }
-  // }
 
   void _handleBackgroundMessage(RemoteMessage message) {
     log('Handling background message: ${message.messageId}');

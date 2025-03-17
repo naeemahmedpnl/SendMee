@@ -8,10 +8,10 @@ import 'package:sendme/views/User_panel/Authentication/user_account_view.dart';
 import 'package:sendme/views/User_panel/Authentication/user_login_view.dart';
 import 'package:sendme/views/User_panel/Authentication/user_signup_view.dart';
 // Ride Booking Views
-import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/choose_driver.dart';
 // import 'package:sendme/views/User_panel/RideBookScreens/payment_method_screen.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/rating_screen.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/show_rider_details.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/rating_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/show_rider_details.dart';
 // import 'package:sendme/views/User_panel/RideBookScreens/widgets/drop_off_location.dart';
 // Other Views
 import 'package:sendme/views/User_panel/Support/support_screen.dart';
@@ -28,7 +28,7 @@ import 'package:sendme/views/User_panel/profile_Screens/profile_screen.dart';
 import 'package:sendme/views/User_panel/profile_Screens/wallet_details.dart';
 
 import '../../views/User_panel/Authentication/pessenger_id.dart';
-import '../../views/User_panel/RideBookScreens/payment_method_screen.dart';
+// import '../../views/User_panel/parcel_deliver/payment_method_screen.dart';
 
 class AppRoutes {
   // Private constructor to prevent instantiation
@@ -60,7 +60,7 @@ class AppRoutes {
   static const String rideDetails = '/show_ride_details';
   static const String chooseDriver = '/choose_driver';
   static const String showRiderDetails = '/ride_details_screen';
-  static const String paymentMethod = '/payment_method_screen';
+  // static const String paymentMethod = '/payment_method_screen';
   static const String ratingScreen = '/rating_screen';
   static const String dropOffLocation = '/dropoff_location';
 
@@ -140,12 +140,12 @@ class AppRoutes {
       case chooseDriver:
         return _buildRoute(const ChooseDriverScreen(tripId: ''));
 
-      case paymentMethod:
-        return _buildRoute(PaymentMethodScreen(
-          estimatedFare: settings.arguments != null
-              ? (settings.arguments as Map)['estimatedFare'] as String
-              : null, 
-        ));
+      // case paymentMethod:
+      //   return _buildRoute(PaymentMethodScreen(
+      //     estimatedFare: settings.arguments != null
+      //         ? (settings.arguments as Map)['estimatedFare'] as String
+      //         : null, 
+      //   ));
 
       case ratingScreen:
         return _buildRoute(RideReviewScreen());

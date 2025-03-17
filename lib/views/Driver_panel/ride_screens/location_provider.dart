@@ -530,76 +530,142 @@ Future<void> _updateConnectionStatus(List<ConnectivityResult> results) async {
     }
   }
 
-  Future<void> updateDriverLocationAPI(String tripId, LatLng position) async {
-    if (_disposed) {
-      log('Ignoring update - provider disposed', name: 'TripProvider');
-      return;
-    }
-    
-    // Skip location updates if offline to prevent log spam
-    if (isOffline) {
-      return;
-    }
-    
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      final token = prefs.getString('token');
-      
-      if (token == null) {
-        log("Token not found", name: 'TripProvider');
-        return;
-      }
-
-      log('Updating driver location', name: 'TripProvider');
-      log('Current Position: ${position.latitude},${position.longitude}',
-          name: 'TripProvider');
-      log('Moving to ${isMovingToPickup ? "Pickup" : "Destination"}',
-          name: 'TripProvider');
-
-      final response = await http.put(
-        Uri.parse('$baseUrl/trip/update-driver-location/$tripId'),
-        headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode({
-          'latitude': position.latitude,
-          'longitude': position.longitude,
-        }),
-      ).timeout(
-        const Duration(seconds: 10),
-        onTimeout: () {
-          throw TimeoutException('Location update timed out');
-        },
-      );
-
-      if (response.statusCode == 200) {
-        log('Location updated successfully', name: 'TripProvider');
-        driverPosition = position;
-        _updateDriverMarker(position);
-        hasNetworkError = false;
-        if (!_disposed) notifyListeners();
-      } else {
-        log('Failed to update location: ${response.body}',
-            name: 'TripProvider');
-        throw Exception('Failed to update location: ${response.body}');
-      }
-    } catch (e) {
-      // Don't show errors for location updates in UI, but log them
-      log('Update location API error', name: 'TripProvider', error: e);
-      
-      if (e is SocketException || e is TimeoutException) {
-        // Check connectivity
-        final result = await _connectivity.checkConnectivity();
-        if (result == ConnectivityResult.none) {
-          isOffline = true;
-          if (!_disposed) notifyListeners();
-        }
-      }
-      
-      throw Exception('Update location API error: $e');
-    }
+  Future<Map<String, dynamic>?> updateDriverLocationAPI(String tripId, LatLng position) async {
+  if (_disposed) {
+    log('Ignoring update - provider disposed', name: 'TripProvider');
+    return null;
   }
+  
+  if (isOffline) return null; // Skip updates if offline
+
+  try {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+
+    if (token == null) {
+      log("Token not found", name: 'TripProvider');
+      return null;
+    }
+
+    log('Updating driver location', name: 'TripProvider');
+    log('Current Position: ${position.latitude},${position.longitude}', name: 'TripProvider');
+
+    final response = await http.put(
+      Uri.parse('$baseUrl/trip/update-driver-location/$tripId'),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      },
+      body: jsonEncode({
+        'latitude': position.latitude,
+        'longitude': position.longitude,
+      }),
+    ).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        throw TimeoutException('Location update timed out');
+      },
+    );
+
+    final responseBody = jsonDecode(response.body);
+    
+    if (response.statusCode == 200 && responseBody['success'] == true) {
+      log('Location updated successfully', name: 'TripProvider');
+      driverPosition = position;
+      _updateDriverMarker(position);
+      hasNetworkError = false;
+      if (!_disposed) notifyListeners();
+      return responseBody;
+    } else {
+      log('Failed to update location: ${response.body}', name: 'TripProvider');
+      return responseBody; // Return response for error handling
+    }
+  } catch (e) {
+    log('Update location API error', name: 'TripProvider', error: e);
+
+    if (e is SocketException || e is TimeoutException) {
+      final result = await _connectivity.checkConnectivity();
+      if (result == ConnectivityResult.none) {
+        isOffline = true;
+        if (!_disposed) notifyListeners();
+      }
+    }
+
+    return {'success': false, 'message': 'Update location API error: $e'};
+  }
+}
+
+
+  // Future<void> updateDriverLocationAPI(String tripId, LatLng position) async {
+  //   if (_disposed) {
+  //     log('Ignoring update - provider disposed', name: 'TripProvider');
+  //     return;
+  //   }
+    
+  //   // Skip location updates if offline to prevent log spam
+  //   if (isOffline) {
+  //     return;
+  //   }
+    
+  //   try {
+  //     final prefs = await SharedPreferences.getInstance();
+  //     final token = prefs.getString('token');
+      
+  //     if (token == null) {
+  //       log("Token not found", name: 'TripProvider');
+  //       return;
+  //     }
+
+  //     log('Updating driver location', name: 'TripProvider');
+  //     log('Current Position: ${position.latitude},${position.longitude}',
+  //         name: 'TripProvider');
+  //     log('Moving to ${isMovingToPickup ? "Pickup" : "Destination"}',
+  //         name: 'TripProvider');
+
+  //     final response = await http.put(
+  //       Uri.parse('$baseUrl/trip/update-driver-location/$tripId'),
+  //       headers: {
+  //         'Authorization': 'Bearer $token',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       body: jsonEncode({
+  //         'latitude': position.latitude,
+  //         'longitude': position.longitude,
+  //       }),
+  //     ).timeout(
+  //       const Duration(seconds: 10),
+  //       onTimeout: () {
+  //         throw TimeoutException('Location update timed out');
+  //       },
+  //     );
+
+  //     if (response.statusCode == 200) {
+  //       log('Location updated successfully', name: 'TripProvider');
+  //       driverPosition = position;
+  //       _updateDriverMarker(position);
+  //       hasNetworkError = false;
+  //       if (!_disposed) notifyListeners();
+  //     } else {
+  //       log('Failed to update location: ${response.body}',
+  //           name: 'TripProvider');
+  //       throw Exception('Failed to update location: ${response.body}');
+  //     }
+  //   } catch (e) {
+  //     // Don't show errors for location updates in UI, but log them
+  //     log('Update location API error', name: 'TripProvider', error: e);
+      
+  //     if (e is SocketException || e is TimeoutException) {
+  //       // Check connectivity
+  //       final result = await _connectivity.checkConnectivity();
+  //       if (result == ConnectivityResult.none) {
+  //         isOffline = true;
+  //         if (!_disposed) notifyListeners();
+  //       }
+  //     }
+      
+  //     throw Exception('Update location API error: $e');
+  //   }
+  // }
 
 
  // Updated method to end trip with optional image upload and retry logic

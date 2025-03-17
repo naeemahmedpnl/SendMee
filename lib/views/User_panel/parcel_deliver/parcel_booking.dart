@@ -17,9 +17,9 @@ import 'package:sendme/utils/theme/app_text_theme.dart';
 import 'package:sendme/utils/theme/map_theme_popup.dart';
 import 'package:sendme/viewmodel/provider/map_provider.dart';
 import 'package:sendme/viewmodel/provider/ridebook_provider.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/choose_driver.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/widgets/address_search.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/widgets/map_picker_screen.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/choose_driver.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/widgets/address_search.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/widgets/map_picker_screen.dart';
 import 'package:sendme/widgets/custom_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -393,6 +393,7 @@ Future<void> _createTripRequest(BuildContext context) async {
                         context,
                         'ride_home.pickup_location'.tr(),
                         rideProvider.pickupAddress,
+                     
                         (address, latLng) {
                           rideProvider.setPickupLocation(address, latLng);
                           _updateMapView();
@@ -990,13 +991,12 @@ Future<void> _createTripRequest(BuildContext context) async {
         // Parse the JSON string back to a Map
         Map<String, dynamic> userData = jsonDecode(userDataJson);
         // Extract wallet balance
-        // In this case, wallet balance is directly in the root of the user data
         return (userData['walletBalance'] as num).toDouble();
       } catch (e) {
         log('Error retrieving wallet balance: $e');
-        return 0.0; // Return 0 if there's an error
+        return 0.0;
       }
     }
-    return 0.0; // Return 0 if no user data is found
+    return 0.0; 
   }
 }

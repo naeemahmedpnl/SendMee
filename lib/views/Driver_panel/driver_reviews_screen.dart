@@ -266,7 +266,7 @@ class _DriverReviewsViewState extends State<DriverReviewsView> {
                           SizedBox(width: screenWidth * 0.04),
                           Expanded(
                             child: Text(
-                              'driverReviews.rateRideWith'.tr(args: ['julia']),
+                              'Rate your ride with passenger',
                               style: AppTextTheme.getLightTextTheme(context).headlineMedium,
                             ),
                           ),

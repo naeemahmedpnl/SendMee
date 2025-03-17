@@ -21,7 +21,7 @@ import 'package:http/http.dart' as http;
 
 class GetDirection extends StatelessWidget {
   final Map<String, dynamic> tripData;
-  const GetDirection({Key? key, required this.tripData}) : super(key: key);
+  const GetDirection({super.key, required this.tripData});
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +34,7 @@ class GetDirection extends StatelessWidget {
 
 class _GetDirectionContent extends StatefulWidget {
   final Map<String, dynamic> tripData;
-  const _GetDirectionContent({Key? key, required this.tripData})
-      : super(key: key);
+  const _GetDirectionContent({super.key, required this.tripData});
 
   @override
   _GetDirectionContentState createState() => _GetDirectionContentState();
@@ -602,57 +601,114 @@ Future<void> _completeTrip({bool isParcel = false}) async {
   }
 
 
-// Update the _startLocationUpdates method to handle mounted state properly
-  void _startLocationUpdates() {
-    _locationUpdateTimer?.cancel(); // Cancel any existing timer first
+void _startLocationUpdates() {
+  _locationUpdateTimer?.cancel();
 
-    if (!mounted) return; // Early return if widget is not mounted
+  if (!mounted) return;
 
-    _locationUpdateTimer = Timer.periodic(
-      const Duration(seconds: 3),
-      (_) async {
-        // Check mounted state before each update
+  _locationUpdateTimer = Timer.periodic(
+    const Duration(seconds: 3),
+    (_) async {
+      if (!mounted) {
+        _locationUpdateTimer?.cancel();
+        return;
+      }
+
+      try {
+        final position = await LocationService.getCurrentPosition();
+
         if (!mounted) {
           _locationUpdateTimer?.cancel();
           return;
         }
 
-        try {
-          final position = await LocationService.getCurrentPosition();
+        final latLng = LatLng(position.latitude, position.longitude);
+        final tripProvider = Provider.of<TripProvider>(context, listen: false);
 
-          // Check mounted again after async operation
-          if (!mounted) {
+        if (!mounted) return;
+
+        final response = await tripProvider.updateDriverLocationAPI(
+            tripProvider.currentTripId!, latLng);
+
+        if (!mounted) return;
+
+        // If trip is not found, stop updates and navigate home
+        if (response != null && response['success'] == false) {
+          if (response['message'] == "Trip not found") {
             _locationUpdateTimer?.cancel();
+            if (mounted) {
+              Navigator.pushReplacementNamed(context, AppDriverRoutes.rideBooking);
+            }
             return;
           }
-
-          final latLng = LatLng(position.latitude, position.longitude);
-          final tripProvider =
-              Provider.of<TripProvider>(context, listen: false);
-
-          if (!mounted) return;
-
-          await tripProvider.updateDriverLocationAPI(
-              tripProvider.currentTripId!, latLng);
-
-          // Final mounted check before UI updates
-          if (!mounted) return;
-
-          // Wrap UI updates in mounted checks
-          if (tripProvider.routePoints.isNotEmpty &&
-              tripProvider.currentRouteIndex <
-                  tripProvider.routePoints.length - 1) {
-            _updateCameraPosition(latLng);
-            _updateDriverMarker(latLng, tripProvider);
-          }
-        } catch (e) {
-          if (mounted) {
-            log('Location update error: $e');
-          }
         }
-      },
-    );
-  }
+
+        if (tripProvider.routePoints.isNotEmpty &&
+            tripProvider.currentRouteIndex < tripProvider.routePoints.length - 1) {
+          _updateCameraPosition(latLng);
+          _updateDriverMarker(latLng, tripProvider);
+        }
+      } catch (e) {
+        if (mounted) {
+          log('Location update error: $e');
+        }
+      }
+    },
+  );
+}
+
+
+// // Update the _startLocationUpdates method to handle mounted state properly
+//   void _startLocationUpdates() {
+//     _locationUpdateTimer?.cancel(); // Cancel any existing timer first
+
+//     if (!mounted) return; // Early return if widget is not mounted
+
+//     _locationUpdateTimer = Timer.periodic(
+//       const Duration(seconds: 3),
+//       (_) async {
+//         // Check mounted state before each update
+//         if (!mounted) {
+//           _locationUpdateTimer?.cancel();
+//           return;
+//         }
+
+//         try {
+//           final position = await LocationService.getCurrentPosition();
+
+//           // Check mounted again after async operation
+//           if (!mounted) {
+//             _locationUpdateTimer?.cancel();
+//             return;
+//           }
+
+//           final latLng = LatLng(position.latitude, position.longitude);
+//           final tripProvider =
+//               Provider.of<TripProvider>(context, listen: false);
+
+//           if (!mounted) return;
+
+//           await tripProvider.updateDriverLocationAPI(
+//               tripProvider.currentTripId!, latLng);
+
+//           // Final mounted check before UI updates
+//           if (!mounted) return;
+
+//           // Wrap UI updates in mounted checks
+//           if (tripProvider.routePoints.isNotEmpty &&
+//               tripProvider.currentRouteIndex <
+//                   tripProvider.routePoints.length - 1) {
+//             _updateCameraPosition(latLng);
+//             _updateDriverMarker(latLng, tripProvider);
+//           }
+//         } catch (e) {
+//           if (mounted) {
+//             log('Location update error: $e');
+//           }
+//         }
+//       },
+//     );
+//   }
 
 // Update the dispose method to ensure proper cleanup
   @override
@@ -1019,16 +1075,6 @@ Future<void> _completeTrip({bool isParcel = false}) async {
                   zoomControlsEnabled: false,
                 ),
               ),
-              // Positioned(
-              //   top: 40,
-              //   left: 20,
-              //   child: IconButton(
-              //     icon: const Icon(Icons.menu),
-              //     onPressed: () {
-              //       Scaffold.of(context).openDrawer();
-              //     },
-              //   ),
-              // ),
               if (_isLoading) const Center(child: CircularProgressIndicator()),
               DraggableScrollableSheet(
                 initialChildSize: 0.5,

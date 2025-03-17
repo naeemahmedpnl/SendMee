@@ -106,19 +106,7 @@ class _UserCancelTripScreenState extends State<UserCancelTripScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // Optional debug info - uncomment if needed
-              // if (kDebugMode) ...[
-              //   Text('Trip ID: ${widget.initialTripDetails['_id']}', 
-              //        style: const TextStyle(color: Colors.white)),
-              //   Text('Pickup: ${widget.initialTripDetails['pickup']}', 
-              //        style: const TextStyle(color: Colors.white)),
-              //   Text('Destination: ${widget.initialTripDetails['destination']}', 
-              //        style: const TextStyle(color: Colors.white)),
-              //   Text('Driver: ${widget.initialTripDetails['driver']['username']}', 
-              //        style: const TextStyle(color: Colors.white)),
-              //   Text('Estimated Fare: \$${widget.initialTripDetails['driverEstimatedFare']}', 
-              //        style: const TextStyle(color: Colors.white)),
-              // ],
+       
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(

@@ -120,73 +120,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   Navigator.of(context).pushNamed(dp.AppDriverRoutes.profile);
                 },
               ),
-              // const CustomDivider(),
-              // // Language Switcher with fixed width trailing
-              // ListTile(
-              //   leading: Container(
-              //     decoration: BoxDecoration(
-              //       color: AppColors.buttonColor,
-              //       borderRadius: BorderRadius.circular(18),
-              //     ),
-              //     width: 36,
-              //     height: 36,
-              //     child: const Icon(
-              //       Icons.language,
-              //       color: AppColors.backgroundDark,
-              //       size: 20,
-              //     ),
-              //   ),
-              //   title: Text(
-              //     'drawer.language'.tr(),
-              //     style: const TextStyle(color: Colors.black, fontSize: 20),
-              //   ),
-              //   trailing: SizedBox(
-              //     width: 50, // Fixed width for trailing widget
-              //     child: Container(
-              //       height: 32,
-              //       decoration: BoxDecoration(
-              //         borderRadius: BorderRadius.circular(16),
-              //         border: Border.all(color: AppColors.buttonColor, width: 1),
-              //       ),
-              //       child: Center(
-              //         child: Text(
-              //           currentLanguage.toUpperCase(),
-              //           style: const TextStyle(
-              //             color: Colors.black,
-              //             fontWeight: FontWeight.bold,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              //   onTap: () async {
-              //     try {
-              //       if (currentLanguage == 'en') {
-              //         await changeLanguage(context, 'es');
-              //       } else {
-              //         await changeLanguage(context, 'en');
-              //       }
-
-              //       if (mounted) {
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           SnackBar(
-              //             content: Text('drawer.languageChanged'.tr()),
-              //             duration: const Duration(seconds: 1),
-              //           ),
-              //         );
-              //       }
-              //     } catch (e) {
-              //       if (mounted) {
-              //         ScaffoldMessenger.of(context).showSnackBar(
-              //           SnackBar(
-              //             content: Text('drawer.languageError'.tr()),
-              //           ),
-              //         );
-              //       }
-              //     }
-              //   },
-              // ),
-              
+            
               
               const CustomDivider(),
               ListTile(

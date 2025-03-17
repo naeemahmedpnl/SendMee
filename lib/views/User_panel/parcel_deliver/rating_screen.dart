@@ -16,8 +16,10 @@ import 'dart:developer' as developer;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RideReviewScreen extends StatefulWidget {
+  const RideReviewScreen({super.key});
+
   @override
-  _RideReviewScreenState createState() => _RideReviewScreenState();
+  State<RideReviewScreen> createState() => _RideReviewScreenState();
 }
 
 class _RideReviewScreenState extends State<RideReviewScreen> {

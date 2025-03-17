@@ -3,6 +3,8 @@ import 'package:sendme/utils/theme/app_colors.dart';
 import 'package:sendme/utils/theme/app_text_theme.dart';
 
 class SupportView extends StatelessWidget {
+  const SupportView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

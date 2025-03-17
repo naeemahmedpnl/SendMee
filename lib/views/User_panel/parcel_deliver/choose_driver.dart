@@ -12,7 +12,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:sendme/services/notification_service.dart';
 import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:sendme/utils/routes/user_panel_routes.dart';
-import 'package:sendme/views/User_panel/RideBookScreens/show_rider_details.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/show_rider_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:socket_io_client/socket_io_client.dart' as IO;
@@ -1443,7 +1443,7 @@ class CancellingDialog extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Cancelling trip...',
+              'Accepting trip...',
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,

@@ -70,6 +70,20 @@ void main() async {
   );
 
 
+// This navigation code should be moved to a widget with a BuildContext
+// For now, we'll remove it from main() since it's using context which isn't available here
+// You should move this code to a widget where context is available
+SharedPreferences.getInstance().then((prefs) {
+  bool shouldNavigate = prefs.getBool('navigate_to_payment') ?? false;
+  if (shouldNavigate) {
+    // Clear the flag
+    prefs.setBool('navigate_to_payment', false);
+    
+    // Save the image URL for later use
+    // The actual navigation should happen in a widget with context
+  }
+});
+
 
   runApp(
     EasyLocalization(
@@ -86,6 +100,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RideProvider()),
+        
         ChangeNotifierProvider(create: (_) => MapProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => PaymentProvider()),

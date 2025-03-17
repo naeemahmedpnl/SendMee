@@ -39,7 +39,7 @@ class UserContactCard extends StatelessWidget {
       width: screenSize.width * 0.9,
       padding: EdgeInsets.all(screenSize.width * 0.03),
       decoration: BoxDecoration(
-        color: Color(0xFFF5FFE8),
+        color: const Color(0xFFF5FFE8),
         borderRadius: BorderRadius.circular(screenSize.width * 0.03),
       ),
       child: Row(
@@ -49,7 +49,7 @@ class UserContactCard extends StatelessWidget {
             radius: screenSize.width * 0.08,
             backgroundImage: userImageUrl.isNotEmpty
                 ? NetworkImage(userImageUrl)
-                : AssetImage("assets/images/profile.png") as ImageProvider,
+                : const AssetImage("assets/images/profile.png") as ImageProvider,
           ),
           SizedBox(width: screenSize.width * 0.03),
           // User Info
