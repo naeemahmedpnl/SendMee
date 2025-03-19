@@ -1,9 +1,126 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/services.dart';
 import 'package:sendme/utils/theme/app_colors.dart';
 import 'package:sendme/utils/theme/app_text_theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SupportScreen extends StatelessWidget {
+  const SupportScreen({super.key});
+
+
+     // Function to launch phone dialer
+  Future<void> _launchPhoneDialer(String phoneNumber) async {
+    final Uri uri = Uri.parse('tel:$phoneNumber');
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch phone dialer';
+    }
+  }
+
+  Future<void> _launchEmail(BuildContext context, String emailAddress) async {
+    try {
+      final Uri emailUri = Uri(
+        scheme: 'mailto',
+        path: emailAddress,
+        queryParameters: {'subject': 'Support Inquiry'},
+      );
+
+      log('Attempting to launch: $emailUri');
+
+      if (await canLaunchUrl(emailUri)) {
+        await launchUrl(
+          emailUri,
+          mode: LaunchMode.externalApplication, 
+        );
+      } else {
+        _showEmailFallbackDialog(context, emailAddress);
+      }
+    } catch (e) {
+      _showEmailErrorSnackBar(context, e.toString());
+    }
+  }
+
+  void _showEmailErrorSnackBar(BuildContext context, String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('support.whatsapp_error'.tr()),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _showEmailFallbackDialog(BuildContext context, String emailAddress) {
+    showDialog(
+      barrierColor: Colors.black,
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: Colors.black,
+          title: Text('support.email_dialog.title'.tr()),
+          content: Text(
+            'support.email_dialog.content'.tr(args: [emailAddress]),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: Text('support.email_dialog.close'.tr()),
+            ),
+            TextButton(
+              onPressed: () {
+                Clipboard.setData(ClipboardData(text: emailAddress));
+                Navigator.of(dialogContext).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('support.email_dialog.copied'.tr())),
+                );
+              },
+              child: Text('support.email_dialog.copy'.tr()),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _launchWhatsApp(BuildContext context, String phoneNumber) async {
+    // Remove any non-numeric characters from the phone number
+    final cleanPhone = phoneNumber.replaceAll(RegExp(r'[^\d+]'), '');
+
+    // Multiple URL formats to try
+    final urlsToTry = [
+      Uri.parse('https://wa.me/$cleanPhone'),
+      Uri.parse('whatsapp://send?phone=$cleanPhone'),
+    ];
+
+    for (final url in urlsToTry) {
+      try {
+        log('Attempting WhatsApp URL: $url');
+
+        if (await canLaunchUrl(url)) {
+          await launchUrl(url, mode: LaunchMode.externalApplication);
+          return;
+        }
+      } catch (e) {
+        log('Error launching WhatsApp: $e');
+      }
+    }
+
+    // If all attempts fail
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+            'Could not launch WhatsApp. Please check the app is installed.'),
+        duration: Duration(seconds: 2),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +202,7 @@ class SupportScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
+                    // Previous code remains the same until the phone ListTile
                 ListTile(
                   leading: const Icon(Icons.phone, color: AppColors.primary),
                   title: Text(
@@ -95,9 +213,15 @@ class SupportScreen extends StatelessWidget {
                     'support.contact_section.call.phone'.tr(),
                     style: AppTextTheme.getLightTextTheme(context).titleSmall,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    // Get the phone number from translation
+                    final phoneNumber =
+                        'support.contact_section.call.phone'.tr();
+                    _launchPhoneDialer(phoneNumber);
+                  },
                 ),
-                ListTile(
+                const SizedBox(height: 10),
+                   ListTile(
                   leading: const Icon(Icons.email, color: AppColors.primary),
                   title: Text(
                     'support.contact_section.email.title'.tr(),
@@ -107,17 +231,10 @@ class SupportScreen extends StatelessWidget {
                     'support.contact_section.email.address'.tr(),
                     style: AppTextTheme.getLightTextTheme(context).titleSmall,
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    _launchEmail(context, 'support@ride-mexico.app');
+                  },
                 ),
-                ListTile(
-                  leading: const Icon(Icons.chat, color: AppColors.primary),
-                  title: Text(
-                    'support.contact_section.chat'.tr(),
-                    style: AppTextTheme.getLightTextTheme(context).titleSmall,
-                  ),
-                  onTap: () {},
-                ),
-
                 Text(
                   'support.feedback_section.title'.tr(),
                   style: const TextStyle(

@@ -12,16 +12,17 @@ import 'package:sendme/views/Driver_panel/form_registration/driver_license_view.
 import 'package:sendme/views/Driver_panel/form_registration/id_confirmation.dart';
 import 'package:sendme/views/Driver_panel/form_registration/proof_of_address.dart';
 import 'package:sendme/views/Driver_panel/form_registration/vehicle_info_view.dart';
-// import 'package:sendme/views/Driver_panel/messages/inbox_screen.dart';
+
 import 'package:sendme/views/Driver_panel/notifications_view.dart';
 import 'package:sendme/views/Driver_panel/payment_successful_view.dart';
+import 'package:sendme/views/Driver_panel/profile_screens/edit_profile_screen.dart';
 import 'package:sendme/views/Driver_panel/profile_screens/profile_view.dart';
 import 'package:sendme/views/Driver_panel/ride_screens/payment_details.dart';
 import 'package:sendme/views/Driver_panel/ride_screens/payment_method.dart';
 import 'package:sendme/views/Driver_panel/ride_screens/pick_up.dart';
 import 'package:sendme/views/Driver_panel/ride_screens/reached.dart';
 import 'package:sendme/views/Driver_panel/ride_screens/ride_booking_view.dart';
-// import 'package:sendme/views/Driver_panel/ride_screens/rider_history.dart';
+
 import 'package:sendme/views/Driver_panel/support_view.dart';
 import 'package:sendme/views/Driver_panel/vechile_info/brand_details_view.dart';
 import 'package:sendme/views/Driver_panel/vechile_info/vehicle_photos_view.dart';
@@ -30,7 +31,7 @@ import 'package:sendme/views/Driver_panel/wallet_view.dart';
 import 'package:sendme/views/Driver_panel/widgets/cancelrequest.dart';
 import 'package:sendme/views/User_panel/common_splash_view.dart';
 
-// import '../../views/Driver_panel/ride_screens/rider_history.dart';
+
 
 class AppDriverRoutes {
   static const String commonSplash = '/';
@@ -49,6 +50,7 @@ class AppDriverRoutes {
   static const String vehicleRegistration = "/driver_vehicle_registration";
   static const String rideBooking = "/driver_ride_booking";
   static const String profile = "/driver_profile";
+  static const String editprofile = "/driver_edit_profile";
   static const String messages = "/driver_messages";
   static const String wallet = "/driver_wallet";
   static const String notifications = "/driver_notifications";
@@ -101,7 +103,9 @@ class AppDriverRoutes {
       case rideBooking:
         return MaterialPageRoute(builder: (context) => const RideBookingView());
       case profile:
-        return MaterialPageRoute(builder: (context) => ProfileView());
+        return MaterialPageRoute(builder: (context) => const ProfileView());
+      case editprofile:
+        return MaterialPageRoute(builder: (context) =>  EditProfileScreen());
       // case messages:
       //   return MaterialPageRoute(builder: (context) => MessagesScreen());
       case getdirection:
@@ -110,7 +114,7 @@ class AppDriverRoutes {
         return MaterialPageRoute(
             builder: (context) => GetDirection(tripData: args));
       case wallet:
-        return MaterialPageRoute(builder: (context) => WalletView());
+        return MaterialPageRoute(builder: (context) => const WalletView());
       case driverreached:
         return MaterialPageRoute(builder: (context) => const ReachedScreen());
       case notifications:
@@ -170,13 +174,7 @@ class AppDriverRoutes {
           tripData: args
         ));
       case support:
-        return MaterialPageRoute(builder: (context) => SupportView());
-      //   case showrides:
-      //     return  MaterialPageRoute(
-      // builder: (context) => RideDetailsScreen(rideDetails: {
-
-      // },)
-      // );
+        return MaterialPageRoute(builder: (context) => const SupportView());
       default:
         return MaterialPageRoute(builder: (context) => CommonSplashView());
     }

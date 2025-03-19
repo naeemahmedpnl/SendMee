@@ -1,264 +1,3 @@
-// import 'dart:async';
-// import 'dart:developer';
-// import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:sendme/services/notification_service.dart';
-// import 'package:sendme/utils/routes/user_panel_routes.dart';
-// import 'package:sendme/utils/routes/driver_panel_routes.dart';
-// import 'package:sendme/utils/theme/app_colors.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-
-// class CommonSplashView extends StatefulWidget {
-//   @override
-//   _CommonSplashViewState createState() => _CommonSplashViewState();
-// }
-
-// class _CommonSplashViewState extends State<CommonSplashView> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     _initializeApp();
-//   }
-
-//   Future<void> _initializeApp() async {
-//     try {
-//       await Future.delayed(const Duration(seconds: 3)); 
-
-//       if (!mounted) return;
-
-//       // Initialize notification service first
-//       final notificationService = NotificationService();
-//       notificationService.initializeNotifications();
-
-//       // Request notification permissions
-//       await notificationService.requestNotificationPermissions();
-
-//       // Get FCM token during app initialization
-//       String? fcmToken = await notificationService.getFCMToken();
-//       log('Initial FCM Token: $fcmToken');
-
-//       // Check location permissions
-//       bool locationEnabled = await _checkAndRequestLocationPermission();
-//       if (locationEnabled) {
-//         await _checkTokenAndNavigate();
-//       } else {
-//         bool proceed = await _showProceedWithoutLocationDialog();
-//         if (proceed) {
-//           await _checkTokenAndNavigate();
-//         } else {
-//           log('User chose not to proceed without location services');
-//         }
-//       }
-//     } catch (e) {
-//       log('Error during app initialization: $e');
-//       // Handle initialization error
-//       if (mounted) {
-//         _showErrorDialog('Failed to initialize app services');
-//       }
-//     }
-//   }
-
-// // Add this helper method for error dialog
-//   Future<void> _showErrorDialog(String message) async {
-//     return showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: const Text('Initialization Error',
-//               style: TextStyle(color: Colors.black)),
-//           content: Text(message, style: const TextStyle(color: Colors.black)),
-//           actions: [
-//             TextButton(
-//               child: const Text('Retry'),
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//                 _initializeApp();
-//               },
-//             ),
-//             TextButton(
-//               child: const Text('Exit'),
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-                
-//               },
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-// // Update _checkTokenAndNavigate to include FCM token verification
-// Future<void> _checkTokenAndNavigate() async {
-//   try {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     String? token = prefs.getString('token');
-//     log('Token: $token');
-//     String? email = prefs.getString('email');
-//     bool isDriver = prefs.getBool('isDriver') ?? false;
-//     String driverStatus = prefs.getString('driverRoleStatus') ?? '';
-
-//     // Verify FCM token exists
-//     String? fcmToken = prefs.getString(isDriver ? 'driver_fcm_token' : 'fcm_token');
-//     if (fcmToken == null) {
-//       // If FCM token doesn't exist, try to get it again
-//       final notificationService = NotificationService();
-//       fcmToken = await notificationService.getFCMToken();
-//       if (fcmToken != null) {
-//         await prefs.setString(isDriver ? 'driver_fcm_token' : 'fcm_token', fcmToken);
-//       }
-//     }
-
-//     if (!mounted) return;
-
-//     if (token != null) {
-//       if (email != null) {
-//         Navigator.pushReplacementNamed(context, AppRoutes.userAccountCreate);
-//       } else {
-//         // Check both isDriver and status
-//         if (isDriver && (driverStatus == 'accepted' || driverStatus == 'unban')) {
-//           Navigator.pushReplacementNamed(context, AppDriverRoutes.rideBooking);
-//         } else {
-//           Navigator.pushReplacementNamed(context, AppRoutes.parcelScreen);
-//         }
-//       }
-//     } else {
-//       Navigator.pushReplacementNamed(context, AppRoutes.userSignup);
-//     }
-//   } catch (e) {
-//     log("❌ Error in navigation check: $e");
-//     if (mounted) {
-//       Navigator.pushReplacementNamed(context, AppRoutes.userSignup);
-//     }
-//   }
-// }
-
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       resizeToAvoidBottomInset: false,
-//       body: Container(
-//         color: AppColors.primary,
-//         child: Center(
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Image.asset(
-//                 'assets/logos/Send_Me.png',
-//                 width: 317,
-//                 height: 317,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   Future<bool> _checkAndRequestLocationPermission() async {
-//     int attempts = 0;
-//     const maxAttempts = 3;
-//     const timeout = Duration(seconds: 10);
-
-//     while (attempts < maxAttempts) {
-//       try {
-//         bool serviceEnabled =
-//             await Geolocator.isLocationServiceEnabled().timeout(timeout);
-//         if (serviceEnabled) {
-//           LocationPermission permission =
-//               await Geolocator.checkPermission().timeout(timeout);
-//           if (permission == LocationPermission.always ||
-//               permission == LocationPermission.whileInUse) {
-//             return true;
-//           }
-//           if (permission == LocationPermission.denied) {
-//             permission = await Geolocator.requestPermission().timeout(timeout);
-//             if (permission != LocationPermission.denied) {
-//               return true;
-//             }
-//           }
-//         } else {
-//           bool userEnabledLocation = await _showLocationServiceDialog();
-//           if (userEnabledLocation) {
-//             // Wait for a moment to allow the system to update the location service status
-//             await Future.delayed(const Duration(seconds: 2));
-//             continue;
-//           }
-//         }
-//       } catch (e) {
-//         log('Error checking location permission: $e');
-//       }
-//       attempts++;
-//     }
-//     return false;
-//   }
-
-//   Future<bool> _showLocationServiceDialog() async {
-//     return await showDialog(
-//           context: context,
-//           barrierDismissible: false,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: const Text('Location Services Disabled',
-//                   style: TextStyle(color: Colors.black)),
-//               content: const Text(
-//                   'Location services are required for this app. Please enable location services to continue.',
-//                   style: TextStyle(color: Colors.black)),
-//               actions: [
-//                 TextButton(
-//                   child: const Text('Cancel'),
-//                   onPressed: () {
-//                     Navigator.of(context).pop(false);
-//                   },
-//                 ),
-//                 TextButton(
-//                   child: const Text('Enable Location'),
-//                   onPressed: () async {
-//                     Navigator.of(context).pop(true);
-//                     await Geolocator.openLocationSettings();
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         ) ??
-//         false;
-//   }
-
-//   Future<bool> _showProceedWithoutLocationDialog() async {
-//     return await showDialog(
-//           context: context,
-//           barrierDismissible: false,
-//           builder: (BuildContext context) {
-//             return AlertDialog(
-//               title: const Text('Location Services Disabled',
-//                   style: TextStyle(color: Colors.black)),
-//               content: const Text(
-//                   'The app works best with location services enabled. Do you want to proceed without location services?',
-//                   style: TextStyle(color: Colors.black)),
-//               actions: [
-//                 TextButton(
-//                   child: const Text('Exit App'),
-//                   onPressed: () {
-//                     Navigator.of(context).pop(false);
-//                   },
-//                 ),
-//                 TextButton(
-//                   child: const Text('Proceed Anyway'),
-//                   onPressed: () {
-//                     Navigator.of(context).pop(true);
-//                   },
-//                 ),
-//               ],
-//             );
-//           },
-//         ) ??
-//         false;
-//   }
-// }
-
 
 import 'dart:async';
 import 'dart:convert';
@@ -270,11 +9,14 @@ import 'package:sendme/services/notification_service.dart';
 import 'package:sendme/utils/routes/user_panel_routes.dart';
 import 'package:sendme/utils/routes/driver_panel_routes.dart';
 import 'package:sendme/utils/theme/app_colors.dart';
+import 'package:sendme/views/User_panel/parcel_deliver/choose_driver.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonSplashView extends StatefulWidget {
+  const CommonSplashView({super.key});
+
   @override
-  _CommonSplashViewState createState() => _CommonSplashViewState();
+  State<CommonSplashView> createState() => _CommonSplashViewState();
 }
 
 class _CommonSplashViewState extends State<CommonSplashView> {
@@ -341,7 +83,7 @@ Future<bool> _showLocationServiceDialog() async {
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        backgroundColor: AppColors.backgroundDark,
+        backgroundColor: AppColors.backgroundLight,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         contentPadding: const EdgeInsets.all(20),
         content: Column(
@@ -350,7 +92,7 @@ Future<bool> _showLocationServiceDialog() async {
             const Icon(
               Icons.location_off,
               size: 60,
-              color: AppColors.primary,
+              color: AppColors.buttonColor,
             ),
             const SizedBox(height: 20),
             const Text(
@@ -358,7 +100,7 @@ Future<bool> _showLocationServiceDialog() async {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black,
               ),
               textAlign: TextAlign.center,
             ),
@@ -366,7 +108,7 @@ Future<bool> _showLocationServiceDialog() async {
             const Text(
               'Please enable location services to use the app.',
               style: TextStyle(
-                color: Colors.white70,
+                color: Colors.black54,
                 fontSize: 14,
               ),
               textAlign: TextAlign.center,
@@ -378,7 +120,7 @@ Future<bool> _showLocationServiceDialog() async {
                 Expanded(
                   child: TextButton(
                     style: TextButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: AppColors.buttonColor,
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(44),
@@ -441,12 +183,28 @@ Future<bool> _showLocationServiceDialog() async {
 
 
 
-
-  Future<void> _checkTokenAndNavigate() async {
+Future<void> _checkTokenAndNavigate() async {
   try {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? userData = prefs.getString('userData');
     log('UserData: $userData');
+
+    String? tripId = prefs.getString('currentTripId');
+    int? tripExpiry = prefs.getInt('tripExpiry');
+    int currentTime = DateTime.now().millisecondsSinceEpoch;
+
+    log('Trip ID: $tripId');
+    log('Trip Expiry: $tripExpiry');
+    log('Current Time: $currentTime');
+
+    if (tripId != null && tripExpiry != null && currentTime < tripExpiry) {
+      log("Navigating to ChooseDriverScreen...");
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ChooseDriverScreen(tripId: tripId)),
+      );
+      return;
+    }
 
     if (userData != null) {
       final Map<String, dynamic> userMap = jsonDecode(userData);
@@ -461,28 +219,24 @@ Future<bool> _showLocationServiceDialog() async {
       log('Driver Status: $driverStatus'); 
       log('Email: $email');
 
-      // Verify FCM token exists
+      // FCM Token Handling
       String? fcmToken = prefs.getString(isDriver ? 'driver_fcm_token' : 'fcm_token');
       if (fcmToken == null) {
         final notificationService = NotificationService();
         fcmToken = await notificationService.getFCMToken();
         if (fcmToken != null) {
-          await prefs.setString(
-              isDriver ? 'driver_fcm_token' : 'fcm_token', fcmToken);
+          await prefs.setString(isDriver ? 'driver_fcm_token' : 'fcm_token', fcmToken);
         }
       }
 
       if (!mounted) return;
 
       if (token != null) {
-        // Check driver status first
         if (isDriver && (driverStatus == 'accepted' || driverStatus == 'unban')) {
           Navigator.pushReplacementNamed(context, AppDriverRoutes.rideBooking);
         } else if (email == null) {
-          // Only go to account create if email is missing
           Navigator.pushReplacementNamed(context, AppRoutes.userAccountCreate);
         } else {
-          // Regular user home
           Navigator.pushReplacementNamed(context, AppRoutes.parcelScreen);
         }
       } else {
@@ -501,6 +255,68 @@ Future<bool> _showLocationServiceDialog() async {
     }
   }
 }
+
+
+
+//   Future<void> _checkTokenAndNavigate() async {
+//   try {
+//     SharedPreferences prefs = await SharedPreferences.getInstance();
+//     String? userData = prefs.getString('userData');
+//     log('UserData: $userData');
+
+//     if (userData != null) {
+//       final Map<String, dynamic> userMap = jsonDecode(userData);
+      
+//       String? token = prefs.getString('token');
+//       bool isDriver = userMap['isDriver'] ?? false;
+//       String driverStatus = userMap['driverRoleStatus'] ?? '';
+//       String? email = userMap['email'];
+
+//       log('Token: $token');
+//       log('Is Driver: $isDriver');
+//       log('Driver Status: $driverStatus'); 
+//       log('Email: $email');
+
+//       // Verify FCM token exists
+//       String? fcmToken = prefs.getString(isDriver ? 'driver_fcm_token' : 'fcm_token');
+//       if (fcmToken == null) {
+//         final notificationService = NotificationService();
+//         fcmToken = await notificationService.getFCMToken();
+//         if (fcmToken != null) {
+//           await prefs.setString(
+//               isDriver ? 'driver_fcm_token' : 'fcm_token', fcmToken);
+//         }
+//       }
+
+//       if (!mounted) return;
+
+//       if (token != null) {
+//         // Check driver status first
+//         if (isDriver && (driverStatus == 'accepted' || driverStatus == 'unban')) {
+//           Navigator.pushReplacementNamed(context, AppDriverRoutes.rideBooking);
+//         } else if (email == null) {
+//           // Only go to account create if email is missing
+//           Navigator.pushReplacementNamed(context, AppRoutes.userAccountCreate);
+//         } else {
+//           // Regular user home
+//           Navigator.pushReplacementNamed(context, AppRoutes.parcelScreen);
+//         }
+//       } else {
+//         Navigator.pushReplacementNamed(context, AppRoutes.userSignup);
+//       }
+
+//     } else {
+//       if (!mounted) return;
+//       Navigator.pushReplacementNamed(context, AppRoutes.userSignup);
+//     }
+
+//   } catch (e) {
+//     log("❌ Error in navigation check: $e");
+//     if (mounted) {
+//       Navigator.pushReplacementNamed(context, AppRoutes.userSignup);
+//     }
+//   }
+// }
 
 
   @override

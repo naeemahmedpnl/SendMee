@@ -75,20 +75,20 @@ class ParcelBookScreenState extends State<ParcelBookScreen>
   // Add this method to check SharedPreferences data
   Future<void> _checkSharedPreferencesData() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      // Log all relevant data
-      log('Checking SharedPreferences data:');
-      log('Token: ${prefs.getString('token')}');
-      log('UserData: ${prefs.getString('userData')}');
-      log('ServiceType: ${prefs.getString('serviceType')}');
-      log('ParcelType: ${prefs.getString('parcelType')}');
-      log('SenderName: ${prefs.getString('senderName')}');
-      log('SenderPhone: ${prefs.getString('senderPhone')}');
-      log('ReceiverName: ${prefs.getString('receiverName')}');
-      log('ReceiverPhone: ${prefs.getString('receiverPhone')}');
-      // Log all keys in SharedPreferences
-      log('All SharedPreferences keys:');
-      log('${prefs.getKeys().toString()}');
+      // final prefs = await SharedPreferences.getInstance();
+      // // Log all relevant data
+      // log('Checking SharedPreferences data:');
+      // log('Token: ${prefs.getString('token')}');
+      // log('UserData: ${prefs.getString('userData')}');
+      // log('ServiceType: ${prefs.getString('serviceType')}');
+      // log('ParcelType: ${prefs.getString('parcelType')}');
+      // log('SenderName: ${prefs.getString('senderName')}');
+      // log('SenderPhone: ${prefs.getString('senderPhone')}');
+      // log('ReceiverName: ${prefs.getString('receiverName')}');
+      // log('ReceiverPhone: ${prefs.getString('receiverPhone')}');
+      // // Log all keys in SharedPreferences
+      // log('All SharedPreferences keys:');
+      // log('${prefs.getKeys().toString()}');
     } catch (e) {
       log('Error checking SharedPreferences: $e');
     }
@@ -217,35 +217,106 @@ class ParcelBookScreenState extends State<ParcelBookScreen>
     return null;
   }
 
+// Future<void> _createTripRequest(BuildContext context) async {
+//   // Create a GlobalKey to track the navigation context
+//   final NavigatorState navigator = Navigator.of(context);
+  
+//   // Get the ride provider without using context
+//   final rideProvider = Provider.of<RideProvider>(context, listen: false);
+  
+//   try {
+//     // Attempt to create trip request
+//     final result = await rideProvider.createTripRequest();
+    
+//     // Log the result
+//     log("Trip creation result: $result");
+    
+//     // Check for success
+//     if (result['success'] == true && result['result'] != null) {
+//       try {
+//         // Extract the trip ID from the result
+//         String tripId = result['result']['_id'];
+        
+//         // Save trip ID to SharedPreferences
+//         final prefs = await SharedPreferences.getInstance();
+//         await prefs.setString('currentTripId', tripId);
+        
+//         log("Saved trip ID to SharedPreferences: $tripId");
+        
+//         // Use WidgetsBinding to ensure we're in a safe frame to navigate
+//         WidgetsBinding.instance.addPostFrameCallback((_) {
+//           // Navigate using the stored navigator state
+//           navigator.push(
+//             MaterialPageRoute(
+//               builder: (context) => ChooseDriverScreen(tripId: tripId),
+//             ),
+//           );
+//         });
+//       } catch (innerError) {
+//         log("Error processing successful response: $innerError");
+        
+//         if (mounted) {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             const SnackBar(
+//               content: Text("Error navigating to driver selection. Please try again."),
+//               backgroundColor: Colors.red,
+//               duration: Duration(seconds: 3),
+//             ),
+//           );
+//         }
+//       }
+//     } else {
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text(result['message'] ?? 'Failed to create trip request'),
+//             backgroundColor: Colors.red,
+//             duration: const Duration(seconds: 3),
+//           ),
+//         );
+//       }
+//     }
+//   } catch (e) {
+//     log("Error creating trip request: $e");
+    
+//     if (mounted) {
+//       String errorMessage = 'Unable to connect to server. Please try again later.';
+//       if (e.toString().contains('Connection timed out') || 
+//           e.toString().contains('SocketException')) {
+//         errorMessage = 'Server is currently unavailable. Please try again later.';
+//       }
+      
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text(errorMessage),
+//           backgroundColor: Colors.red,
+//           duration: const Duration(seconds: 5),
+//         ),
+//       );
+//     }
+//   }
+// }
+
+
+
 Future<void> _createTripRequest(BuildContext context) async {
-  // Create a GlobalKey to track the navigation context
   final NavigatorState navigator = Navigator.of(context);
-  
-  // Get the ride provider without using context
   final rideProvider = Provider.of<RideProvider>(context, listen: false);
-  
+
   try {
-    // Attempt to create trip request
     final result = await rideProvider.createTripRequest();
-    
-    // Log the result
     log("Trip creation result: $result");
-    
-    // Check for success
+
     if (result['success'] == true && result['result'] != null) {
       try {
-        // Extract the trip ID from the result
         String tripId = result['result']['_id'];
-        
-        // Save trip ID to SharedPreferences
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('currentTripId', tripId);
-        
+
+        // ✅ SharedPreferences main Save karo (With Expiry)
+        await saveTripData(tripId);
+
         log("Saved trip ID to SharedPreferences: $tripId");
-        
-        // Use WidgetsBinding to ensure we're in a safe frame to navigate
+
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          // Navigate using the stored navigator state
           navigator.push(
             MaterialPageRoute(
               builder: (context) => ChooseDriverScreen(tripId: tripId),
@@ -254,7 +325,6 @@ Future<void> _createTripRequest(BuildContext context) async {
         });
       } catch (innerError) {
         log("Error processing successful response: $innerError");
-        
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -278,24 +348,38 @@ Future<void> _createTripRequest(BuildContext context) async {
     }
   } catch (e) {
     log("Error creating trip request: $e");
-    
     if (mounted) {
-      String errorMessage = 'Unable to connect to server. Please try again later.';
-      if (e.toString().contains('Connection timed out') || 
-          e.toString().contains('SocketException')) {
-        errorMessage = 'Server is currently unavailable. Please try again later.';
-      }
-      
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(errorMessage),
+        const SnackBar(
+          content: Text('Unable to connect to server. Please try again later.'),
           backgroundColor: Colors.red,
-          duration: const Duration(seconds: 5),
+          duration: Duration(seconds: 5),
         ),
       );
     }
   }
 }
+
+
+
+
+Future<void> saveTripData(String tripId) async {
+  final prefs = await SharedPreferences.getInstance();
+  
+  // Current Time
+  int currentTime = DateTime.now().millisecondsSinceEpoch;
+  
+  // Expiry Time (Current Time + 20 Minutes)
+  int expiryTime = currentTime + (20 * 60 * 1000);
+
+  // Save Trip ID & Expiry Time
+  await prefs.setString('currentTripId', tripId);
+  await prefs.setInt('tripExpiry', expiryTime);
+}
+
+
+
+
 
 
   @override

@@ -17,7 +17,7 @@ class Message {
     return Message(
       id: json['_id'] ?? '',
       content: json['message'] ?? '',
-      senderId: json['Sender'] ?? '',  // Note: changed from senderId to Sender
+      senderId: json['Sender'] ?? '',  
       createdOn: json['createdOn'] != null 
           ? DateTime.parse(json['createdOn'])
           : DateTime.now(),
@@ -28,7 +28,7 @@ class Message {
     return {
       '_id': id,
       'message': content,
-      'Sender': senderId,  // Note: changed from senderId to Sender
+      'Sender': senderId,  
       'createdOn': createdOn.toIso8601String(),
     };
   }

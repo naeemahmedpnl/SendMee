@@ -22,6 +22,6 @@ class ImageUrlUtils {
         : normalizedPath;
     
     // Combine with base URL
-    return '${Constants.apiBaseUrl}/${cleanPath}';
+    return '${Constants.apiBaseUrl}/$cleanPath';
   }
 }

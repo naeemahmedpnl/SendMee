@@ -496,7 +496,7 @@ final phoneRegex = RegExp(r'^\+(52|92)\d{10,11}$|^\+27\d{9}$');
         Uri.parse('${Constants.apiBaseUrl}/auth/updateProfile'),
       )
         ..headers['Authorization'] = 'Bearer $token'
-        ..fields['name'] = name
+        ..fields['username'] = name
         ..fields['address'] = address;
 
       if (profilePicture != null) {

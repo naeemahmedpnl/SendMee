@@ -289,7 +289,7 @@ Future<void> acceptDriverOffer(String tripId) async {
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => const CancellingDialog(), 
+      builder: (BuildContext context) => const AcceptingDialog(), 
     );
 
     log('Making API request to accept driver offer...');
@@ -351,67 +351,6 @@ Future<void> acceptDriverOffer(String tripId) async {
         'driverEstimatedFare': driverRequest['driverEstimatedFare'] ?? 0.0
       }
     };
-    
-  //   if (mounted) {
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => ShowRiderDetails(
-  //           tripDetails: navigationData['tripDetails'],
-  //           initialTripDetails: navigationData['initialTripDetails'],
-  //         ),
-  //       ),
-  //     );
-  //   }
-  // }
-
-    // if (response.statusCode == 200) {
-    //   final responseData = jsonDecode(response.body);
-      
-    //   // Save trip ID to SharedPreferences
-    //   await prefs.setString('currentTripId', tripId);
-    //   log('Saved trip ID to SharedPreferences: $tripId');
-
-    //   // Find the corresponding driver request
-    //   final driverRequest = driverRequests.firstWhere(
-    //     (req) => req['_id'] == tripId,
-    //     orElse: () => {},
-    //   );
-
-    //   // Dismiss loading dialog
-    //   if (mounted && Navigator.canPop(context)) {
-    //     Navigator.pop(context);
-    //   }
-      
-    //   // IMPORTANT: Create properly structured data for ShowRiderDetails
-    //   final navigationData = {
-    //     'tripDetails': responseData['tripDetails'] ?? {
-    //       '_id': tripId,
-    //       'passenger': {'_id': responseData['tripDetails']?['passenger'] ?? ''},
-    //       'status': 'user_accepted'
-    //     },
-    //     'initialTripDetails': driverRequest.isNotEmpty ? driverRequest : {
-    //       'driver': {
-    //         '_id': driverRequest['driver']?['_id'] ?? '',
-    //         'userid': {
-    //           '_id': driverRequest['driver']?['userid']?['_id'] ?? '',
-    //           'phone': driverRequest['driver']?['userid']?['phone'] ?? ''
-    //         },
-    //         'username': driverRequest['driver']?['username'] ?? 'Driver',
-    //         'ratingAverage': driverRequest['driver']?['ratingAverage'] ?? 0.0
-    //       },
-    //       'pickup': driverRequest['pickup'] ?? '0,0',
-    //       'destination': driverRequest['destination'] ?? '0,0',
-    //       'driverLocation': driverRequest['driverLocation'] ?? {
-    //         'latitude': 0.0,
-    //         'longitude': 0.0
-    //       },
-    //       'driverEstimatedFare': driverRequest['driverEstimatedFare'] ?? 0.0
-    //     }
-    //   };
-      
-    //   // Log the data we're navigating with
-    //   log('Navigating with data: $navigationData');
 
       // Use Navigator.push instead of pushReplacement for more reliable navigation
       if (mounted) {
@@ -419,7 +358,7 @@ Future<void> acceptDriverOffer(String tripId) async {
           context,
           MaterialPageRoute(
             builder: (context) => ShowRiderDetails(
-              tripDetails: navigationData['tripDetails'] ?? {}, // Added null check with empty map as default
+              tripDetails: navigationData['tripDetails'] ?? {}, 
               initialTripDetails: navigationData['initialTripDetails'] ?? {},
             ),
           ),
@@ -442,481 +381,6 @@ Future<void> acceptDriverOffer(String tripId) async {
   }
 }
 
-// Future<void> acceptDriverOffer(String tripId) async {
-//   log('BEGIN acceptDriverOffer for tripId: $tripId');
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String? token = prefs.getString('token');
-
-//   if (token == null) {
-//     log('Token not found');
-//     return;
-//   }
-
-//   try {
-//     log('Showing loading dialog...');
-//     showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => const CancellingDialog(), 
-//     );
-
-//     log('Making API request to accept driver offer...');
-//     final response = await http.put(
-//       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//     );
-
-//     log('Accept Driver Offer Response: ${response.statusCode}');
-//     log('Response Body: ${response.body}');
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-      
-//       // Save trip ID to SharedPreferences
-//       await prefs.setString('currentTripId', tripId);
-//       log('Saved trip ID to SharedPreferences: $tripId');
-
-//       // Find the corresponding driver request
-//       log('Looking for driver request with tripId: $tripId');
-//       final driverRequest = driverRequests.firstWhere(
-//         (req) => req['_id'] == tripId,
-//         orElse: () => {},
-//       );
-//       log('Found driver request: ${driverRequest.isNotEmpty ? 'YES' : 'NO'}');
-
-//       // Prepare navigation data
-//       final navigationData = {
-//         'tripDetails': responseData['tripDetails'],
-//         'initialTripDetails': driverRequest.isNotEmpty ? driverRequest : {
-//           '_id': tripId,
-//           'status': 'user_accepted'
-//         },
-//         'tripId': tripId  // Make sure you include this!
-//       };
-//       log('Prepared navigation data: $navigationData');
-
-//       // Dismiss loading dialog
-//       if (mounted && Navigator.canPop(context)) {
-//         log('Dismissing loading dialog');
-//         Navigator.pop(context);
-//       }
-
-//       // Add a timestamp before navigation
-//       final beforeNav = DateTime.now();
-//       log('ABOUT TO NAVIGATE at ${beforeNav.toString()}');
-
-//       // Navigate to next screen with complete data
-//       if (mounted) {
-//         log('=== NAVIGATION START === pushing to ${AppRoutes.rideDetails}');
-//         Navigator.push(
-//   context,
-//   MaterialPageRoute(
-//     builder: (context) => const ShowRiderDetails(
-//       tripDetails: {
-//         'tripDetails': {
-//           'passenger': {'_id': 'actualPassengerId'},
-//           '_id': 'actualTripId'
-//         }
-//       },
-//       initialTripDetails: {
-//         'driver': {
-//           'userid': {
-//             '_id': 'actualDriverId',
-//             'phone': 'driverPhoneNumber'
-//           },
-//           'username': 'Driver Name',
-//           'ratingAverage': 4.5
-//         },
-//         'pickup': '24.8806697, 67.0690683',
-//         'destination': '24.8822133, 67.0673898',
-//         'driverLocation': {
-//           'latitude': 24.8807527,
-//           'longitude': 67.069163
-//         }
-//       }
-//     ),
-//   ),
-// );
-//         // Navigator.pushReplacementNamed(
-//         //   context,
-//         //   AppRoutes.rideDetails,
-//         //   arguments: navigationData,
-//         // );
-//         log('=== NAVIGATION COMMAND SENT ===');
-        
-//         // Add a small delay and check if still mounted
-//         Future.delayed(const Duration(milliseconds: 100), () {
-//           if (mounted) {
-//             log('Still mounted after navigation: YES');
-//           } else {
-//             log('Still mounted after navigation: NO');
-//           }
-//         });
-//       } else {
-//         log('Widget not mounted, cannot navigate');
-//       }
-//     } else if (response.statusCode == 400) {
-//       // Detailed logging for 400 status
-//       log('Received 400 error response');
-//       try {
-//         final errorBody = jsonDecode(response.body);
-//         log('400 Error Details: $errorBody');
-        
-//         final errorMessage = errorBody['message'] ?? 'Unknown error';
-//         log('Specific Error Message: $errorMessage');
-
-//         _handleDetailedError(
-//           statusCode: response.statusCode, 
-//           errorMessage: errorMessage,
-//           fullErrorBody: errorBody
-//         );
-//       } catch (parseError) {
-//         log('Error parsing 400 response body: $parseError');
-//         _handleError('Failed to parse error response');
-//       }
-//     } else {
-//       log('Received error response: ${response.statusCode}');
-//       _handleError('Failed to accept trip: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     log('Error in acceptDriverOffer: $e');
-//     log('Stack trace: ${StackTrace.current}');
-//     _handleError('Failed to accept trip');
-//   } finally {
-//     // Ensure loading dialog is dismissed
-//     if (mounted && Navigator.canPop(context)) {
-//       log('Ensuring dialog is dismissed in finally block');
-//       Navigator.pop(context);
-//     }
-//     log('END acceptDriverOffer for tripId: $tripId');
-//   }
-// }
-
-
-
-
-
-
-
-
-
-// Future<void> acceptDriverOffer(String tripId) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String? token = prefs.getString('token');
-
-//   if (token == null) {
-//     log('Token not found');
-//     return;
-//   }
-
-//   try {
-//     showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => const CancellingDialog(), 
-//     );
-
-//     final response = await http.put(
-//       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//     );
-
-//     log('Accept Driver Offer Response: ${response.statusCode}');
-//     log('Response Body: ${response.body}');
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-      
-//       // Save trip ID to SharedPreferences
-//       await prefs.setString('currentTripId', tripId);
-//       log('Saved trip ID to SharedPreferences: $tripId');
-
-//       // Find the corresponding driver request
-//       final driverRequest = driverRequests.firstWhere(
-//         (req) => req['_id'] == tripId,
-//         orElse: () => {},
-//       );
-
-//       // Dismiss loading dialog
-//       if (mounted && Navigator.canPop(context)) {
-//         Navigator.pop(context);
-//       }
-
-//       // Navigate to next screen with complete data
-//       if (mounted) {
-//         Navigator.pushReplacementNamed(
-//           context,
-//           AppRoutes.rideDetails,
-//           arguments: {
-//             'tripDetails': responseData['tripDetails'],
-//             'initialTripDetails': driverRequest.isNotEmpty ? driverRequest : {
-//               '_id': tripId,
-//               'status': 'user_accepted'
-//             },
-         
-//           },
-//         );
-//       }
-//     } else if (response.statusCode == 400) {
-//       // Detailed logging for 400 status
-//       try {
-//         final errorBody = jsonDecode(response.body);
-//         log('400 Error Details: $errorBody');
-        
-//         final errorMessage = errorBody['message'] ?? 'Unknown error';
-//         log('Specific Error Message: $errorMessage');
-
-//         _handleDetailedError(
-//           statusCode: response.statusCode, 
-//           errorMessage: errorMessage,
-//           fullErrorBody: errorBody
-//         );
-//       } catch (parseError) {
-//         log('Error parsing 400 response body: $parseError');
-//         _handleError('Failed to parse error response');
-//       }
-//     } else {
-//       _handleError('Failed to accept trip: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     log('Error in acceptDriverOffer: $e');
-//     _handleError('Failed to accept trip');
-//   } finally {
-//     // Ensure loading dialog is dismissed
-//     if (mounted && Navigator.canPop(context)) {
-//       Navigator.pop(context);
-//     }
-//   }
-// }
-
-// Future<void> acceptDriverOffer(String tripId) async {
-//   SharedPreferences prefs = await SharedPreferences.getInstance();
-//   String? token = prefs.getString('token');
-
-//   if (token == null) {
-//     log('Token not found');
-//     return;
-//   }
-
-//   try {
-//     showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => const CancellingDialog(), 
-//     );
-
-//     final response = await http.put(
-//       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//     );
-
-//     log('Accept Driver Offer Response: ${response.statusCode}');
-//     log('Response Body: ${response.body}');
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-      
-//       // Save trip ID to SharedPreferences
-//       await prefs.setString('currentTripId', tripId);
-//       log('Saved trip ID to SharedPreferences: $tripId');
-
-//       // Dismiss loading dialog
-//       if (mounted && Navigator.canPop(context)) {
-//         Navigator.pop(context);
-//       }
-
-//       // Navigate to next screen immediately
-//       Navigator.pushReplacementNamed(
-//         context,
-//         AppRoutes.rideDetails,
-//         arguments: {
-//           'tripDetails': responseData['tripDetails'],
-//           'tripId': tripId
-//         },
-//       );
-//     } else if (response.statusCode == 400) {
-//       // Detailed logging for 400 status
-//       try {
-//         final errorBody = jsonDecode(response.body);
-//         log('400 Error Details: $errorBody');
-        
-//         final errorMessage = errorBody['message'] ?? 'Unknown error';
-//         log('Specific Error Message: $errorMessage');
-
-//         _handleDetailedError(
-//           statusCode: response.statusCode, 
-//           errorMessage: errorMessage,
-//           fullErrorBody: errorBody
-//         );
-//       } catch (parseError) {
-//         log('Error parsing 400 response body: $parseError');
-//         _handleError('Failed to parse error response');
-//       }
-//     } else {
-//       _handleError('Failed to accept trip: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     log('Error in acceptDriverOffer: $e');
-//     _handleError('Failed to accept trip');
-//   } finally {
-//     // Ensure loading dialog is dismissed
-//     if (mounted && Navigator.canPop(context)) {
-//       Navigator.pop(context);
-//     }
-//   }
-// }
-
-
-// Enhanced error handling method
-  void _handleDetailedError({
-  required int statusCode, 
-  required String errorMessage,
-  Map<String, dynamic>? fullErrorBody
-}) {
-  log('Detailed Error Handling:');
-  log('Status Code: $statusCode');
-  log('Error Message: $errorMessage');
-  
-  if (fullErrorBody != null) {
-    fullErrorBody.forEach((key, value) {
-      log('Error Detail - $key: $value');
-    });
-  }
-
-  // Show user-friendly error dialog
-  _showErrorDialog(
-    context,
-    'Trip Acceptance Failed',
-    errorMessage,
-  );
-}
-
-// Show error dialog to user
-void _showErrorDialog(BuildContext context, String title, String message) {
-  if (!mounted) return;
-  
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('OK', style: TextStyle(color: AppTheme.primaryColor)),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-// // Modify the acceptDriverOffer method
-// Future<void> acceptDriverOffer(String tripId) async {
-//     SharedPreferences prefs = await SharedPreferences.getInstance();
-//     String? token = prefs.getString('token');
-
-//     if (token == null) {
-//       log('Token not found');
-//       return;
-//     }
-
-//   try {
-//     showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => const CancellingDialog(), 
-//     );
-
-//     final response = await http.put(
-//       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $token',
-//       },
-//     );
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-      
-//       socket?.on('trip_confirmed', (confirmationData) {
-//         if (confirmationData['tripId'] == tripId) {
-//           // Navigate to next screen
-//           Navigator.pushReplacementNamed(
-//             context,
-//             AppRoutes.rideDetails,
-//             arguments: {
-//               'tripDetails': responseData['tripDetails'],
-//             },
-//           );
-//         }
-//       });
-//     } else {
-//       _handleError('Failed to accept trip: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     log('Error in acceptDriverOffer: $e');
-//     _handleError('Failed to accept trip');
-//   } finally {
-//     // Ensure loading dialog is dismissed
-//     if (mounted && Navigator.canPop(context)) {
-//       Navigator.pop(context);
-//     }
-//   }
-// }
-
-
-
-
-  // // Initialize socket connection
-  // void connectToSocket() {
-  //   try {
-  //     socket = IO.io(Constants.apiBaseUrl, <String, dynamic>{
-  //       'transports': ['websocket'],
-  //       'autoConnect': false,
-  //       'reconnection': true,
-  //       'reconnectionAttempts': 5,
-  //       'reconnectionDelay': 1000,
-  //     });
-
-  //     socket?.connect();
-
-  //     socket?.onConnect((_) {
-  //       log('Socket connected successfully');
-  //       if (mounted) {
-  //         setState(() => isConnected = true);
-  //         joinTripRoom();
-  //       }
-  //     });
-
-  //     socket?.onDisconnect((_) {
-  //       log('Socket disconnected');
-  //       if (mounted) {
-  //         setState(() => isConnected = false);
-  //       }
-  //     });
-
-  //     socket?.on('driver_accepted_trip', (data) async {
-  //       log('Driver accepted trip event received: $data');
-  //       await handleDriverAcceptedEvent(data);
-  //     });
-
-  //     socket?.onError((err) => log('Socket error: $err'));
-  //     socket?.onConnectError((err) => log('Socket connect error: $err'));
-  //   } catch (e) {
-  //     log('Error connecting to socket: $e');
-  //   }
-  // }
 
   void joinTripRoom() {
     socket?.emit('join-room', widget.tripId);
@@ -983,175 +447,6 @@ void _showErrorDialog(BuildContext context, String title, String message) {
       requestTimers.remove(requestId);
     });
   }
-
-
-//   Future<void> acceptDriverOffer(String tripId) async {
-//   try {
-//     // Show loading indicator
-//     showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) => const CancellingDialog(), 
-//     );
-
-//     final response = await http.put(
-//       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': 'Bearer $_token',
-//       },
-//     );
-
-//     log('User accepted trip API response: ${response.statusCode} - ${response.body}');
-
-//     if (response.statusCode == 200) {
-//       final responseData = jsonDecode(response.body);
-      
-//       log('User accepted trip response data: $responseData');
-      
-//       // Find the driver request data that matches the tripId
-//       final driverRequest = driverRequests.firstWhere(
-//         (req) => req['_id'] == tripId,
-//         orElse: () => {}
-//       );
-      
-//       log('Selected driver request: $driverRequest');
-      
-//       // Prepare to emit event, making sure it includes all required data
-//       // Standardize the structure to match what both server and driver expect
-//       final eventData = {
-//         'status': 'user_accepted',
-//         'tripDetails': responseData['tripDetails'] ?? {
-//           '_id': tripId,
-//           'status': 'user_accepted',
-//           'pickup': driverRequest['pickup'],
-//           'destination': driverRequest['destination'],
-//           'driverEstimatedFare': driverRequest['driverEstimatedFare'],
-//         },
-//         'tripId': tripId
-//       };
-      
-//       log('Emitting user_accepted_trip event: $eventData');
-      
-//       // Emit event to notify driver through socket
-//       socket?.emit('user_accepted_trip', eventData);
-
-//       // Notify other drivers they weren't selected
-//       socket?.emit('user_accepted_other_driver', {
-//         'tripId': tripId,
-//         'driverIds': driverRequests
-//             .where((req) => req['_id'] != tripId)
-//             .map((req) => req['driver']?['_id'])
-//             .toList(),
-//       });
-
-//       // Wait to ensure socket events are sent
-//       await Future.delayed(const Duration(milliseconds: 500));
-      
-//       // Hide loading indicator
-//       if (mounted && Navigator.canPop(context)) {
-//         Navigator.pop(context);
-//       }
-
-//       if (mounted) {
-//         final dataToPass = {
-//           'tripDetails': responseData['tripDetails'] ?? eventData['tripDetails'],
-//           'initialTripDetails': driverRequest.isNotEmpty ? driverRequest : {
-//             '_id': tripId,
-//             'status': 'user_accepted'
-//           },
-//         };
-        
-//         log('Navigating to ride details with data: $dataToPass');
-        
-//         Navigator.pushReplacementNamed(
-//           context,
-//           AppRoutes.rideDetails,
-//           arguments: dataToPass,
-//         );
-//       }
-//     } else {
-//       // Hide loading indicator if still showing
-//       if (mounted && Navigator.canPop(context)) {
-//         Navigator.pop(context);
-//       }
-//       _handleError('Failed to accept trip: ${response.statusCode}');
-//     }
-//   } catch (e) {
-//     log('Error in acceptDriverOffer: $e');
-//     // Hide loading indicator if still showing
-//     if (mounted && Navigator.canPop(context)) {
-//       Navigator.pop(context);
-//     }
-//     _handleError('Failed to accept trip: ${e.toString()}');
-//   }
-// }
-
-  // Future<void> acceptDriverOffer(String tripId) async {
-  //   try {
-  //     // Show loading indicator
-  //     showDialog(
-  //       context: context,
-  //       barrierDismissible: false,
-  //       builder: (BuildContext context) => const CancellingDialog(), 
-  //     );
-
-  //     final response = await http.put(
-  //       Uri.parse('${Constants.apiBaseUrl}/trip/user-accept/$tripId'),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': 'Bearer $_token',
-  //       },
-  //     );
-
-  //     // Hide loading indicator
-  //     if (Navigator.canPop(context)) {
-  //       Navigator.pop(context);
-  //     }
-
-  //     if (response.statusCode == 200) {
-  //       final responseData = jsonDecode(response.body);
-        
-  //       log('User accepted trip response: ${response.body}');
-        
-  //       // Emit event to notify driver through socket
-  //       socket?.emit('user_accepted_trip', {
-  //         'status': 'user_accepted',
-  //         'tripDetails': responseData['tripDetails'],
-  //         'tripId': tripId
-  //       });
-
-  //       // Notify other drivers they weren't selected
-  //       socket?.emit('user_accepted_other_driver', {
-  //         'tripId': tripId,
-  //         'driverIds': driverRequests
-  //             .where((req) => req['_id'] != tripId)
-  //             .map((req) => req['driver']?['_id'])
-  //             .toList(),
-  //       });
-
-  //       if (mounted) {
-  //         // Add a delay to ensure socket events are sent before navigation
-  //         await Future.delayed(const Duration(milliseconds: 300));
-          
-  //         Navigator.pushNamed(
-  //           context,
-  //           AppRoutes.rideDetails,
-  //           arguments: {
-  //             'tripDetails': responseData['tripDetails'],
-  //             'initialTripDetails':
-  //                 driverRequests.firstWhere((req) => req['_id'] == tripId),
-  //           },
-  //         );
-  //       }
-  //     } else {
-  //       _handleError('Failed to accept trip: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     log('Error in acceptDriverOffer: $e');
-  //     _handleError('Failed to accept trip');
-  //   }
-  // }
 
   void declineDriverOffer(String tripId) {
     removeRequest(tripId);
@@ -1422,8 +717,8 @@ void _showErrorDialog(BuildContext context, String title, String message) {
 }
 
 // Separate widget classes for UI components
-class CancellingDialog extends StatelessWidget {
-  const CancellingDialog({super.key});
+class AcceptingDialog extends StatelessWidget {
+  const AcceptingDialog({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -1455,6 +750,43 @@ class CancellingDialog extends StatelessWidget {
     );
   }
 }
+
+
+// Separate widget classes for UI components
+class CancellingDialog extends StatelessWidget {
+  const CancellingDialog({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.9),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: const Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primaryColor),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Cancelling trip...',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class NoInternetBanner extends StatelessWidget {
   const NoInternetBanner({super.key});

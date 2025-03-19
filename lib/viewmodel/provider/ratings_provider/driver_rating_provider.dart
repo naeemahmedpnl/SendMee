@@ -1,105 +1,4 @@
-// import 'dart:developer';
-// import 'package:flutter/foundation.dart';
-// import 'package:sendme/utils/constant/api_base_url.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-
-// class DriverRatingProvider with ChangeNotifier {
-//   int? rating;
-//   String feedback = '';
-
-//   void setRating(int value) {
-//     rating = value;
-//     notifyListeners();
-//   }
-
-//   void setFeedback(String value) {
-//     feedback = value;
-//     notifyListeners();
-//   }
-
-//   String get baseUrl => Constants.apiBaseUrl;
-
-//   Future<bool> submitRating() async {
-//     try {
-//       final prefs = await SharedPreferences.getInstance();
-     
-//       // Get token from SharedPreferences
-//       final token = prefs.getString('token');
-//       if (token == null) {
-//         log('Token not found in SharedPreferences', name: 'RatingProvider');
-//         return false;
-//       }
-     
-//       // Get passenger ID from SharedPreferences
-//       final passengerId = prefs.getString('passenger_details_id');
-//       if (passengerId == null) {
-//         log('Passenger ID not found in SharedPreferences', name: 'RatingProvider');
-//         return false;
-//       }
-      
-//       // Validate rating
-//       if (rating == null || rating! < 1 || rating! > 5) {
-//         log('Invalid rating value: $rating', name: 'RatingProvider');
-//         return false;
-//       }
-
-//       // Match the exact API request format
-//       final body = jsonEncode({
-//         "passengerId": passengerId, // Changed to match API format
-//         "feedback": feedback,
-//         "rating": rating, // Send as integer, not string
-//       });
-
-//       final url = '$baseUrl/rating/giveRatingToPassenger';
-//       log('Submitting rating to URL: $url', name: 'RatingProvider');
-//       log('Request body: $body', name: 'RatingProvider');
-
-//       final response = await http.put(
-//         Uri.parse(url),
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': 'Bearer $token',
-//         },
-//         body: body,
-//       );
-
-//       log('Response status code: ${response.statusCode}', name: 'RatingProvider');
-//       log('Response body: ${response.body}', name: 'RatingProvider');
-
-//       if (response.statusCode == 200) {
-//         log('Rating submitted successfully', name: 'RatingProvider');
-        
-//         // After successful rating submission, clean up SharedPreferences
-//         await prefs.remove('passenger_details_id');
-        
-//         log('Cleaned up SharedPreferences after successful rating', name: 'RatingProvider');
-        
-//         return true;
-//       } else {
-//         // Parse error response for more details
-//         final errorResponse = json.decode(response.body);
-//         log(
-//           'Failed to submit rating. Status code: ${response.statusCode}, Error: ${errorResponse.toString()}',
-//           name: 'RatingProvider'
-//         );
-//         return false;
-//       }
-//     } catch (e, stackTrace) {
-//       log(
-//         'Error submitting rating',
-//         error: e,
-//         stackTrace: stackTrace,
-//         name: 'RatingProvider',
-//       );
-//       return false;
-//     }
-//   }
-// }
-
 import 'dart:developer';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sendme/utils/constant/api_base_url.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -272,12 +171,12 @@ class DriverRatingProvider with ChangeNotifier {
       SnackBar(
         content: Row(
           children: [
-            Icon(Icons.error_outline, color: Colors.white),
-            SizedBox(width: 8),
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 message,
-                style: TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],
@@ -287,8 +186,8 @@ class DriverRatingProvider with ChangeNotifier {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: EdgeInsets.all(10),
-        duration: Duration(seconds: 4),
+        margin: const EdgeInsets.all(10),
+        duration: const Duration(seconds: 4),
         action: SnackBarAction(
           label: 'OK',
           textColor: Colors.white,
